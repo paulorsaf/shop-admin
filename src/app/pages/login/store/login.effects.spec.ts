@@ -9,6 +9,7 @@ import { AuthService } from "src/app/services/auth/auth.service";
 import { login, loginFail, loginSuccess, recoverPassword, recoverPasswordFail, recoverPasswordSuccess } from "./login.actions";
 import { User } from "src/app/model/user/user";
 import { AuthServiceMock } from "src/mock/auth-service.mock";
+import { verfiyUserIsLoggedSuccess } from "src/app/store/user/user.actions";
 
 describe('LoginEffects', () => {
 
@@ -16,6 +17,7 @@ describe('LoginEffects', () => {
     let effects: LoginEffects;
     let authService: AuthServiceMock;
 
+    const user = {id: '1'} as any;
     const error = {error: "error"};
 
     beforeEach(() => {
@@ -44,7 +46,6 @@ describe('LoginEffects', () => {
         })
 
         it('when success, then return login success', (done) => {
-            const user = {id: '1'} as any;
             authService._response = of(user);
     
             effects.loginEffect$.subscribe(response => {
@@ -58,6 +59,21 @@ describe('LoginEffects', () => {
     
             effects.loginEffect$.subscribe(response => {
                 expect(response).toEqual(loginFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given login success", () => {
+
+        beforeEach(() => {
+            actions$ = of(loginSuccess({user}));
+        })
+
+        it('then return verify user is logged success', (done) => {
+            effects.loginSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(verfiyUserIsLoggedSuccess({user}));
                 done();
             })
         })

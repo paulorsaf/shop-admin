@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './user.actions';
+import { logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './user.actions';
 import { UserState } from './user.state';
 
 const initialState: UserState = AppInitialState.user;
@@ -27,6 +27,20 @@ const _userReducer = createReducer(initialState,
             ...state,
             isVerifiedUserLogged: true,
             isVerifyingUserLogged: false
+        };
+    }),
+    on(logout, (state) => {
+        return {
+            ...state,
+            isLoggedOut: false,
+            isLoggingOut: true
+        };
+    }),
+    on(logoutSuccess, (state) => {
+        return {
+            ...state,
+            isLoggedOut: true,
+            isLoggingOut: false
         };
     })
 );

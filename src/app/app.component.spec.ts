@@ -6,7 +6,6 @@ import { Store, StoreModule } from '@ngrx/store';
 import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { AppComponent } from './app.component';
-import { User } from './model/user/user';
 import { AppState } from './store/app-state';
 import { verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './store/user/user.actions';
 import { userReducer } from './store/user/user.reducers';
@@ -18,6 +17,8 @@ describe('AppComponent', () => {
   let page: PageMock;
   let store: Store<AppState>;
   let location: Location;
+
+  const user = {id: 1} as any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -62,18 +63,21 @@ describe('AppComponent', () => {
       expect(page.querySelector('[test-id="app-loader"]')).not.toBeNull();
     })
 
-    describe('when verification is finished with success', () => {
+    describe('when verification is finished with success and user is logged', () => {
 
       beforeEach(() => {
         spyOn(component, 'isBasePath').and.returnValue(true);
 
-        const user = {id: 1} as any;
         store.dispatch(verfiyUserIsLoggedSuccess({user}));
         fixture.detectChanges();
       })
   
       it('then show app', () => {
         expect(page.querySelector('router-outlet')).not.toBeNull();
+      })
+  
+      it('then show side menu', () => {
+        expect(page.querySelector('mat-drawer')).not.toBeNull();
       })
 
       it('then hide app loader', () => {
@@ -89,7 +93,7 @@ describe('AppComponent', () => {
 
     })
 
-    describe('when verification is finished with error', () => {
+    describe('when verification is finished with error and user is not logged', () => {
 
       beforeEach(() => {
         store.dispatch(verfiyUserIsLoggedFail());
@@ -98,6 +102,10 @@ describe('AppComponent', () => {
   
       it('then show app', () => {
         expect(page.querySelector('router-outlet')).not.toBeNull();
+      })
+  
+      it('then hide side menu', () => {
+        expect(page.querySelector('mat-drawer')).toBeNull();
       })
 
       it('then hide app loader', () => {
@@ -113,6 +121,19 @@ describe('AppComponent', () => {
 
     })
 
+  })
+
+  it('given user clicks on logout, then logout', done => {
+    store.dispatch(verfiyUserIsLoggedSuccess({user}));
+    fixture.detectChanges();
+
+    page.querySelector('[test-id="logout-button"]').click();
+    fixture.detectChanges();
+
+    store.select('user').subscribe(state => {
+      expect(state.isLoggingOut).toBeTruthy();
+      done();
+    })
   })
   
 });

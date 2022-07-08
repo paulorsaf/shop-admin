@@ -34,10 +34,7 @@ export class AuthService {
     return new Observable<User>(observer => {
       this.auth.onAuthStateChanged(user => {
         if (user) {
-          observer.next({
-            email: user.email || "",
-            uid: user.uid
-          });
+          observer.next({email: user.email || "", uid: user.uid});
         } else {
           observer.error({});
         }
@@ -47,6 +44,12 @@ export class AuthService {
         observer.complete();
       })
     })
+  }
+
+  logout(): Observable<void> {
+    return from(this.auth.signOut().then(() => {
+      return;
+    }));
   }
 
   private translateLoginError(error: {code: string}) {

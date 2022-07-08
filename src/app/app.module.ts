@@ -10,6 +10,9 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     
     AppStoreModule,
 
+    MatIconModule,
+    MatListModule,
     MatProgressSpinnerModule,
+    MatSidenavModule,
     MatSnackBarModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),

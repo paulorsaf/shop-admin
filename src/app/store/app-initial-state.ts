@@ -9,6 +9,8 @@ export const AppInitialState: AppState = {
         isRecoveringPassword: false
     },
     user: {
+        isLoggedOut: false,
+        isLoggingOut: false,
         isVerifiedUserLogged: false,
         isVerifyingUserLogged: false,
         user: null

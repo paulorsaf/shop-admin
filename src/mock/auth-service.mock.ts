@@ -16,4 +16,8 @@ export class AuthServiceMock {
         return this._response || of({});
     }
 
+    logout() {
+        return this._response || of({});
+    }
+
 }

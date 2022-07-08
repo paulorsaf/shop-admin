@@ -1,3 +1,11 @@
 section {
     min-height: 100vh;
 }
+
+mat-drawer-container,
+mat-drawer-content {
+    min-height: 100vh;
+}
+mat-list {
+    width: 15vw;
+}

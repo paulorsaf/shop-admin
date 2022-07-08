@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
+import { User } from './model/user/user';
 import { AppState } from './store/app-state';
-import { verfiyUserIsLogged } from './store/user/user.actions';
+import { logout, verfiyUserIsLogged } from './store/user/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { verfiyUserIsLogged } from './store/user/user.actions';
 export class AppComponent implements OnInit {
 
   isVerifyingUserLogged$!: Observable<boolean>;
+  user$!: Observable<User>;
 
   constructor(
     private router: Router,
@@ -21,9 +23,14 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.isVerifyingUserLogged$ = this.store.select(state => state.user.isVerifyingUserLogged);
+    this.user$ = this.store.select(state => state.user.user);
 
     this.store.dispatch(verfiyUserIsLogged());
     this.onVerifiedUserLogged();
+  }
+
+  logout() {
+    this.store.dispatch(logout());
   }
 
   private onVerifiedUserLogged() {
@@ -34,8 +41,7 @@ export class AppComponent implements OnInit {
       ).subscribe(state => {
         if (!state.user) {
           this.router.navigate(['login']);
-        }
-        if (this.isBasePath()) {
+        } else if (this.isBasePath()) {
           this.router.navigate(['home']);
         }
       })

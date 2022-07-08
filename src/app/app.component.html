@@ -2,4 +2,17 @@
     <mat-spinner diameter="40" test-id="app-loader"></mat-spinner>
 </section>
 
-<router-outlet *ngIf="!(isVerifyingUserLogged$ | async)"></router-outlet>
+<mat-drawer-container *ngIf="!(isVerifyingUserLogged$ | async)">
+    <mat-drawer mode="side" opened *ngIf="user$ | async">
+        <mat-list>
+            <mat-list-item (click)="logout()" test-id="logout-button">
+                <mat-icon mat-list-icon>logout</mat-icon>
+                <div mat-line>Sair</div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+        </mat-list>
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

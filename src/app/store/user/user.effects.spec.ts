@@ -6,9 +6,8 @@ import { UserEffects } from './user.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { AuthService } from "src/app/services/auth/auth.service";
-import { User } from "src/app/model/user/user";
 import { AuthServiceMock } from "src/mock/auth-service.mock";
-import { verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from "./user.actions";
+import { logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from "./user.actions";
 
 describe('UserEffects', () => {
 
@@ -35,6 +34,7 @@ describe('UserEffects', () => {
         .overrideProvider(AuthService, {useValue: authService});
 
         effects = TestBed.get(UserEffects);
+        spyOn(effects, 'reloadApp');
     })
 
     describe("Given verify user is logged", () => {
@@ -58,6 +58,23 @@ describe('UserEffects', () => {
     
             effects.verfiyUserIsLoggedEffect$.subscribe(response => {
                 expect(response).toEqual(verfiyUserIsLoggedFail());
+                done();
+            })
+        })
+
+    })
+
+    describe("Given logout", () => {
+
+        beforeEach(() => {
+            actions$ = of(logout());
+        })
+
+        it('when success, then return logout success', (done) => {
+            authService._response = of({});
+    
+            effects.logoutEffect$.subscribe(response => {
+                expect(response).toEqual(logoutSuccess());
                 done();
             })
         })
