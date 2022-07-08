@@ -9,6 +9,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     
     AppStoreModule,
 
+    MatProgressSpinnerModule,
     MatSnackBarModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),

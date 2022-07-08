@@ -1,1 +1,5 @@
-<router-outlet></router-outlet>
+<section class="centralize" *ngIf="(isVerifyingUserLogged$ | async)">
+    <mat-spinner diameter="40" test-id="app-loader"></mat-spinner>
+</section>
+
+<router-outlet *ngIf="!(isVerifyingUserLogged$ | async)"></router-outlet>

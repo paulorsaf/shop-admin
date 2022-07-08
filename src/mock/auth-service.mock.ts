@@ -12,4 +12,8 @@ export class AuthServiceMock {
         return this._response || of({});
     }
 
+    findLoggedUser() {
+        return this._response || of({});
+    }
+
 }

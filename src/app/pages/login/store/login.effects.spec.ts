@@ -44,7 +44,7 @@ describe('LoginEffects', () => {
         })
 
         it('when success, then return login success', (done) => {
-            const user = {id: '1'} as User;
+            const user = {id: '1'} as any;
             authService._response = of(user);
     
             effects.loginEffect$.subscribe(response => {

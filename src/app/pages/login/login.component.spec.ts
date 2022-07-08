@@ -6,6 +6,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { User } from 'src/app/model/user/user';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
+import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { LoginComponent } from './login.component';
@@ -29,7 +30,7 @@ describe('LoginComponent', () => {
         BrowserAnimationsModule,
         LoginModule,
         RouterTestingModule.withRoutes([{
-          path: "home", component: LoginComponent
+          path: "home", component: BlankComponent
         }]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('login', loginReducer)
@@ -159,7 +160,7 @@ describe('LoginComponent', () => {
     describe('when login success', () => {
 
       beforeEach(() => {
-        store.dispatch(loginSuccess({user: {id: 1} as User}));
+        store.dispatch(loginSuccess({user: {id: 1} as any}));
         fixture.detectChanges();
       })
 

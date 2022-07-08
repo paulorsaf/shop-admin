@@ -9,21 +9,44 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class AuthService {
 
   constructor(
-    private afAuth: AngularFireAuth
+    private auth: AngularFireAuth
   ) { }
 
   login(email: string, password: string): Observable<User> {
     return from(
-      this.afAuth.signInWithEmailAndPassword(email, password)
+      this.auth.signInWithEmailAndPassword(email, password)
+        .then(user => ({
+          email,
+          uid: user?.user?.uid || ""
+        }))
         .catch(this.translateLoginError)
     );
   }
 
   recoverPassword(email: string): Observable<void> {
     return from(
-      this.afAuth.sendPasswordResetEmail(email)
+      this.auth.sendPasswordResetEmail(email)
         .catch(this.translateLoginError)
     );
+  }
+
+  findLoggedUser(): Observable<User> {
+    return new Observable<User>(observer => {
+      this.auth.onAuthStateChanged(user => {
+        if (user) {
+          observer.next({
+            email: user.email || "",
+            uid: user.uid
+          });
+        } else {
+          observer.error({});
+        }
+        observer.complete();
+      }, () => {
+        observer.error({});
+        observer.complete();
+      })
+    })
   }
 
   private translateLoginError(error: {code: string}) {
