@@ -30,6 +30,9 @@ export class AuthService {
     if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
       return Promise.reject({message: 'Email e/ou senha nao encontrados.'});
     }
+    if (error.code.includes("auth/requests-from-referer") && error.code.includes("-are-blocked")) {
+      return Promise.reject({message: 'Tentativa de acesso bloqueada.'});
+    }
     return Promise.reject(error);
   }
 
