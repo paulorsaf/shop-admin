@@ -56,10 +56,6 @@ export class ProductDetailComponent implements OnInit {
   }
 
   save() {
-
-  }
-
-  cancel() {
     
   }
 

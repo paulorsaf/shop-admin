@@ -10,5 +10,8 @@ export class CategoryServiceMock {
     findById() {
         return this._response || of({});
     }
+    save() {
+        return this._response || of({});
+    }
 
 }

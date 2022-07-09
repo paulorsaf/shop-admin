@@ -40,4 +40,11 @@ export class CategoryService {
       )
   }
 
+  save(category: Category): Observable<void> {
+    return of<any>({})
+      .pipe(
+        delay(1000)
+      );
+  }
+
 }

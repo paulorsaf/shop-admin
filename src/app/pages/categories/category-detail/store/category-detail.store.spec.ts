@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadDetail, loadDetailFail, loadDetailSuccess } from "./category-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
 import { categoryDetailReducer } from "./category-detail.reducers";
 import { CategoryDetailState } from "./category-detail.state";
 
@@ -58,6 +58,77 @@ describe('Category store', () => {
             error,
             isLoaded: false,
             isLoading: false
+        });
+    });
+    
+    it('saveDetail', () => {
+        const initialState: CategoryDetailState = {
+            ...AppInitialState.categoryDetail,
+            error: {},
+            isSaved: true,
+            isSaving: false
+        };
+
+        const category = {id: '1', name: "any"};
+        const state = categoryDetailReducer(initialState, saveDetail({category}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categoryDetail,
+            error: null,
+            isSaved: false,
+            isSaving: true
+        });
+    });
+    
+    it('saveDetailSuccess', () => {
+        const initialState: CategoryDetailState = {
+            ...AppInitialState.categoryDetail,
+            isSaved: false,
+            isSaving: true
+        };
+
+        const state = categoryDetailReducer(initialState, saveDetailSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.categoryDetail,
+            isSaved: true,
+            isSaving: false
+        });
+    });
+    
+    it('saveDetailFail', () => {
+        const initialState: CategoryDetailState = {
+            ...AppInitialState.categoryDetail,
+            isSaved: false,
+            isSaving: true
+        };
+
+        const error = {error: "error"};
+        const state = categoryDetailReducer(initialState, saveDetailFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categoryDetail,
+            error,
+            isSaved: false,
+            isSaving: false
+        });
+    });
+    
+    it('clear', () => {
+        const initialState: CategoryDetailState = {
+            ...AppInitialState.categoryDetail,
+            category: {id: 1} as any,
+            error: {},
+            isLoaded: true,
+            isLoading: true,
+            isSaved: true,
+            isSaving: true
+        };
+
+        const state = categoryDetailReducer(initialState, clear());
+
+        expect(state).toEqual({
+            ...AppInitialState.categoryDetail
         });
     });
   

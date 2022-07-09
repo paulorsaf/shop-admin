@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { CategoryDetailEffects } from './category-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { loadDetail, loadDetailFail, loadDetailSuccess } from "./category-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
 import { CategoryServiceMock } from "src/mock/category-service.mock";
 import { CategoryService } from "src/app/services/category/category.service";
 
@@ -57,6 +57,47 @@ describe('CategoryDetailEffects', () => {
     
             effects.loadDetailEffect$.subscribe(response => {
                 expect(response).toEqual(loadDetailFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save detail", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveDetail({category}));
+        })
+
+        it('when success, then return save detail success', (done) => {
+            categoryService._response = of(category);
+    
+            effects.saveDetailEffect$.subscribe(response => {
+                expect(response).toEqual(saveDetailSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save detail fail', (done) => {
+            categoryService._response = throwError(error);
+    
+            effects.saveDetailEffect$.subscribe(response => {
+                expect(response).toEqual(saveDetailFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save detail success", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveDetailSuccess());
+        })
+
+        it('then clear category state', (done) => {
+            effects.saveDetailSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(clear());
                 done();
             })
         })

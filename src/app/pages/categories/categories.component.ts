@@ -32,7 +32,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
       .subscribe(categories => {
         this.dataSource = new MatTableDataSource<any>(categories);
       });
-
+      
     this.store.dispatch(load());
   }
 

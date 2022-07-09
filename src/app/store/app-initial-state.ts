@@ -11,6 +11,8 @@ export const AppInitialState: AppState = {
         error: null,
         isLoaded: false,
         isLoading: false,
+        isSaved: false,
+        isSaving: false,
         category: undefined
     },
     login: {
