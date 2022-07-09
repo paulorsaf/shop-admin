@@ -29,7 +29,8 @@ describe('AppComponent', () => {
         RouterTestingModule.withRoutes([
           { path: "home", component: BlankComponent },
           { path: "login", component: BlankComponent },
-          { path: "products", component: BlankComponent }
+          { path: "products", component: BlankComponent },
+          { path: "categories", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('user', userReducer)
@@ -124,30 +125,43 @@ describe('AppComponent', () => {
 
   })
 
-  it('given user clicks on logout, then logout', done => {
-    store.dispatch(verfiyUserIsLoggedSuccess({user}));
-    fixture.detectChanges();
+  describe('given user is verified and clicks on a menu item', () => {
 
-    page.querySelector('[test-id="logout-button"]').click();
-    fixture.detectChanges();
-
-    store.select('user').subscribe(state => {
-      expect(state.isLoggingOut).toBeTruthy();
-      done();
+    beforeEach(() => {
+      store.dispatch(verfiyUserIsLoggedSuccess({user}));
+      fixture.detectChanges();
     })
-  })
 
-  it('given user clicks on products button, then go to products page', done => {
-    store.dispatch(verfiyUserIsLoggedSuccess({user}));
-    fixture.detectChanges();
+    it('given user clicks on logout, then logout', done => {
+      page.querySelector('[test-id="logout-button"]').click();
+      fixture.detectChanges();
+  
+      store.select('user').subscribe(state => {
+        expect(state.isLoggingOut).toBeTruthy();
+        done();
+      })
+    })
+  
+    it('given user clicks on products button, then go to products page', done => {
+      page.querySelector('[test-id="products-button"]').click();
+      fixture.detectChanges();
+  
+      setTimeout(() => {
+        expect(location.path()).toEqual('/products');
+        done();
+      }, 100);
+    })
+  
+    it('given user clicks on categories button, then go to categories page', done => {
+      page.querySelector('[test-id="categories-button"]').click();
+      fixture.detectChanges();
+  
+      setTimeout(() => {
+        expect(location.path()).toEqual('/categories');
+        done();
+      }, 100);
+    })
 
-    page.querySelector('[test-id="products-button"]').click();
-    fixture.detectChanges();
-
-    setTimeout(() => {
-      expect(location.path()).toEqual('/products');
-      done();
-    }, 100);
   })
   
 });

@@ -7,8 +7,8 @@ import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { ProductsComponent } from './products.component';
 import { ProductsModule } from './products.module';
-import { loadSuccess } from './store/products.actions';
-import { productsReducer } from './store/products.reducers';
+import { loadSuccess } from './store/products/products.actions';
+import { productsReducer } from './store/products/products.reducers';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;

@@ -31,11 +31,19 @@ export class UserEffects {
             ofType(logout),
             switchMap(() =>
                 this.authService.logout().pipe(
-                    map(() => logoutSuccess()),
-                    tap(() => this.reloadApp())
+                    map(() => logoutSuccess())
                 )
             )
         )
+    )
+
+    logoutSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(logoutSuccess),
+            tap(() => this.reloadApp())
+        ), {
+            dispatch: false
+        }
     )
 
     reloadApp() {

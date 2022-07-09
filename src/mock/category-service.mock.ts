@@ -1,6 +1,6 @@
 import { of } from "rxjs";
 
-export class ProductServiceMock {
+export class CategoryServiceMock {
     
     _response: any;
 

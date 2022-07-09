@@ -7,21 +7,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ProductsComponent } from './products.component';
 import { MatTableModule } from '@angular/material/table';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { MatSelectModule } from '@angular/material/select';
+import { CategoriesComponent } from './categories.component';
+import { CategoryDetailComponent } from './category-detail/category-detail.component';
 
 const routes: Routes = [
-  { path: '', component: ProductsComponent },
-  { path: ':id', component: ProductDetailComponent }
+  { path: '', component: CategoriesComponent },
+  { path: ':id', component: CategoryDetailComponent }
 ];
 
 @NgModule({
   declarations: [
-    ProductsComponent,
-    ProductDetailComponent
+    CategoriesComponent,
+    CategoryDetailComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +39,6 @@ const routes: Routes = [
     MatSelectModule,
     MatTableModule
   ],
-  exports: [ProductsComponent]
+  exports: [CategoriesComponent]
 })
-export class ProductsModule { }
+export class CategoriesModule { }

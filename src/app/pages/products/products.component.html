@@ -14,7 +14,7 @@
     </div>
 </section>
 
-<section *ngIf="!(isLoading$ | async)" class="products" test-id="products">
+<section *ngIf="!(isLoading$ | async)" class="page" test-id="products">
     <h1>Produtos</h1>
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="name">

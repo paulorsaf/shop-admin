@@ -37,6 +37,10 @@ export class AppComponent implements OnInit {
     this.router.navigate(['products']);
   }
 
+  goToCategoriesPage() {
+    this.router.navigate(['categories']);
+  }
+
   private onVerifiedUserLogged() {
     this.store.select('user')
       .pipe(
