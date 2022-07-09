@@ -1,1 +1,36 @@
-<p>category-detail works!</p>
+<section *ngIf="(isLoading$ | async)" class="page-loading" test-id="category-loader">
+    <div>
+        <ngx-skeleton-loader appearance="line" count="1"
+            [theme]="{height: '32px', width: '123px', 'margin-bottom': '16px'}">
+        </ngx-skeleton-loader>
+    </div>
+    <div>
+        <ngx-skeleton-loader appearance="line" count="1"
+            [theme]="{height: '56px', width: '100%', 'margin-bottom': 0}">
+        </ngx-skeleton-loader>
+        <ngx-skeleton-loader appearance="line" count="3"
+            [theme]="{height: '48px', width: '100%', 'margin-bottom': 0}">
+        </ngx-skeleton-loader>
+    </div>
+</section>
+
+<section *ngIf="!(isLoading$ | async)" class="page" test-id="category">
+    <h1>Detalhes da categoria</h1>
+    <form [formGroup]="form" *ngIf="form">
+        <div>
+            <mat-form-field>
+                <mat-label>Nome</mat-label>
+                <input matInput placeholder="Nome" formControlName="name">
+            </mat-form-field>
+        </div>
+        
+        <button type="button" mat-button color="primary" (click)="cancel()"
+            test-id="cancel-button">
+            Cancelar
+        </button>
+        <button type="button" mat-raised-button color="primary" (click)="save()"
+            test-id="save-button">
+            Salvar
+        </button>
+    </form>
+</section>

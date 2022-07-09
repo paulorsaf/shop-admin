@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { CategoryDetailEffects } from '../pages/categories/category-detail/store/category-detail.effects';
+import { categoryDetailReducer } from '../pages/categories/category-detail/store/category-detail.reducers';
 import { CategoriesEffects } from '../pages/categories/store/categories.effects';
 import { categoriesReducer } from '../pages/categories/store/categories.reducers';
 import { LoginEffects } from '../pages/login/store/login.effects';
@@ -17,6 +19,7 @@ import { userReducer } from './user/user.reducers';
   imports: [
     StoreModule.forRoot([]),
     StoreModule.forFeature('categories', categoriesReducer),
+    StoreModule.forFeature('categoryDetail', categoryDetailReducer),
     StoreModule.forFeature('login', loginReducer),
     StoreModule.forFeature('productDetail', productDetailReducer),
     StoreModule.forFeature('products', productsReducer),
@@ -25,6 +28,7 @@ import { userReducer } from './user/user.reducers';
 
     EffectsModule.forRoot([
       CategoriesEffects,
+      CategoryDetailEffects,
       LoginEffects,
       ProductDetailEffects,
       ProductsEffects,

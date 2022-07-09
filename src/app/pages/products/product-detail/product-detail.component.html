@@ -20,13 +20,13 @@
         <div>
             <mat-form-field>
                 <mat-label>Nome</mat-label>
-                <input matInput placeholder="Nome">
+                <input matInput placeholder="Nome" formControlName="name">
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Categoria</mat-label>
-                <mat-select>
+                <mat-select formControlName="category">
                     <mat-option *ngFor="let category of categories$ | async" [value]="category.id">
                         {{category.name}}
                     </mat-option>
@@ -36,13 +36,15 @@
         <div>
             <mat-form-field>
                 <mat-label>Preço</mat-label>
-                <input matInput type="number" placeholder="Preço">
+                <input matInput type="number" placeholder="Preço" formControlName="price">
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Preço com desconto</mat-label>
-                <input matInput type="number" placeholder="Preço com desconto">
+                <input matInput type="number" placeholder="Preço com desconto"
+                    formControlName="priceWithDiscount">
             </mat-form-field>
         </div>
+        
         <button type="button" mat-button color="primary" (click)="cancel()"
             test-id="cancel-button">
             Cancelar

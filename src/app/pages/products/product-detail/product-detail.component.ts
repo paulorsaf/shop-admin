@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { filter, Observable, of, take } from 'rxjs';
 import { Category } from 'src/app/model/category/category';
 import { AppState } from 'src/app/store/app-state';
 import { load } from '../../categories/store/categories.actions';
@@ -27,10 +27,6 @@ export class ProductDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-
-    });
-
     this.categories$ = this.store.select(state => state.categories.categories);
     this.isLoading$ = this.store.select(state => state.productDetail.isLoading);
 
@@ -38,6 +34,25 @@ export class ProductDetailComponent implements OnInit {
     this.store.dispatch(loadDetail({id}));
 
     this.store.dispatch(load());
+
+    this.createForm();
+  }
+
+  private createForm() {
+    this.store.select('productDetail')
+      .pipe(
+        filter(state => !!state.isLoaded),
+        take(1)
+      )
+      .subscribe(state => {
+        const product = state.product;
+        this.form = this.formBuilder.group({
+          name: [product?.name || ''],
+          category: [product?.category.id || ''],
+          price: [product?.price || 0],
+          priceWithDiscount: [product?.priceWithDiscount || 0]
+        });
+      })
   }
 
   save() {

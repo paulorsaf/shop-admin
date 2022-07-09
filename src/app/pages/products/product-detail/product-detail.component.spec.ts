@@ -46,10 +46,6 @@ describe('ProductDetailComponent', () => {
     fixture.detectChanges();
   });
 
-  it('given page starts, then create form', () => {
-    expect(component.form).not.toBeUndefined();
-  });
-
   it('given page starts, then load product by id', done => {
     store.select('productDetail').subscribe(state => {
       expect(state.isLoading).toBeTruthy();
@@ -79,7 +75,9 @@ describe('ProductDetailComponent', () => {
   describe('given product by id is loaded', () => {
 
     beforeEach(() => {
-      const product = {id: 1} as any;
+      const product: Product = {
+        id: 1, name: "name", category: {id: '1'}, price: 10, priceWithDiscount: 5
+      } as any;
       store.dispatch(loadDetailSuccess({product}));
       fixture.detectChanges();
     })
@@ -90,6 +88,27 @@ describe('ProductDetailComponent', () => {
 
     it('then show product detail', () => {
       expect(page.querySelector('[test-id="product"]')).not.toBeNull();
+    })
+
+  })
+
+  describe('given update product', () => {
+
+    beforeEach(() => {
+      const product: Product = {
+        id: 1, name: "name", category: {id: '1'}, price: 10, priceWithDiscount: 5
+      } as any;
+      store.dispatch(loadDetailSuccess({product}));
+      fixture.detectChanges();
+    })
+
+    it('then create form with product detail values', () => {
+      expect(component.form.value).toEqual({
+        name: "name",
+        category: "1",
+        price: 10,
+        priceWithDiscount: 5
+      })
     })
 
   })

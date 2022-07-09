@@ -3,7 +3,7 @@ import { loadDetail, loadDetailFail, loadDetailSuccess } from "./product-detail.
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
-describe('Products store', () => {
+describe('Product store', () => {
     
     it('loadDetail', () => {
         const initialState: ProductDetailState = {

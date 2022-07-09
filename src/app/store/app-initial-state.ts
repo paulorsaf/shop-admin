@@ -7,6 +7,12 @@ export const AppInitialState: AppState = {
         isLoaded: false,
         isLoading: false
     },
+    categoryDetail: {
+        error: null,
+        isLoaded: false,
+        isLoading: false,
+        category: undefined
+    },
     login: {
         error: null,
         isLoggedIn: false,
