@@ -10,15 +10,17 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductsComponent } from './products.component';
 import { MatTableModule } from '@angular/material/table';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
-const routes: Routes = [{
-  path: '',
-  component: ProductsComponent
-}];
+const routes: Routes = [
+  { path: '', component: ProductsComponent },
+  { path: ':id', component: ProductDetailComponent }
+];
 
 @NgModule({
   declarations: [
-    ProductsComponent
+    ProductsComponent,
+    ProductDetailComponent
   ],
   imports: [
     CommonModule,

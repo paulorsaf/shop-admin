@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
@@ -20,6 +21,7 @@ export class ProductsComponent implements OnInit {
   products$!: Observable<Product[]>;
 
   constructor(
+    private router: Router,
     private store: Store<AppState>
   ) { }
 
@@ -32,6 +34,10 @@ export class ProductsComponent implements OnInit {
     });
 
     this.store.dispatch(load());
+  }
+
+  goToProductDetail(product: Product) {
+    this.router.navigate([`/products/${product.id}`]);
   }
 
 }

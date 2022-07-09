@@ -1,6 +1,9 @@
+import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { AppState } from 'src/app/store/app-state';
+import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { ProductsComponent } from './products.component';
 import { ProductsModule } from './products.module';
@@ -12,11 +15,15 @@ describe('ProductsComponent', () => {
   let fixture: ComponentFixture<ProductsComponent>;
   let page: PageMock;
   let store: Store<AppState>;
+  let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         ProductsModule,
+        RouterTestingModule.withRoutes([{
+          path: "products/:id", component: BlankComponent
+        }]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('products', productsReducer)
       ]
@@ -25,6 +32,7 @@ describe('ProductsComponent', () => {
 
     fixture = TestBed.createComponent(ProductsComponent);
     store = TestBed.inject(Store);
+    location = TestBed.inject(Location);
 
     component = fixture.componentInstance;
     page = fixture.debugElement.nativeElement;
@@ -54,7 +62,7 @@ describe('ProductsComponent', () => {
   describe('given products loaded', () => {
 
     beforeEach(() => {
-      const products = [{}, {}] as any;
+      const products = [{id: 1}, {id: 2}] as any;
       store.dispatch(loadSuccess({products}));
       fixture.detectChanges();
     })
@@ -65,6 +73,16 @@ describe('ProductsComponent', () => {
 
     it('then show products', () => {
       expect(page.querySelector('[test-id="products"]')).not.toBeNull();
+    });
+
+    it('when click on product, then go to product page', done => {
+      page.querySelectorAll('table tbody tr')[0].click();
+      fixture.detectChanges();
+
+      setTimeout(() => {
+        expect(location.path()).toEqual('/products/1');
+        done();
+      }, 100)
     });
 
   })
