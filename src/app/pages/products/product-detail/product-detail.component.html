@@ -27,11 +27,8 @@
             <mat-form-field>
                 <mat-label>Categoria</mat-label>
                 <mat-select>
-                    <mat-option [value]="1">
-                        Masculino
-                    </mat-option>
-                    <mat-option [value]="1">
-                        Feminino
+                    <mat-option *ngFor="let category of categories$ | async" [value]="category.id">
+                        {{category.name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

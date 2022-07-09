@@ -7,6 +7,7 @@ import { Product } from 'src/app/model/product/product';
 import { AppState } from 'src/app/store/app-state';
 import { ActivatedRouteMock } from 'src/mock/activated-route.mock';
 import { PageMock } from 'src/mock/page.mock';
+import { categoriesReducer } from '../../categories/store/categories.reducers';
 import { ProductsModule } from '../products.module';
 import { ProductDetailComponent } from './product-detail.component';
 import { loadDetailSuccess } from './store/products/product-detail.actions';
@@ -28,6 +29,7 @@ describe('ProductDetailComponent', () => {
         ReactiveFormsModule,
         BrowserAnimationsModule,
         StoreModule.forRoot([]),
+        StoreModule.forFeature('categories', categoriesReducer),
         StoreModule.forFeature('productDetail', productDetailReducer)
       ]
     })
@@ -44,6 +46,10 @@ describe('ProductDetailComponent', () => {
     fixture.detectChanges();
   });
 
+  it('given page starts, then create form', () => {
+    expect(component.form).not.toBeUndefined();
+  });
+
   it('given page starts, then load product by id', done => {
     store.select('productDetail').subscribe(state => {
       expect(state.isLoading).toBeTruthy();
@@ -51,8 +57,11 @@ describe('ProductDetailComponent', () => {
     })
   });
 
-  it('given page starts, then create form', () => {
-    expect(component.form).not.toBeUndefined();
+  it('given page starts, then load categories', done => {
+    store.select('categories').subscribe(state => {
+      expect(state.isLoading).toBeTruthy();
+      done();
+    })
   });
 
   describe('given is loading product by id', () => {

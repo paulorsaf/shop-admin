@@ -13,6 +13,9 @@ export class CategoryService {
   }, {
     id: '2',
     name: 'Feminino'
+  }, {
+    id: '3',
+    name: 'Infantil'
   }]
 
   constructor() { }

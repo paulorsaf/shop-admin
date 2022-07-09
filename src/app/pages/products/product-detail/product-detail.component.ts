@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+import { Category } from 'src/app/model/category/category';
 import { AppState } from 'src/app/store/app-state';
+import { load } from '../../categories/store/categories.actions';
 import { loadDetail } from './store/products/product-detail.actions';
 
 @Component({
@@ -15,6 +17,7 @@ export class ProductDetailComponent implements OnInit {
 
   form!: FormGroup;
 
+  categories$!: Observable<Category[]>;
   isLoading$!: Observable<boolean>;
 
   constructor(
@@ -28,10 +31,13 @@ export class ProductDetailComponent implements OnInit {
 
     });
 
+    this.categories$ = this.store.select(state => state.categories.categories);
     this.isLoading$ = this.store.select(state => state.productDetail.isLoading);
 
     const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
     this.store.dispatch(loadDetail({id}));
+
+    this.store.dispatch(load());
   }
 
   save() {
