@@ -5,11 +5,15 @@
 <mat-drawer-container *ngIf="!(isVerifyingUserLogged$ | async)">
     <mat-drawer mode="side" opened *ngIf="user$ | async">
         <mat-list>
+            <mat-list-item (click)="goToProductsPage()" test-id="products-button">
+                <mat-icon mat-list-icon>inventory_2</mat-icon>
+                <div mat-line>Produtos</div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
             <mat-list-item (click)="logout()" test-id="logout-button">
                 <mat-icon mat-list-icon>logout</mat-icon>
                 <div mat-line>Sair</div>
             </mat-list-item>
-            <mat-divider></mat-divider>
         </mat-list>
     </mat-drawer>
     <mat-drawer-content>

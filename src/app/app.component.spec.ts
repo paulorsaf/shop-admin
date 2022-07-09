@@ -27,8 +27,9 @@ describe('AppComponent', () => {
       ],
       imports: [
         RouterTestingModule.withRoutes([
+          { path: "home", component: BlankComponent },
           { path: "login", component: BlankComponent },
-          { path: "home", component: BlankComponent }
+          { path: "products", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('user', userReducer)
@@ -134,6 +135,19 @@ describe('AppComponent', () => {
       expect(state.isLoggingOut).toBeTruthy();
       done();
     })
+  })
+
+  it('given user clicks on products button, then go to products page', done => {
+    store.dispatch(verfiyUserIsLoggedSuccess({user}));
+    fixture.detectChanges();
+
+    page.querySelector('[test-id="products-button"]').click();
+    fixture.detectChanges();
+
+    setTimeout(() => {
+      expect(location.path()).toEqual('/products');
+      done();
+    }, 100);
   })
   
 });

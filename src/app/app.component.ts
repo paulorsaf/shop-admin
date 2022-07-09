@@ -33,6 +33,10 @@ export class AppComponent implements OnInit {
     this.store.dispatch(logout());
   }
 
+  goToProductsPage() {
+    this.router.navigate(['products']);
+  }
+
   private onVerifiedUserLogged() {
     this.store.select('user')
       .pipe(

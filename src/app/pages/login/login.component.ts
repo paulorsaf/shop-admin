@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -20,6 +20,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   isRecoveringPassword$!: Observable<boolean>;
 
   loginSubscription!: Subscription;
+
+  @HostListener('document:keydown.enter', ['$event'])
+  onKeydownEnter(event: KeyboardEvent) {
+    event.preventDefault();
+    this.login();
+  }
 
   constructor(
     private formBulder: FormBuilder,
@@ -45,7 +51,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    this.store.dispatch(login(this.form.value));
+    if (this.form.valid) {
+      this.store.dispatch(login(this.form.value));
+    }
   }
 
   recoverPassword() {

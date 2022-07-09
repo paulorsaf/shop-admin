@@ -8,4 +8,7 @@ mat-drawer-content {
 }
 mat-list {
     width: 15vw;
+    mat-list-item {
+        cursor: pointer;
+    }
 }

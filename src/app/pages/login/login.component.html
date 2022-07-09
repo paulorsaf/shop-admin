@@ -36,7 +36,7 @@
                 </div>
                 <div class="sign-buttons" align="middle">
                     <button type="button" mat-raised-button color="primary" (click)="login()"
-                        *ngIf="!(isLoggingIn$ | async)" test-id="login-button"
+                        *ngIf="!(isLoggingIn$ | async)" #loginButton test-id="login-button"
                         [disabled]="!form.valid || (isRecoveringPassword$ | async)">
                         <span>Entrar</span>
                     </button>
