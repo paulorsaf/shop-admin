@@ -3,13 +3,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
+import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
 import { MatDialogMock } from 'src/mock/mat-dialog.mock';
+import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { CategoriesComponent } from './categories.component';
 import { CategoriesModule } from './categories.module';
-import { loadSuccess } from './store/categories.actions';
+import { loadSuccess, removeFail, removeSuccess } from './store/categories.actions';
 import { categoriesReducer } from './store/categories.reducers';
 
 describe('CategoriesComponent', () => {
@@ -19,9 +21,11 @@ describe('CategoriesComponent', () => {
   let page: PageMock;
   let location: Location;
   let dialog: MatDialogMock;
+  let messageService: MessageServiceMock;
 
   beforeEach(async () => {
     dialog = new MatDialogMock();
+    messageService = new MessageServiceMock();
 
     await TestBed.configureTestingModule({
       imports: [
@@ -35,6 +39,7 @@ describe('CategoriesComponent', () => {
       ]
     })
     .overrideProvider(MatDialog, {useValue: dialog})
+    .overrideProvider(MessageService, {useValue: messageService})
     .compileComponents();
 
     fixture = TestBed.createComponent(CategoriesComponent);
@@ -131,16 +136,50 @@ describe('CategoriesComponent', () => {
       expect(dialog.hasOpened).toBeTruthy();
     })
 
-    it('when user confirms removal, then remove', done => {
-      dialog.response = "YES";
+    describe('when user confirms removal', () => {
 
-      page.querySelectorAll('[test-id="remove-category-button"]')[0].click();
-      fixture.detectChanges();
-
-      store.select('categories').subscribe(state => {
-        expect(state.isRemoving).toBeTruthy();
-        done();
+      beforeEach(() => {
+        dialog.response = "YES";
+  
+        page.querySelectorAll('[test-id="remove-category-button"]')[0].click();
+        fixture.detectChanges();
       })
+
+      it('then show loading', () => {
+        expect(page.querySelector('[test-id="categories-loader"]')).not.toBeNull();
+      })
+
+      it('then remove', done => {
+        store.select('categories').subscribe(state => {
+          expect(state.isRemoving).toBeTruthy();
+          done();
+        })
+      })
+
+      it('and category removed with success, then hide loading', () => {
+        store.dispatch(removeSuccess());
+        fixture.detectChanges();
+  
+        expect(page.querySelector('[test-id="categories-loader"]')).toBeNull();
+      })
+
+      describe('and category removed with error', () => {
+
+        beforeEach(() => {
+          store.dispatch(removeFail({error: "error"}));
+          fixture.detectChanges();
+        })
+
+        it('then hide loading', () => {
+          expect(page.querySelector('[test-id="categories-loader"]')).toBeNull();
+        })
+  
+        it('and category removed with error, then show error', () => {
+          expect(messageService._hasShownError).toBeTruthy();
+        })
+
+      })
+
     })
 
     it('when user cancels removal, then do not remove', done => {
