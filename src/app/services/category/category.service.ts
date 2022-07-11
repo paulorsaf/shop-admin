@@ -1,6 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay, Observable, of, switchMap } from 'rxjs';
 import { Category } from 'src/app/model/category/category';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,33 +20,33 @@ export class CategoryService {
     name: 'Infantil'
   }]
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   find(): Observable<Category[]> {
-    return of({})
-      .pipe(
-        delay(1000),
-        switchMap(() => {
-          return of(this.categories)
-        })
-      )
+    const url = `${environment.apiUrl}/categories`;
+    return this.http.get<Category[]>(url);
   }
 
   findById(id: string): Observable<Category> {
-    return of({})
-      .pipe(
-        delay(1000),
-        switchMap(() => {
-          return of(this.categories.find(p => p.id === id) as Category)
-        })
-      )
+    const url = `${environment.apiUrl}/categories/${id}`;
+    return this.http.get<Category>(url);
+  }
+
+  remove(category: Category): Observable<void> {
+    const url = `${environment.apiUrl}/categories/${category.id}`;
+    return this.http.delete<void>(url);
   }
 
   save(category: Category): Observable<void> {
-    return of<any>({})
-      .pipe(
-        delay(1000)
-      );
+    const url = `${environment.apiUrl}/categories`;
+    return this.http.post<void>(url, category);
+  }
+
+  update(category: Category): Observable<void> {
+    const url = `${environment.apiUrl}/categories/${category.id}`;
+    return this.http.patch<void>(url, category);
   }
 
 }

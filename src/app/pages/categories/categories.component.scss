@@ -1,0 +1,17 @@
+.mat-column-delete {
+    width: 32px;
+    text-align: center;
+    font-weight: bold;
+}
+
+tr {
+    .display-on-hover {
+        display: none;
+    }
+
+    &:hover {
+        .display-on-hover {
+            display: block;
+        }
+    }
+}

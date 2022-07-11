@@ -1,4 +1,5 @@
 export const environmentDefault = {
+    apiUrl: "http://localhost:3000",
     firebaseConfig: {
         apiKey: "AIzaSyBdZ7krmoy3lL3ezSE8lpv5Q2k4MIBPEtA",
         authDomain: "shop-354211.firebaseapp.com",

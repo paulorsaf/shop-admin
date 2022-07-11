@@ -1,11 +1,11 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { load, loadFail, loadSuccess } from "./categories.actions";
+import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from "./categories.actions";
 import { categoriesReducer } from "./categories.reducers";
 import { CategoriesState } from "./categories.state";
 
-describe('Products store', () => {
+describe('Categories store', () => {
     
-    it('categories', () => {
+    it('load', () => {
         const initialState: CategoriesState = {
             ...AppInitialState.categories,
             error: {},
@@ -58,6 +58,59 @@ describe('Products store', () => {
             error,
             isLoaded: false,
             isLoading: false
+        });
+    });
+    
+    it('remove', () => {
+        const initialState: CategoriesState = {
+            ...AppInitialState.categories,
+            error: {},
+            isRemoved: true,
+            isRemoving: false
+        };
+
+        const category = {id: 1} as any;
+        const state = categoriesReducer(initialState, remove({category}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categories,
+            error: null,
+            isRemoved: false,
+            isRemoving: true
+        });
+    });
+    
+    it('removeSuccess', () => {
+        const initialState: CategoriesState = {
+            ...AppInitialState.categories,
+            isRemoved: false,
+            isRemoving: true
+        };
+
+        const state = categoriesReducer(initialState, removeSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.categories,
+            isRemoved: true,
+            isRemoving: false
+        });
+    });
+    
+    it('removeFail', () => {
+        const initialState: CategoriesState = {
+            ...AppInitialState.categories,
+            isRemoved: false,
+            isRemoving: true
+        };
+
+        const error = {error: "error"}
+        const state = categoriesReducer(initialState, removeFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categories,
+            error,
+            isRemoved: false,
+            isRemoving: false
         });
     });
   

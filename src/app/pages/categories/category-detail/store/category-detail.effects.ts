@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
+import { iif, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Category } from "src/app/model/category/category";
 import { CategoryService } from "src/app/services/category/category.service";
@@ -31,9 +31,16 @@ export class CategoryDetailEffects {
         this.actions$.pipe(
             ofType(saveDetail),
             switchMap((params: {category: Category}) =>
-                this.categoryService.save(params.category).pipe(
-                    map(() => saveDetailSuccess()),
-                    catchError(error => of(saveDetailFail({error})))
+                iif(
+                    () => params.category.id === "new",
+                    this.categoryService.save(params.category).pipe(
+                        map(() => saveDetailSuccess()),
+                        catchError(error => of(saveDetailFail({error})))
+                    ),
+                    this.categoryService.update(params.category).pipe(
+                        map(() => saveDetailSuccess()),
+                        catchError(error => of(saveDetailFail({error})))
+                    )
                 )
             )
         )

@@ -80,7 +80,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
         filter(isSaved => isSaved)
       )
       .subscribe(error => {
-        this.messageService.showError(error)
+        this.messageService.showError(error.error)
       });
   }
 

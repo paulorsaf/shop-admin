@@ -5,7 +5,9 @@ export const AppInitialState: AppState = {
         categories: [],
         error: null,
         isLoaded: false,
-        isLoading: false
+        isLoading: false,
+        isRemoved: false,
+        isRemoving: false
     },
     categoryDetail: {
         error: null,
