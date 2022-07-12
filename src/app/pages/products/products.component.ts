@@ -17,8 +17,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   dataSource!: MatTableDataSource<Product[]>;
   displayedColumns = ['name', 'category', 'price', 'priceWithDiscount'];
 
+  hasProducts$!: Observable<boolean>;
   isLoading$!: Observable<boolean>;
-  products$!: Observable<Product[]>;
 
   subscription!: Subscription;
 
@@ -30,11 +30,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Product[]>([]);
 
+    this.hasProducts$ = this.store.select(state => state.products.products.length > 0);
     this.isLoading$ = this.store.select(state => state.products.isLoading);
-    this.subscription = this.store.select(state => state.products.products)
-      .subscribe(products => {
-        this.dataSource = new MatTableDataSource<any>(products);
-      });
+
+    this.onProductsChange();
 
     this.store.dispatch(load());
   }
@@ -45,6 +44,19 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   goToProductDetail(product: Product) {
     this.router.navigate([`/products/${product.id}`]);
+  }
+
+  goToAddProductDetail() {
+    this.router.navigate([`/products/new`]);
+  }
+
+  private onProductsChange() {
+    this.subscription =
+      this.store
+        .select(state => state.products.products)
+        .subscribe(products => {
+          this.dataSource = new MatTableDataSource<any>(products);
+        });
   }
 
 }

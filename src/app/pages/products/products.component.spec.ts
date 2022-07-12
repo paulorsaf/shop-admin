@@ -75,12 +75,34 @@ describe('ProductsComponent', () => {
       expect(page.querySelector('[test-id="products"]')).not.toBeNull();
     });
 
+    it('when products found, then hide no results message', () => {
+      expect(page.querySelector('[test-id="no-results-found"]')).toBeNull();
+    });
+
+    it('when no products found, then show no results message', () => {
+      const products = [] as any;
+      store.dispatch(loadSuccess({products}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
+    });
+
     it('when click on product, then go to product page', done => {
       page.querySelectorAll('table tbody tr')[0].click();
       fixture.detectChanges();
 
       setTimeout(() => {
         expect(location.path()).toEqual('/products/1');
+        done();
+      }, 100)
+    });
+
+    it('when click on add product button, then go to add product page', done => {
+      page.querySelector('[test-id="add-product-button"]').click();
+      fixture.detectChanges();
+
+      setTimeout(() => {
+        expect(location.path()).toEqual('/products/new');
         done();
       }, 100)
     });

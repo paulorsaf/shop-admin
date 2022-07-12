@@ -21,33 +21,48 @@
             <mat-form-field>
                 <mat-label>Nome</mat-label>
                 <input matInput placeholder="Nome" formControlName="name">
+                <mat-error *ngIf="form.get('name')?.hasError('required')">
+                    Nome é obrigatório
+                </mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Categoria</mat-label>
-                <mat-select formControlName="category">
+                <mat-select formControlName="categoryId">
                     <mat-option *ngFor="let category of categories$ | async" [value]="category.id">
                         {{category.name}}
                     </mat-option>
                 </mat-select>
+                <mat-error *ngIf="form.get('category')?.hasError('required')">
+                    Categoria é obrigatória
+                </mat-error>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Preço</mat-label>
                 <input matInput type="number" placeholder="Preço" formControlName="price">
+                <mat-error *ngIf="form.get('name')?.hasError('required')">
+                    Preço é obrigatório
+                </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Preço com desconto</mat-label>
                 <input matInput type="number" placeholder="Preço com desconto"
                     formControlName="priceWithDiscount">
+                <mat-error *ngIf="form.get('priceWithDiscount')?.hasError('required')">
+                    Preço com desconto é obrigatório
+                </mat-error>
             </mat-form-field>
         </div>
         
         <button type="button" mat-raised-button color="primary" (click)="save()"
-            test-id="save-button">
+            [disabled]="!form.valid" *ngIf="!(isSaving$ | async)" test-id="save-button">
             Salvar
+        </button>
+        <button type="button" mat-button  *ngIf="isSaving$ | async">
+            <mat-spinner color="primary" diameter="20" test-id="save-loader"></mat-spinner>
         </button>
     </form>
 </section>

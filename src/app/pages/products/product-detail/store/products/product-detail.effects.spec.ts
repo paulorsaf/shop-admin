@@ -6,7 +6,7 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { loadDetail, loadDetailFail, loadDetailSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
 
 describe('ProductDetailEffects', () => {
@@ -57,6 +57,47 @@ describe('ProductDetailEffects', () => {
     
             effects.loadDetailEffect$.subscribe(response => {
                 expect(response).toEqual(loadDetailFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save detail", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveDetail({product}));
+        })
+
+        it('when success, then return save detail success', (done) => {
+            productService._response = of(product);
+    
+            effects.saveDetailEffect$.subscribe(response => {
+                expect(response).toEqual(saveDetailSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save detail fail', (done) => {
+            productService._response = throwError(error);
+    
+            effects.saveDetailEffect$.subscribe(response => {
+                expect(response).toEqual(saveDetailFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save detail success", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveDetailSuccess());
+        })
+
+        it('then return clear product', (done) => {
+            effects.saveDetailSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(clear());
                 done();
             })
         })

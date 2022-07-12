@@ -1,62 +1,115 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { filter, Observable, of, take } from 'rxjs';
+import { filter, Observable, of, Subscription, take } from 'rxjs';
 import { Category } from 'src/app/model/category/category';
+import { Product } from 'src/app/model/product/product';
+import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { load } from '../../categories/store/categories.actions';
-import { loadDetail } from './store/products/product-detail.actions';
+import { loadDetail, saveDetail } from './store/products/product-detail.actions';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
 
   categories$!: Observable<Category[]>;
   isLoading$!: Observable<boolean>;
+  isSaving$!: Observable<boolean>;
+
+  errorSubscription!: Subscription;
+  saveSubscription!: Subscription;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
+    private messageService: MessageService,
     private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
     this.categories$ = this.store.select(state => state.categories.categories);
     this.isLoading$ = this.store.select(state => state.productDetail.isLoading);
+    this.isSaving$ = this.store.select(state => state.productDetail.isSaving);
 
-    const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    this.store.dispatch(loadDetail({id}));
+    this.loadProductDetail();
 
     this.store.dispatch(load());
 
-    this.createForm();
+    this.onError();
+    this.onCategorySaved();
   }
 
-  private createForm() {
+  ngOnDestroy(): void {
+    this.errorSubscription.unsubscribe();
+  }
+
+  save() {
+    this.store.dispatch(saveDetail({product: this.form.value}));
+  }
+
+  private loadProductDetail() {
+    if (this.isNew()) {
+      this.createForm();
+    } else {
+      const id = this.activatedRoute.snapshot.paramMap.get('id') as string;
+      this.store.dispatch(loadDetail({id}));
+      this.createFormOnProductDetailLoaded();
+    }
+  }
+
+  private isNew() {
+    return this.getId() === "new";
+  }
+
+  private getId() {
+    return this.activatedRoute.snapshot.paramMap.get('id') || '';
+  }
+
+  private createFormOnProductDetailLoaded() {
     this.store.select('productDetail')
       .pipe(
         filter(state => !!state.isLoaded),
         take(1)
       )
-      .subscribe(state => {
-        const product = state.product;
-        this.form = this.formBuilder.group({
-          name: [product?.name || ''],
-          category: [product?.category.id || ''],
-          price: [product?.price || 0],
-          priceWithDiscount: [product?.priceWithDiscount || 0]
-        });
-      })
+      .subscribe(state => this.createForm(state.product))
   }
 
-  save() {
-    
+  private createForm(product?: Product) {
+    this.form = this.formBuilder.group({
+      id: [product?.id || null],
+      name: [product?.name || '', [Validators.required]],
+      categoryId: [product?.category?.id || '', [Validators.required]],
+      price: [product?.price || 0, [Validators.required]],
+      priceWithDiscount: [product?.priceWithDiscount || 0]
+    });
+  }
+
+  private onError() {
+    this.errorSubscription = this.store
+      .select(state => state.productDetail.error)
+      .pipe(
+        filter(isSaved => isSaved)
+      )
+      .subscribe(error => {
+        this.messageService.showError(error.error)
+      });
+  }
+
+  private onCategorySaved() {
+    this.saveSubscription = this.store
+      .select(state => state.productDetail.isSaved)
+      .pipe(
+        filter(isSaved => isSaved),
+        take(1)
+      )
+      .subscribe(() => window.history.back());
   }
 
 }

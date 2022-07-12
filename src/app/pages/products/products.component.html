@@ -4,6 +4,11 @@
             [theme]="{height: '32px', width: '123px', 'margin-bottom': '16px'}">
         </ngx-skeleton-loader>
     </div>
+    <div align="right">
+        <ngx-skeleton-loader appearance="line" count="1"
+            [theme]="{height: '32px', width: '123px'}">
+        </ngx-skeleton-loader>
+    </div>
     <div>
         <ngx-skeleton-loader appearance="line" count="1"
             [theme]="{height: '56px', width: '100%', 'margin-bottom': 0}">
@@ -16,6 +21,12 @@
 
 <section *ngIf="!(isLoading$ | async)" class="page" test-id="products">
     <h1>Produtos</h1>
+    <div align="right">
+        <button type="button" mat-button color="primary" (click)="goToAddProductDetail()"
+            test-id="add-product-button">
+            Adicionar produto
+        </button>
+    </div>
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef>Nome</th>
@@ -36,4 +47,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToProductDetail(row)"></tr>
     </table>
+    <div *ngIf="!(hasProducts$ | async)" align="middle" test-id="no-results-found">
+        Nenhum resultado encontrado
+    </div>
 </section>

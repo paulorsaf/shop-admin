@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { delay, Observable, of, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Category } from 'src/app/model/category/category';
 import { environment } from 'src/environments/environment';
+import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,32 +21,32 @@ export class CategoryService {
   }]
 
   constructor(
-    private http: HttpClient
+    private apiService: ApiService
   ) { }
 
   find(): Observable<Category[]> {
     const url = `${environment.apiUrl}/categories`;
-    return this.http.get<Category[]>(url);
+    return this.apiService.get<Category[]>(url);
   }
 
   findById(id: string): Observable<Category> {
     const url = `${environment.apiUrl}/categories/${id}`;
-    return this.http.get<Category>(url);
+    return this.apiService.get<Category>(url);
   }
 
   remove(category: Category): Observable<void> {
     const url = `${environment.apiUrl}/categories/${category.id}`;
-    return this.http.delete<void>(url);
+    return this.apiService.delete<void>(url);
   }
 
   save(category: Category): Observable<void> {
     const url = `${environment.apiUrl}/categories`;
-    return this.http.post<void>(url, category);
+    return this.apiService.post<void>(url, category);
   }
 
   update(category: Category): Observable<void> {
     const url = `${environment.apiUrl}/categories/${category.id}`;
-    return this.http.patch<void>(url, category);
+    return this.apiService.patch<void>(url, category);
   }
 
 }

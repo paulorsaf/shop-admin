@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { delay, Observable, of, switchMap } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
+import { environment } from 'src/environments/environment';
+import { ApiService } from 'src/app/services/api/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,16 +35,13 @@ export class ProductService {
     sizes: [""]
   }]
 
-  constructor() { }
+  constructor(
+    private apiService: ApiService
+  ) { }
 
   find(): Observable<Product[]> {
-    return of({})
-      .pipe(
-        delay(1000),
-        switchMap(() => {
-          return of(this.products)
-        })
-      )
+    const url = `${environment.apiUrl}/products`;
+    return this.apiService.get<Product[]>(url);
   }
 
   findById(id: string): Observable<Product> {
@@ -53,6 +52,11 @@ export class ProductService {
           return of(this.products.find(p => p.id === id) as Product)
         })
       )
+  }
+
+  save(product: Product): Observable<Product[]> {
+    const url = `${environment.apiUrl}/products`;
+    return this.apiService.post<Product[]>(url, product);
   }
 
 }
