@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { MatSelectModule } from '@angular/material/select';
+import { CategoryNamePipeModule } from 'src/app/pipes/category-name/category-name.module';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -37,7 +38,9 @@ const routes: Routes = [
     MatInputModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    MatTableModule
+    MatTableModule,
+
+    CategoryNamePipeModule
   ],
   exports: [ProductsComponent]
 })

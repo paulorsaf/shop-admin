@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { AppState } from 'src/app/store/app-state';
 import { load } from './store/products/products.actions';
+import { load as loadCategories } from 'src/app/pages/categories/store/categories.actions';
 
 @Component({
   selector: 'app-products',
@@ -36,6 +37,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.onProductsChange();
 
     this.store.dispatch(load());
+    this.store.dispatch(loadCategories());
   }
 
   ngOnDestroy(): void {

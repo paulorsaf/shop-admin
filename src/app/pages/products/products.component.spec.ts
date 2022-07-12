@@ -5,6 +5,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { AppState } from 'src/app/store/app-state';
 import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
 import { PageMock } from 'src/mock/page.mock';
+import { categoriesReducer } from '../categories/store/categories.reducers';
 import { ProductsComponent } from './products.component';
 import { ProductsModule } from './products.module';
 import { loadSuccess } from './store/products/products.actions';
@@ -25,6 +26,7 @@ describe('ProductsComponent', () => {
           path: "products/:id", component: BlankComponent
         }]),
         StoreModule.forRoot([]),
+        StoreModule.forFeature('categories', categoriesReducer),
         StoreModule.forFeature('products', productsReducer)
       ]
     })
@@ -42,6 +44,13 @@ describe('ProductsComponent', () => {
 
   it('given page starts, then load products', done => {
     store.select('products').subscribe(state => {
+      expect(state.isLoading).toBeTruthy();
+      done();
+    })
+  });
+
+  it('given page starts, then load categories', done => {
+    store.select('categories').subscribe(state => {
       expect(state.isLoading).toBeTruthy();
       done();
     })
