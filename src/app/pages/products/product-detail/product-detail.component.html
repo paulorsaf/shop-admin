@@ -61,7 +61,7 @@
             [disabled]="!form.valid" *ngIf="!(isSaving$ | async)" test-id="save-button">
             Salvar
         </button>
-        <button type="button" mat-button  *ngIf="isSaving$ | async">
+        <button type="button" mat-button *ngIf="isSaving$ | async">
             <mat-spinner color="primary" diameter="20" test-id="save-loader"></mat-spinner>
         </button>
     </form>

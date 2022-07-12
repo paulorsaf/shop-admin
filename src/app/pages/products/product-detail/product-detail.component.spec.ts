@@ -3,12 +3,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { Store, StoreModule } from '@ngrx/store';
+import { Category } from 'src/app/model/category/category';
 import { Product } from 'src/app/model/product/product';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { ActivatedRouteMock } from 'src/mock/activated-route.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
+import { loadSuccess } from '../../categories/store/categories.actions';
 import { categoriesReducer } from '../../categories/store/categories.reducers';
 import { ProductsModule } from '../products.module';
 import { ProductDetailComponent } from './product-detail.component';
@@ -284,7 +286,7 @@ describe('ProductDetailComponent', () => {
 
   function dispatchLoadDetailSuccess() {
     const product: Product = {
-      id: 1, name: "name", category: {id: '1'}, price: 10, priceWithDiscount: 5
+      id: 1, name: "name", categoryId: '1', price: 10, priceWithDiscount: 5
     } as any;
     store.dispatch(loadDetailSuccess({product}));
     fixture.detectChanges();
