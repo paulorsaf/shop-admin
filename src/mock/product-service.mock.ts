@@ -2,6 +2,8 @@ import { of } from "rxjs";
 
 export class ProductServiceMock {
     
+    _isSaved = false;
+    _isUpdated = false;
     _response: any;
 
     find() {
@@ -11,6 +13,11 @@ export class ProductServiceMock {
         return this._response || of({});
     }
     save() {
+        this._isSaved = true;
+        return this._response || of({});
+    }
+    update() {
+        this._isUpdated = true;
         return this._response || of({});
     }
 

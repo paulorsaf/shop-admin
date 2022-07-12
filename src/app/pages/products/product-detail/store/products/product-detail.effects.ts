@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { iif, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
@@ -31,9 +31,16 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(saveDetail),
             switchMap((params: {product: Product}) =>
-                this.productService.save(params.product).pipe(
-                    map(() => saveDetailSuccess()),
-                    catchError(error => of(saveDetailFail({error})))
+                iif(
+                    () => !!params.product.id,
+                    this.productService.update(params.product).pipe(
+                        map(() => saveDetailSuccess()),
+                        catchError(error => of(saveDetailFail({error})))
+                    ),
+                    this.productService.save(params.product).pipe(
+                        map(() => saveDetailSuccess()),
+                        catchError(error => of(saveDetailFail({error})))
+                    )
                 )
             )
         )

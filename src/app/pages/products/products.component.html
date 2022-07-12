@@ -34,7 +34,7 @@
         </ng-container>
         <ng-container matColumnDef="category">
           <th mat-header-cell *matHeaderCellDef>Categoria</th>
-          <td mat-cell *matCellDef="let element">{{element.categoryId | categoryName |async}}</td>
+          <td mat-cell *matCellDef="let element">{{element.categoryId | categoryName | async}}</td>
         </ng-container>
         <ng-container matColumnDef="price">
           <th mat-header-cell *matHeaderCellDef>Preço</th>

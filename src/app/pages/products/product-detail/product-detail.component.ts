@@ -85,10 +85,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       id: [product?.id || null],
       name: [product?.name || '', [Validators.required]],
-      categoryId: [product?.category?.id || '', [Validators.required]],
+      categoryId: [product?.categoryId || '', [Validators.required]],
       price: [product?.price || 0, [Validators.required]],
       priceWithDiscount: [product?.priceWithDiscount || 0]
     });
+    console.log(this.form.value)
   }
 
   private onError() {

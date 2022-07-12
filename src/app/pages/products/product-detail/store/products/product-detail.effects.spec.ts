@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { provideMockActions } from '@ngrx/effects/testing';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, of, take, throwError } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
@@ -15,7 +15,7 @@ describe('ProductDetailEffects', () => {
     let effects: ProductDetailEffects;
     let productService: ProductServiceMock;
 
-    const product = {id: '1'} as any;
+    const product = {name: 'anyName'} as any;
     const error = {error: "error"};
 
     beforeEach(() => {
@@ -69,10 +69,30 @@ describe('ProductDetailEffects', () => {
             actions$ = of(saveDetail({product}));
         })
 
+        it('when product doesnt have an id, then call save', (done) => {
+            productService._response = of(product);
+    
+            effects.saveDetailEffect$.pipe(take(1)).subscribe(() => {
+                expect(productService._isSaved).toBeTruthy();
+                done();
+            })
+        })
+
+        it('when product has an id, then call update', (done) => {
+            actions$ = of(saveDetail({product: {...product, id: '1'}}));
+
+            productService._response = of(product);
+    
+            effects.saveDetailEffect$.pipe(take(1)).subscribe(() => {
+                expect(productService._isUpdated).toBeTruthy();
+                done();
+            })
+        })
+
         it('when success, then return save detail success', (done) => {
             productService._response = of(product);
     
-            effects.saveDetailEffect$.subscribe(response => {
+            effects.saveDetailEffect$.pipe(take(1)).subscribe(response => {
                 expect(response).toEqual(saveDetailSuccess());
                 done();
             })
@@ -81,7 +101,7 @@ describe('ProductDetailEffects', () => {
         it('when fail, then return save detail fail', (done) => {
             productService._response = throwError(error);
     
-            effects.saveDetailEffect$.subscribe(response => {
+            effects.saveDetailEffect$.pipe(take(1)).subscribe(response => {
                 expect(response).toEqual(saveDetailFail({error}));
                 done();
             })
@@ -89,7 +109,7 @@ describe('ProductDetailEffects', () => {
 
     })
 
-    describe("Given save detail success", () => {
+    describe("Given save product detail success", () => {
 
         beforeEach(() => {
             actions$ = of(saveDetailSuccess());

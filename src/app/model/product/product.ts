@@ -1,7 +1,5 @@
-import { Category } from "../category/category";
-
 export type Product = {
-    category: Category;
+    categoryId: string;
     colors: string[];
     id: string;
     images: string[];
