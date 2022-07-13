@@ -1,11 +1,11 @@
 export const environmentDefault = {
     apiUrl: "http://localhost:3000",
     firebaseConfig: {
-        apiKey: "AIzaSyBdZ7krmoy3lL3ezSE8lpv5Q2k4MIBPEtA",
+        apiKey: "AIzaSyAdts_6YqaZPH6ucaPPIIO-lxYskA14xB4",
         authDomain: "shop-354211.firebaseapp.com",
         projectId: "shop-354211",
         storageBucket: "shop-354211.appspot.com",
         messagingSenderId: "119837004113",
-        appId: "1:119837004113:web:44ba5b45e61154d0c78370"
+        appId: "1:119837004113:web:4dbd8ff53877d56ac78370"
     }
 }
