@@ -6,7 +6,7 @@ import { ProductsEffects } from './products.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { load, loadFail, loadSuccess } from "./products.actions";
+import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
 import { ProductService } from "src/app/services/product/product.service";
 
 describe('ProductsEffects', () => {
@@ -57,6 +57,48 @@ describe('ProductsEffects', () => {
     
             effects.loadEffect$.subscribe(response => {
                 expect(response).toEqual(loadFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given remove", () => {
+
+        beforeEach(() => {
+            const product = {id: 1} as any;
+            actions$ = of(remove({product}));
+        })
+
+        it('when success, then return load success', (done) => {
+            productService._response = of(products);
+    
+            effects.removeEffect$.subscribe(response => {
+                expect(response).toEqual(removeSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return load fail', (done) => {
+            productService._response = throwError(error);
+    
+            effects.removeEffect$.subscribe(response => {
+                expect(response).toEqual(removeFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given remove success", () => {
+
+        beforeEach(() => {
+            actions$ = of(removeSuccess());
+        })
+
+        it('then return load', (done) => {
+            effects.removeSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(load());
                 done();
             })
         })

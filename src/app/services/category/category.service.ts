@@ -9,17 +9,6 @@ import { ApiService } from '../api/api.service';
 })
 export class CategoryService {
 
-  categories: Category[] = [{
-    id: '1',
-    name: 'Masculino'
-  }, {
-    id: '2',
-    name: 'Feminino'
-  }, {
-    id: '3',
-    name: 'Infantil'
-  }]
-
   constructor(
     private apiService: ApiService
   ) { }

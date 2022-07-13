@@ -13,6 +13,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryNamePipeModule } from 'src/app/pipes/category-name/category-name.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
 
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,

@@ -28,3 +28,21 @@ table {
         }
     }
 }
+
+tr {
+    .display-on-hover {
+        display: none;
+    }
+
+    &:hover {
+        .display-on-hover {
+            display: block;
+        }
+    }
+}
+
+.mat-column-delete {
+    width: 90px;
+    text-align: center;
+    font-weight: bold;
+}

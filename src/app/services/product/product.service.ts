@@ -23,6 +23,11 @@ export class ProductService {
     return this.apiService.get<Product>(url);
   }
 
+  remove(product: Product): Observable<void> {
+    const url = `${environment.apiUrl}/products/${product.id}`;
+    return this.apiService.delete<void>(url);
+  }
+
   save(product: Product): Observable<Product[]> {
     const url = `${environment.apiUrl}/products`;
     return this.apiService.post<Product[]>(url, product);

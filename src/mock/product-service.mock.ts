@@ -12,6 +12,10 @@ export class ProductServiceMock {
     findById() {
         return this._response || of({});
     }
+    remove() {
+        this._isUpdated = true;
+        return this._response || of({});
+    }
     save() {
         this._isSaved = true;
         return this._response || of({});

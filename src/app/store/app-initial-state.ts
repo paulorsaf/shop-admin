@@ -36,7 +36,9 @@ export const AppInitialState: AppState = {
         error: null,
         isLoaded: false,
         isLoading: false,
-        products: []  
+        isRemoved: false,
+        isRemoving: false,
+        products: []
     },
     user: {
         isLoggedOut: false,
