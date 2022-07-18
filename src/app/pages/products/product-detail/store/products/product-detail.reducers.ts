@@ -65,6 +65,8 @@ const _productDetailReducer = createReducer(initialState,
             error: null,
             isLoadedStock: false,
             isLoadingStock: true,
+            isSavedStock: false,
+            isSavingStock: false,
             stock: []
         };
     }),

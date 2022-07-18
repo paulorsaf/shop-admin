@@ -138,6 +138,8 @@ describe('Product store', () => {
             error: {},
             isLoadedStock: true,
             isLoadingStock: false,
+            isSavedStock: true,
+            isSavingStock: true,
             stock: [{}] as any
         };
 
@@ -148,6 +150,8 @@ describe('Product store', () => {
             error: null,
             isLoadedStock: false,
             isLoadingStock: true,
+            isSavedStock: false,
+            isSavingStock: false,
             stock: []
         });
     });

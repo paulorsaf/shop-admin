@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
 import { Category } from 'src/app/model/category/category';
 import { Product } from 'src/app/model/product/product';
+import { Stock } from 'src/app/model/product/stock';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { load } from '../../categories/store/categories.actions';
@@ -19,6 +21,7 @@ import { loadDetail, loadStock, saveDetail } from './store/products/product-deta
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
 
+  dataSource!: MatTableDataSource<Stock[]>;
   displayedColumns = ['amount', 'color', 'size'];
   form!: FormGroup;
 
@@ -31,6 +34,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   errorSubscription!: Subscription;
   saveSubscription!: Subscription;
+  stockSubscription!: Subscription;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -41,6 +45,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource<Stock[]>([]);
+
     this.categories$ = this.store.select(state => state.categories.categories);
     this.isLoading$ = this.store.select(state => state.productDetail.isLoading);
     this.isLoadingStock$ = this.store.select(state => state.productDetail.isLoadingStock);
@@ -54,10 +60,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
     this.onError();
     this.onCategorySaved();
+    this.onStockChange();
   }
 
   ngOnDestroy(): void {
     this.errorSubscription.unsubscribe();
+    this.saveSubscription.unsubscribe();
+    this.stockSubscription.unsubscribe();
   }
 
   save() {
@@ -77,6 +86,15 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.store.dispatch(loadStock({id}));
       this.createFormOnProductDetailLoaded();
     }
+  }
+
+  private onStockChange() {
+    this.stockSubscription =
+      this.store
+        .select(state => state.productDetail.stock)
+        .subscribe(stock => {
+          this.dataSource = new MatTableDataSource<any>(stock);
+        });
   }
 
   private isNew() {

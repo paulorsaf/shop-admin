@@ -10,3 +10,14 @@ button {
 mat-divider {
     margin: 20px 0;
 }
+
+.centralize {
+    flex-direction: row;
+    justify-content: start;
+}
+.color {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin-right: 10px;
+}

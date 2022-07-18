@@ -82,18 +82,24 @@
                 Adicionar ao estoque
             </button>
         </div>
-        <table mat-table [dataSource]="[]" *ngIf="!(isLoadingStock$ | async)" test-id="stock-details">
+        <table mat-table [dataSource]="dataSource" *ngIf="!(isLoadingStock$ | async)"
+            test-id="stock-details">
             <ng-container matColumnDef="amount">
-              <th mat-header-cell *matHeaderCellDef>Quantidade</th>
-              <td mat-cell *matCellDef="let element">Qtd</td>
+                <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+                <td mat-cell *matCellDef="let element">{{element.quantity}}</td>
             </ng-container>
             <ng-container matColumnDef="color">
-              <th mat-header-cell *matHeaderCellDef>Cor</th>
-              <td mat-cell *matCellDef="let element">Cor</td>
+                <th mat-header-cell *matHeaderCellDef>Cor</th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="centralize">
+                        <div class="color" [ngStyle]="{'background-color': element.color}"></div>
+                        {{element.color}}
+                    </div>
+                </td>
             </ng-container>
             <ng-container matColumnDef="size">
-              <th mat-header-cell *matHeaderCellDef>Tamanho</th>
-              <td mat-cell *matCellDef="let element">Tamanho</td>
+                <th mat-header-cell *matHeaderCellDef>Tamanho</th>
+                <td mat-cell *matCellDef="let element">{{element.size}}</td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
