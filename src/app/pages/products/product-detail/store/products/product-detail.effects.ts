@@ -86,6 +86,15 @@ export class ProductDetailEffects {
         )
     )
 
+    saveStockSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(saveStockSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                of(loadStock({id: storeState.productDetail.product!.id})))
+        )
+    )
+
     getStore(){
         return withLatestFrom(this.store);
     }

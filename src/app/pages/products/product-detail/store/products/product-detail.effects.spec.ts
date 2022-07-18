@@ -191,4 +191,19 @@ describe('ProductDetailEffects', () => {
 
     })
 
+    describe("Given save stock success", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveStockSuccess());
+        })
+
+        it('then return load stock', (done) => {
+            effects.saveStockSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadStock({id: '1'}));
+                done();
+            })
+        })
+
+    })
+
 });
