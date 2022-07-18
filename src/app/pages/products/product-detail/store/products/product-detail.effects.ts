@@ -75,12 +75,21 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(saveStock),
             this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
-                this.stockService.addStock(
-                    storeState.productDetail.product!.id, action.stock
-                ).pipe(
-                    map(() => saveStockSuccess()),
-                    catchError(error => of(saveStockFail({error})))
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
+                iif(
+                    () => !!storeState.productDetail.stock?.id,
+                    this.stockService.addStock(
+                        storeState.productDetail.product!.id, action.stock
+                    ).pipe(
+                        map(() => saveStockSuccess()),
+                        catchError(error => of(saveStockFail({error})))
+                    ),
+                    this.stockService.createStock(
+                        storeState.productDetail.product!.id, action.stock
+                    ).pipe(
+                        map(() => saveStockSuccess()),
+                        catchError(error => of(saveStockFail({error})))
+                    )
                 )
             )
         )

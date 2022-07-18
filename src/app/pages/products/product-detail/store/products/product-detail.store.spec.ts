@@ -152,7 +152,7 @@ describe('Product store', () => {
             isLoadingStock: true,
             isSavedStock: false,
             isSavingStock: false,
-            stock: []
+            stock: undefined
         });
     });
     

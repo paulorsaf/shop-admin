@@ -355,7 +355,7 @@ describe('ProductDetailComponent', () => {
       })
 
       it('and stock is empty, then show no results found for stock', () => {
-        store.dispatch(loadStockSuccess({stock: []}));
+        store.dispatch(loadStockSuccess({stock: {id: 1} as any}));
         fixture.detectChanges();
 
         expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
@@ -399,9 +399,7 @@ describe('ProductDetailComponent', () => {
   }
 
   function dispatchLoadStockSuccess() {
-    const stock: any = {
-      id: 1, name: "name", categoryId: '1', price: 10, priceWithDiscount: 5
-    } as any;
+    const stock: any = {id: 1, stockOptions: [{id: 1}]} as any;
     store.dispatch(loadStockSuccess({stock}));
     fixture.detectChanges();
   }

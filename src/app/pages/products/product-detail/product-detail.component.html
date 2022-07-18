@@ -71,41 +71,48 @@
         <h2>Estoque</h2>
 
         <div *ngIf="(isLoadingStock$ | async)" test-id="stock-loader">
+            <div align="right">
+                <ngx-skeleton-loader appearance="line" count="1"
+                    [theme]="{height: '32px', width: '123px'}">
+                </ngx-skeleton-loader>
+            </div>
             <ngx-skeleton-loader appearance="line" count="1"
                 [theme]="{height: '200px', width: '100%'}">
             </ngx-skeleton-loader>
         </div>
         
-        <div align="right">
-            <button type="button" mat-button color="primary" (click)="showAddToStock()"
-                test-id="add-stock-button">
-                Adicionar ao estoque
-            </button>
-        </div>
-        <table mat-table [dataSource]="dataSource" *ngIf="!(isLoadingStock$ | async)"
-            test-id="stock-details">
-            <ng-container matColumnDef="amount">
-                <th mat-header-cell *matHeaderCellDef>Quantidade</th>
-                <td mat-cell *matCellDef="let element">{{element.quantity}}</td>
-            </ng-container>
-            <ng-container matColumnDef="color">
-                <th mat-header-cell *matHeaderCellDef>Cor</th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="centralize">
-                        <div class="color" [ngStyle]="{'background-color': element.color}"></div>
-                        {{element.color}}
-                    </div>
-                </td>
-            </ng-container>
-            <ng-container matColumnDef="size">
-                <th mat-header-cell *matHeaderCellDef>Tamanho</th>
-                <td mat-cell *matCellDef="let element">{{element.size}}</td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-        <div *ngIf="(stock$ | async)?.length === 0" align="middle" test-id="no-results-found">
-            Nenhum resultado encontrado
+        <div *ngIf="!(isLoadingStock$ | async)">
+            <div align="right">
+                <button type="button" mat-button color="primary" (click)="showAddToStock()"
+                    test-id="add-stock-button">
+                    Adicionar ao estoque
+                </button>
+            </div>
+            <table mat-table [dataSource]="dataSource"
+                test-id="stock-details">
+                <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+                    <td mat-cell *matCellDef="let element">{{element.quantity}}</td>
+                </ng-container>
+                <ng-container matColumnDef="color">
+                    <th mat-header-cell *matHeaderCellDef>Cor</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div class="centralize">
+                            <div class="color" [ngStyle]="{'background-color': element.color}"></div>
+                            {{element.color}}
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="size">
+                    <th mat-header-cell *matHeaderCellDef>Tamanho</th>
+                    <td mat-cell *matCellDef="let element">{{element.size}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div *ngIf="(stock$ | async)?.length === 0" align="middle" test-id="no-results-found">
+                Nenhum resultado encontrado
+            </div>
         </div>
     </section>
 </section>

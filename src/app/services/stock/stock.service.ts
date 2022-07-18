@@ -13,12 +13,17 @@ export class StockService {
     private apiService: ApiService
   ) { }
 
-  findByProductId(id: string): Observable<Stock[]> {
-    const url = `${environment.apiUrl}/products/${id}/stocks`;
-    return this.apiService.get<Stock[]>(url);
+  addStock(productId: string, stock: AddStock): Observable<void> {
+    const url = `${environment.apiUrl}/products/${productId}/stocks`;
+    return this.apiService.patch<void>(url, stock);
   }
 
-  addStock(productId: string, stock: AddStock): Observable<void> {
+  findByProductId(id: string): Observable<Stock> {
+    const url = `${environment.apiUrl}/products/${id}/stocks`;
+    return this.apiService.get<Stock>(url);
+  }
+
+  createStock(productId: string, stock: AddStock): Observable<void> {
     const url = `${environment.apiUrl}/products/${productId}/stocks`;
     return this.apiService.post<void>(url, stock);
   }

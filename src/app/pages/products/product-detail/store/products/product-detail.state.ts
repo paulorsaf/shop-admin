@@ -12,5 +12,5 @@ export type ProductDetailState = {
     isSavedStock: boolean;
     isSavingStock: boolean;
     product?: Product;
-    stock: Stock[];
+    stock?: Stock;
 }

@@ -35,7 +35,7 @@ export const AppInitialState: AppState = {
         isSavedStock: false,
         isSavingStock: false,
         product: undefined,
-        stock: []
+        stock: undefined
     },
     products: {
         error: null,

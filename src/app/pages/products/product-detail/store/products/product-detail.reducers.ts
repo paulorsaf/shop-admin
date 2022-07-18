@@ -67,7 +67,7 @@ const _productDetailReducer = createReducer(initialState,
             isLoadingStock: true,
             isSavedStock: false,
             isSavingStock: false,
-            stock: []
+            stock: undefined
         };
     }),
     on(loadStockSuccess, (state, action) => {

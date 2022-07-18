@@ -52,7 +52,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.isLoadingStock$ = this.store.select(state => state.productDetail.isLoadingStock);
     this.isSaving$ = this.store.select(state => state.productDetail.isSaving);
     this.product$ = this.store.select(state => state.productDetail.product);
-    this.stock$ = this.store.select(state => state.productDetail.stock);
+    this.stock$ = this.store.select(state => state.productDetail.stock?.stockOptions || []);
 
     this.loadProductDetail();
 
@@ -93,7 +93,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.store
         .select(state => state.productDetail.stock)
         .subscribe(stock => {
-          this.dataSource = new MatTableDataSource<any>(stock);
+          this.dataSource = new MatTableDataSource<any>(stock?.stockOptions || []);
         });
   }
 

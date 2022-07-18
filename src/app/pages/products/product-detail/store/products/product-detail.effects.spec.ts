@@ -21,7 +21,7 @@ describe('ProductDetailEffects', () => {
 
     const error = {error: "error"};
     const product = {name: 'anyName'} as any;
-    const stock = [{id: "anyStockId"}] as any[];
+    const stock = {id: "anyStockId"} as any;
 
     const initialState: AppState = {
         productDetail: {
@@ -169,6 +169,24 @@ describe('ProductDetailEffects', () => {
 
         beforeEach(() => {
             actions$ = of(saveStock({stock: {id: 1} as any}));
+        })
+
+        it('when stock doesnt have an id, then create stock', done => {
+            stockService._response = of(stock);
+    
+            effects.saveStockEffect$.subscribe(() => {
+                expect(stockService._isCreated).toBeTruthy()
+                done();
+            })
+        })
+
+        it('when stock has an id, then add stock', done => {
+            stockService._response = of(stock);
+    
+            effects.saveStockEffect$.subscribe(() => {
+                expect(stockService._isAdded).toBeTruthy()
+                done();
+            })
         })
 
         it('when success, then return save stock success', (done) => {
