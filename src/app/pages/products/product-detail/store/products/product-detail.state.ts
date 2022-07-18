@@ -1,4 +1,5 @@
 import { Product } from "src/app/model/product/product";
+import { Stock } from "src/app/model/product/stock";
 
 export type ProductDetailState = {
     error: any;
@@ -11,5 +12,5 @@ export type ProductDetailState = {
     isSavedStock: boolean;
     isSavingStock: boolean;
     product?: Product;
-    stock: any[];
+    stock: Stock[];
 }

@@ -138,7 +138,7 @@ describe('Product store', () => {
             error: {},
             isLoadedStock: true,
             isLoadingStock: false,
-            stock: [{}]
+            stock: [{}] as any
         };
 
         const state = productDetailReducer(initialState, loadStock({id: '1'}));

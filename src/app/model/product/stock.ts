@@ -1,10 +1,8 @@
 export type Stock = {
     id: string;
-    productId: string;
-    
-    color: string;
     quantity: number;
-    size: string;
+    color?: string;
+    size?: string;
 }
 
 export type AddStock = {
