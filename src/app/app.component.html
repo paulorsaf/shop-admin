@@ -22,6 +22,39 @@
         </mat-list>
     </mat-drawer>
     <mat-drawer-content>
+        <div class="mobile">
+            <mat-toolbar>
+                <button mat-icon-button (click)="showMenu = !showMenu">
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </mat-toolbar>
+            <div *ngIf="showMenu">
+                <mat-card *ngIf="showMenu">
+                    <mat-card-title align="right">
+                        <button mat-icon-button (click)="showMenu = !showMenu">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </mat-card-title>
+                    <mat-list>
+                        <mat-list-item (click)="goToCategoriesPage()" test-id="categories-button">
+                            <mat-icon mat-list-icon>category</mat-icon>
+                            <div mat-line>Categorias</div>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item (click)="goToProductsPage()" test-id="products-button">
+                            <mat-icon mat-list-icon>shopping_bag</mat-icon>
+                            <div mat-line>Produtos</div>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                        <mat-list-item (click)="logout()" test-id="logout-button">
+                            <mat-icon mat-list-icon>logout</mat-icon>
+                            <div mat-line>Sair</div>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-card>
+                <div class="sidemenu-overlay" (click)="showMenu = !showMenu"></div>
+            </div>
+        </div>
         <router-outlet></router-outlet>
     </mat-drawer-content>
 </mat-drawer-container>

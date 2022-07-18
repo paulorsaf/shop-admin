@@ -15,6 +15,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddTokenHeaderHttpRequestInterceptor } from './interceptors/add-token-header-http-request.interceptor';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -29,11 +32,14 @@ import { AddTokenHeaderHttpRequestInterceptor } from './interceptors/add-token-h
     
     AppStoreModule,
 
+    MatButtonModule,
+    MatCardModule,
     MatIconModule,
     MatListModule,
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatToolbarModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule

@@ -14,6 +14,7 @@ import { CategoriesComponent } from './categories.component';
 import { CategoryDetailComponent } from './category-detail/category-detail.component';
 import { ConfirmDialogModule } from 'src/app/components/confirm-dialog/confirm-dialog.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   { path: '', component: CategoriesComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
     MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
     MatSelectModule,

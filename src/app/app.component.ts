@@ -13,6 +13,8 @@ import { logout, verfiyUserIsLogged } from './store/user/user.actions';
 })
 export class AppComponent implements OnInit {
 
+  showMenu = false;
+
   isVerifyingUserLogged$!: Observable<boolean>;
   user$!: Observable<User>;
 
@@ -30,14 +32,17 @@ export class AppComponent implements OnInit {
   }
 
   logout() {
+    this.showMenu = false;
     this.store.dispatch(logout());
   }
 
   goToProductsPage() {
+    this.showMenu = false;
     this.router.navigate(['products']);
   }
 
   goToCategoriesPage() {
+    this.showMenu = false;
     this.router.navigate(['categories']);
   }
 

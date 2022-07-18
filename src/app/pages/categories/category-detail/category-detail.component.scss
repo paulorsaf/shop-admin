@@ -6,3 +6,9 @@ button {
 button {
     margin-top: 10px;
 }
+
+@media only screen and (max-width: 1130px) {
+    mat-form-field {
+        width: 100%;
+    }
+}

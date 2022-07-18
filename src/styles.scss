@@ -46,3 +46,15 @@ tr {
     text-align: center;
     font-weight: bold;
 }
+
+.mobile {
+    display: none;
+}
+@media only screen and (max-width: 1130px) {
+    .mobile {
+        display: block;
+    }
+    .display-on-hover {
+        display: block !important;
+    }
+}
