@@ -28,9 +28,12 @@ export const AppInitialState: AppState = {
         error: null,
         isLoaded: false,
         isLoading: false,
+        isLoadedStock: false,
+        isLoadingStock: false,
         isSaved: false,
         isSaving: false,
-        product: undefined
+        product: undefined,
+        stock: []
     },
     products: {
         error: null,

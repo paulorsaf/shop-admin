@@ -14,6 +14,9 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryNamePipeModule } from 'src/app/pipes/category-name/category-name.module';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { AddStockComponent } from './product-detail/add-stock/add-stock.component';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -23,7 +26,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ProductsComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    AddStockComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +40,7 @@ const routes: Routes = [
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
+    MatDividerModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
@@ -44,6 +49,9 @@ const routes: Routes = [
 
     CategoryNamePipeModule
   ],
-  exports: [ProductsComponent]
+  exports: [
+    ProductsComponent,
+    AddStockComponent
+  ]
 })
 export class ProductsModule { }

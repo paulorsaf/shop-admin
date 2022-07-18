@@ -11,3 +11,10 @@ export class MatDialogMock {
         }
     }
 }
+
+export class MatDialogRefMock {
+    hasClosed = false;
+    close() {
+        this.hasClosed = true;
+    }
+}

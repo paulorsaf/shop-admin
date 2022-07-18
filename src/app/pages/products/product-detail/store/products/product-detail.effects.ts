@@ -4,13 +4,15 @@ import { iif, of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
+import { StockService } from "src/app/services/stock/stock.service";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
 
 @Injectable()
 export class ProductDetailEffects {
 
     constructor(
         private productService: ProductService,
+        private stockService: StockService,
         private actions$: Actions
     ){
     }
@@ -50,6 +52,18 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(saveDetailSuccess),
             switchMap(() => of(clear()))
+        )
+    )
+
+    loadStockEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadStock),
+            switchMap((params: {id: string}) =>
+                this.stockService.findByProductId(params.id).pipe(
+                    map(stock => loadStockSuccess({stock})),
+                    catchError(error => of(loadStockFail({error})))
+                )
+            )
         )
     )
 

@@ -1,32 +1,34 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { Store, StoreModule } from '@ngrx/store';
-import { Category } from 'src/app/model/category/category';
 import { Product } from 'src/app/model/product/product';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { ActivatedRouteMock } from 'src/mock/activated-route.mock';
+import { MatDialogMock } from 'src/mock/mat-dialog.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
-import { loadSuccess } from '../../categories/store/categories.actions';
 import { categoriesReducer } from '../../categories/store/categories.reducers';
 import { ProductsModule } from '../products.module';
 import { ProductDetailComponent } from './product-detail.component';
-import { loadDetailSuccess, saveDetailFail, saveDetailSuccess } from './store/products/product-detail.actions';
+import { loadDetailSuccess, loadStockSuccess, saveDetailFail, saveDetailSuccess } from './store/products/product-detail.actions';
 import { productDetailReducer } from './store/products/product-detail.reducers';
 
-describe('ProductDetailComponent', () => {
+fdescribe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;
   let fixture: ComponentFixture<ProductDetailComponent>;
   let store: Store<AppState>;
   let page: PageMock;
   let activatedRoute: ActivatedRouteMock;
   let messageService: MessageServiceMock;
+  let dialog: MatDialogMock;
 
   beforeEach(async () => {
     activatedRoute = new ActivatedRouteMock();
+    dialog = new MatDialogMock();
     messageService = new MessageServiceMock();
 
     await TestBed.configureTestingModule({
@@ -40,6 +42,7 @@ describe('ProductDetailComponent', () => {
       ]
     })
     .overrideProvider(ActivatedRoute, {useValue: activatedRoute})
+    .overrideProvider(MatDialog, {useValue: dialog})
     .overrideProvider(MessageService, {useValue: messageService})
     .compileComponents();
 
@@ -284,11 +287,122 @@ describe('ProductDetailComponent', () => {
 
   })
 
+  describe('given stock', () => {
+
+    describe('when page starts with new product', () => {
+
+      beforeEach(() => {
+        activatedRoute.value = "new";
+
+        fixture.detectChanges();
+      })
+
+      it('then hide product stock', () => {
+        expect(page.querySelector('[test-id="stock"]')).toBeNull();
+      })
+  
+      it('then do not load product stock', done => {
+        store.select('productDetail').subscribe(state => {
+          expect(state.isLoadingStock).toBeFalsy();
+          done();
+        })
+      })
+      
+    })
+
+    describe('when page starts with existing product', () => {
+  
+      beforeEach(() => {
+        activatedRoute.value = "1";
+        fixture.detectChanges();
+        
+        dispatchLoadDetailSuccess();
+      })
+
+      it('then load stock', done => {
+        store.select('productDetail').subscribe(state => {
+          expect(state.isLoadingStock).toBeTruthy();
+          done();
+        })
+      })
+
+      it('then show stock loader', () => {
+        expect(page.querySelector('[test-id="stock-loader"]')).not.toBeNull();
+      })
+
+      it('then hide stock details', () => {
+        expect(page.querySelector('[test-id="stock-details"]')).toBeNull();
+      })
+
+    })
+
+    describe('when stock loaded', () => {
+  
+      beforeEach(() => {
+        loadProductAndStock();
+      })
+
+      it('then hide stock loader', () => {
+        expect(page.querySelector('[test-id="stock-loader"]')).toBeNull();
+      })
+
+      it('then show product stock details', () => {
+        expect(page.querySelector('[test-id="stock-details"]')).not.toBeNull();
+      })
+
+      it('then hide no results found for stock', () => {
+        expect(page.querySelector('[test-id="no-results-found"]')).toBeNull();
+      })
+
+      it('and stock is empty, then show no results found for stock', () => {
+        store.dispatch(loadStockSuccess({stock: []}));
+        fixture.detectChanges();
+
+        expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
+      })
+
+    })
+
+    describe('when user clicks on add to stock button', () => {
+  
+      beforeEach(() => {
+        loadProductAndStock();
+      })
+      
+      beforeEach(() => {
+        page.querySelector('[test-id="add-stock-button"]').click();
+        fixture.detectChanges();
+      })
+
+      it('then show add to stock modal', () => {
+        expect(dialog.hasOpened).toBeTruthy();
+      })
+
+    })
+
+  })
+
+  function loadProductAndStock() {
+    activatedRoute.value = "1";
+    fixture.detectChanges();
+    
+    dispatchLoadDetailSuccess();
+    dispatchLoadStockSuccess();
+  }
+
   function dispatchLoadDetailSuccess() {
     const product: Product = {
       id: 1, name: "name", categoryId: '1', price: 10, priceWithDiscount: 5
     } as any;
     store.dispatch(loadDetailSuccess({product}));
+    fixture.detectChanges();
+  }
+
+  function dispatchLoadStockSuccess() {
+    const stock: any = {
+      id: 1, name: "name", categoryId: '1', price: 10, priceWithDiscount: 5
+    } as any;
+    store.dispatch(loadStockSuccess({stock}));
     fixture.detectChanges();
   }
 

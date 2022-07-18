@@ -6,20 +6,25 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
+import { StockService } from "src/app/services/stock/stock.service";
+import { StockServiceMock } from "src/mock/stock-service.mock";
 
-describe('ProductDetailEffects', () => {
+fdescribe('ProductDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: ProductDetailEffects;
     let productService: ProductServiceMock;
+    let stockService: StockServiceMock;
 
-    const product = {name: 'anyName'} as any;
     const error = {error: "error"};
+    const product = {name: 'anyName'} as any;
+    const stock = [{id: "anyStockId"}] as any[];
 
     beforeEach(() => {
         productService = new ProductServiceMock();
+        stockService = new StockServiceMock();
 
         TestBed.configureTestingModule({
             imports: [
@@ -32,7 +37,8 @@ describe('ProductDetailEffects', () => {
                 provideMockActions(() => actions$)
             ],
         })
-        .overrideProvider(ProductService, {useValue: productService});
+        .overrideProvider(ProductService, {useValue: productService})
+        .overrideProvider(StockService, {useValue: stockService});
 
         effects = TestBed.get(ProductDetailEffects);
     })
@@ -118,6 +124,32 @@ describe('ProductDetailEffects', () => {
         it('then return clear product', (done) => {
             effects.saveDetailSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(clear());
+                done();
+            })
+        })
+
+    })
+
+    describe("Given load stock", () => {
+
+        beforeEach(() => {
+            actions$ = of(loadStock({id: '1'}));
+        })
+
+        it('when success, then return load stock success', (done) => {
+            stockService._response = of(stock);
+    
+            effects.loadStockEffect$.subscribe(response => {
+                expect(response).toEqual(loadStockSuccess({stock}));
+                done();
+            })
+        })
+    
+        it('when fail, then return load stock fail', (done) => {
+            stockService._response = throwError(error);
+    
+            effects.loadStockEffect$.subscribe(response => {
+                expect(response).toEqual(loadStockFail({error}));
                 done();
             })
         })

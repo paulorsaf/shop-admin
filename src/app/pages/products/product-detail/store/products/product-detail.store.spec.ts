@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
@@ -129,6 +129,60 @@ describe('Product store', () => {
 
         expect(state).toEqual({
             ...AppInitialState.productDetail
+        });
+    });
+    
+    it('loadStock', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isLoadedStock: true,
+            isLoadingStock: false,
+            stock: [{}]
+        };
+
+        const state = productDetailReducer(initialState, loadStock({id: '1'}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error: null,
+            isLoadedStock: false,
+            isLoadingStock: true,
+            stock: []
+        });
+    });
+    
+    it('loadStockSuccess', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isLoadingStock: true
+        };
+
+        const stock = [{}, {}] as any;
+        const state = productDetailReducer(initialState, loadStockSuccess({stock}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isLoadedStock: true,
+            isLoadingStock: false,
+            stock
+        });
+    });
+    
+    it('loadStockFail', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isLoadingStock: true
+        };
+
+        const error = {error: "error"};
+        const state = productDetailReducer(initialState, loadStockFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error,
+            isLoadedStock: false,
+            isLoadingStock: false
         });
     });
   

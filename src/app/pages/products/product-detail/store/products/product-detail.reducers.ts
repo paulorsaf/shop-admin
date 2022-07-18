@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from './product-detail.actions';
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from './product-detail.actions';
 import { ProductDetailState } from './product-detail.state';
 
 const initialState: ProductDetailState = AppInitialState.productDetail;
@@ -57,6 +57,31 @@ const _productDetailReducer = createReducer(initialState,
     on(clear, () => {
         return {
             ...initialState
+        };
+    }),
+    on(loadStock, (state) => {
+        return {
+            ...state,
+            error: null,
+            isLoadedStock: false,
+            isLoadingStock: true,
+            stock: []
+        };
+    }),
+    on(loadStockSuccess, (state, action) => {
+        return {
+            ...state,
+            isLoadedStock: true,
+            isLoadingStock: false,
+            stock: action.stock
+        };
+    }),
+    on(loadStockFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isLoadedStock: false,
+            isLoadingStock: false
         };
     })
 );

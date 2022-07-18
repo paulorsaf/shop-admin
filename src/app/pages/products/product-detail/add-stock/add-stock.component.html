@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Adicionar ao estoque</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" *ngIf="form">
+        <div>
+            <mat-form-field>
+                <mat-label>Quantidade</mat-label>
+                <input matInput type="number" placeholder="Quantidade" formControlName="quantity">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Cor</mat-label>
+                <input matInput placeholder="Cor" formControlName="color">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Tamanho</mat-label>
+                <mat-select formControlName="size">
+                    <mat-option *ngFor="let size of sizes" [value]="size">
+                        {{size}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()" test-id="cancel-button">Cancelar</button>
+    <button mat-button cdkFocusInitial (click)="save()" [disabled]="!form.valid" test-id="save-button">
+        Salvar
+    </button>
+</div>
