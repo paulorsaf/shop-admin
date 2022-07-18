@@ -7,7 +7,7 @@ import { PageMock } from 'src/mock/page.mock';
 import { ProductsModule } from '../../products.module';
 import { AddStockComponent } from './add-stock.component';
 
-fdescribe('AddStockComponent', () => {
+describe('AddStockComponent', () => {
   let component: AddStockComponent;
   let fixture: ComponentFixture<AddStockComponent>;
   let dialogRef: MatDialogRefMock;
