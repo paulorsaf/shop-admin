@@ -1,5 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Product } from "src/app/model/product/product";
+import { AddStock, Stock } from "src/app/model/product/stock";
 
 export const clear = createAction('[Product] clear');
 
@@ -12,5 +13,9 @@ export const saveDetailSuccess = createAction('[Product] save detail success');
 export const saveDetailFail = createAction('[Product] save detail fail', props<{error: any}>());
 
 export const loadStock = createAction('[Product] load stock', props<{id: string}>());
-export const loadStockSuccess = createAction('[Product] load stock success', props<{stock: any[]}>());
+export const loadStockSuccess = createAction('[Product] load stock success', props<{stock: Stock[]}>());
 export const loadStockFail = createAction('[Product] load stock fail', props<{error: any}>());
+
+export const saveStock = createAction('[Product] save stock', props<{stock: AddStock}>());
+export const saveStockSuccess = createAction('[Product] save stock success');
+export const saveStockFail = createAction('[Product] save stock fail', props<{error: any}>());

@@ -10,24 +10,31 @@
         <div>
             <mat-form-field>
                 <mat-label>Cor</mat-label>
-                <input matInput placeholder="Cor" formControlName="color">
+                <input matInput [ngxMatColorPicker]="picker" placeholder="Cor"
+                    formControlName="color">
+                <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
+                <ngx-mat-color-picker #picker></ngx-mat-color-picker>
             </mat-form-field>
         </div>
         <div>
             <mat-form-field>
                 <mat-label>Tamanho</mat-label>
                 <mat-select formControlName="size">
-                    <mat-option *ngFor="let size of sizes" [value]="size">
-                        {{size}}
-                    </mat-option>
+                    <mat-option [value]="''">Nao aplicável</mat-option>
+                    <mat-option *ngFor="let size of sizes" [value]="size">{{size}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="cancel()" test-id="cancel-button">Cancelar</button>
-    <button mat-button cdkFocusInitial (click)="save()" [disabled]="!form.valid" test-id="save-button">
-        Salvar
+    <div *ngIf="!(isSaving$ | async)" test-id="action-buttons">
+        <button mat-button (click)="cancel()" test-id="cancel-button">Cancelar</button>
+        <button mat-button cdkFocusInitial (click)="save()" [disabled]="!form.valid" test-id="save-button">
+            Salvar
+        </button>
+    </div>
+    <button type="button" mat-button *ngIf="(isSaving$ | async)">
+        <mat-spinner color="primary" diameter="20" test-id="save-stock-loader"></mat-spinner>
     </button>
 </div>

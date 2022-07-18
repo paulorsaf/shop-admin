@@ -8,6 +8,8 @@ export type ProductDetailState = {
     isLoadingStock: boolean;
     isSaved: boolean;
     isSaving: boolean;
+    isSavedStock: boolean;
+    isSavingStock: boolean;
     product?: Product;
     stock: any[];
 }

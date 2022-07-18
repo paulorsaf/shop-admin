@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess } from "./product-detail.actions";
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
@@ -183,6 +183,57 @@ describe('Product store', () => {
             error,
             isLoadedStock: false,
             isLoadingStock: false
+        });
+    });
+    
+    it('saveStock', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isSavedStock: true,
+            isSavingStock: false
+        };
+
+        const stock = {id: 1} as any;
+        const state = productDetailReducer(initialState, saveStock({stock}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error: null,
+            isSavedStock: false,
+            isSavingStock: true,
+        });
+    });
+    
+    it('saveStockSuccess', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isSavingStock: true
+        };
+
+        const state = productDetailReducer(initialState, saveStockSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isSavedStock: true,
+            isSavingStock: false,
+        });
+    });
+    
+    it('saveStockFail', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isSavingStock: true
+        };
+
+        const error = {error: "error"};
+        const state = productDetailReducer(initialState, saveStockFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error,
+            isSavedStock: false,
+            isSavingStock: false
         });
     });
   

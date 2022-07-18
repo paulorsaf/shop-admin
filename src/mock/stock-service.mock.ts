@@ -4,6 +4,9 @@ export class StockServiceMock {
     
     _response: any;
 
+    addStock() {
+        return this._response || of({});
+    }
     findByProductId() {
         return this._response || of({});
     }

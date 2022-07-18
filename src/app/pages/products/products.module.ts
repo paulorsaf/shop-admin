@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { AddStockComponent } from './product-detail/add-stock/add-stock.component';
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -47,7 +48,12 @@ const routes: Routes = [
     MatSelectModule,
     MatTableModule,
 
+    NgxMatColorPickerModule,
+
     CategoryNamePipeModule
+  ],
+  providers: [
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
   ],
   exports: [
     ProductsComponent,

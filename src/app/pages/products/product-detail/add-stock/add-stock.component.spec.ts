@@ -1,10 +1,13 @@
-import { DialogRef } from '@angular/cdk/dialog';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Store, StoreModule } from '@ngrx/store';
+import { AppState } from 'src/app/store/app-state';
 import { MatDialogRefMock } from 'src/mock/mat-dialog.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { ProductsModule } from '../../products.module';
+import { saveStockSuccess } from '../store/products/product-detail.actions';
+import { productDetailReducer } from '../store/products/product-detail.reducers';
 import { AddStockComponent } from './add-stock.component';
 
 describe('AddStockComponent', () => {
@@ -12,6 +15,7 @@ describe('AddStockComponent', () => {
   let fixture: ComponentFixture<AddStockComponent>;
   let dialogRef: MatDialogRefMock;
   let page: PageMock;
+  let store: Store<AppState>;
 
   beforeEach(async () => {
     dialogRef = new MatDialogRefMock();
@@ -19,7 +23,9 @@ describe('AddStockComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        ProductsModule
+        ProductsModule,
+        StoreModule.forRoot([]),
+        StoreModule.forFeature('productDetail', productDetailReducer)
       ],
       providers: [
         MatDialogRef
@@ -29,6 +35,7 @@ describe('AddStockComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(AddStockComponent);
+    store = TestBed.inject(Store);
 
     component = fixture.componentInstance;
     page = fixture.debugElement.nativeElement;
@@ -75,6 +82,54 @@ describe('AddStockComponent', () => {
       fixture.detectChanges();
 
       expect(page.querySelector('[test-id="save-button"]').disabled).toBeFalsy();
+    })
+
+  })
+
+  describe('given user clicks on save button', () => {
+
+    beforeEach(() => {
+      component.form.get('quantity')?.setValue('10');
+      fixture.detectChanges();
+
+      page.querySelector('[test-id="save-button"]').click();
+      fixture.detectChanges();
+    })
+
+    it('then save stock', done => {
+      store.select('productDetail').subscribe(state => {
+        expect(state.isSavingStock).toBeTruthy();
+        done();
+      })
+    })
+
+    it('then hide action buttons', () => {
+      expect(page.querySelector('[test-id="action-buttons"]')).toBeNull();
+    })
+
+    it('then show save stock loader', () => {
+      expect(page.querySelector('[test-id="save-stock-loader"]')).not.toBeNull();
+    })
+
+    describe('when stock saved', () => {
+
+      beforeEach(() => {
+        store.dispatch(saveStockSuccess());
+        fixture.detectChanges();
+      })
+
+      it('then show action buttons', () => {
+        expect(page.querySelector('[test-id="action-buttons"]')).not.toBeNull();
+      })
+
+      it('then hide save stock loader', () => {
+        expect(page.querySelector('[test-id="save-stock-loader"]')).toBeNull();
+      })
+
+      it('then close add stock page', () => {
+        expect(dialogRef.hasClosed).toBeTruthy();
+      })
+
     })
 
   })

@@ -6,10 +6,11 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { StockServiceMock } from "src/mock/stock-service.mock";
+import { AppState } from "src/app/store/app-state";
 
 describe('ProductDetailEffects', () => {
 
@@ -22,6 +23,14 @@ describe('ProductDetailEffects', () => {
     const product = {name: 'anyName'} as any;
     const stock = [{id: "anyStockId"}] as any[];
 
+    const initialState: AppState = {
+        productDetail: {
+            product: {
+                id: '1'
+            }
+        }
+    } as any;
+
     beforeEach(() => {
         productService = new ProductServiceMock();
         stockService = new StockServiceMock();
@@ -33,7 +42,7 @@ describe('ProductDetailEffects', () => {
             ],
             providers: [
                 ProductDetailEffects,
-                provideMockStore({}),
+                provideMockStore({initialState}),
                 provideMockActions(() => actions$)
             ],
         })
@@ -150,6 +159,32 @@ describe('ProductDetailEffects', () => {
     
             effects.loadStockEffect$.subscribe(response => {
                 expect(response).toEqual(loadStockFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save stock", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveStock({stock: {id: 1} as any}));
+        })
+
+        it('when success, then return save stock success', (done) => {
+            stockService._response = of(stock);
+    
+            effects.saveStockEffect$.subscribe(response => {
+                expect(response).toEqual(saveStockSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save stock fail', (done) => {
+            stockService._response = throwError(error);
+    
+            effects.saveStockEffect$.subscribe(response => {
+                expect(response).toEqual(saveStockFail({error}));
                 done();
             })
         })

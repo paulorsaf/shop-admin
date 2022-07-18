@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from "@ngrx/store";
 import { iif, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { Product } from "src/app/model/product/product";
+import { AddStock } from "src/app/model/product/stock";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./product-detail.actions";
+import { AppState } from "src/app/store/app-state";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess } from "./product-detail.actions";
 
 @Injectable()
 export class ProductDetailEffects {
@@ -13,7 +16,8 @@ export class ProductDetailEffects {
     constructor(
         private productService: ProductService,
         private stockService: StockService,
-        private actions$: Actions
+        private actions$: Actions,
+        private store: Store<AppState>
     ){
     }
 
@@ -66,5 +70,24 @@ export class ProductDetailEffects {
             )
         )
     )
+
+    saveStockEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(saveStock),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                this.stockService.addStock(
+                    storeState.productDetail.product!.id, action.stock
+                ).pipe(
+                    map(() => saveStockSuccess()),
+                    catchError(error => of(saveStockFail({error})))
+                )
+            )
+        )
+    )
+
+    getStore(){
+        return withLatestFrom(this.store);
+    }
 
 }
