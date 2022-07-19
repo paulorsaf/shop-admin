@@ -4,11 +4,10 @@ import { Store } from "@ngrx/store";
 import { iif, of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { Product } from "src/app/model/product/product";
-import { AddStock } from "src/app/model/product/stock";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { AppState } from "src/app/store/app-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 
 @Injectable()
 export class ProductDetailEffects {
@@ -49,13 +48,6 @@ export class ProductDetailEffects {
                     )
                 )
             )
-        )
-    )
-
-    saveDetailSuccessEffect$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(saveDetailSuccess),
-            switchMap(() => of(clear()))
         )
     )
 
@@ -101,6 +93,31 @@ export class ProductDetailEffects {
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 of(loadStock({id: storeState.productDetail.product!.id})))
+        )
+    )
+
+    uploadImageEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(uploadImage),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                this.productService.uploadImage(
+                    storeState.productDetail.product!.id, action.image
+                ).pipe(
+                    map(() => uploadImageSuccess()),
+                    catchError(error => of(uploadImageFail({error})))
+                )
+            )
+        )
+    )
+
+    uploadImageSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(uploadImageSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                of(loadDetail({id: storeState.productDetail.product!.id}))
+            )
         )
     )
 

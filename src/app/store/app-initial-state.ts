@@ -34,6 +34,8 @@ export const AppInitialState: AppState = {
         isSaving: false,
         isSavedStock: false,
         isSavingStock: false,
+        isUploadedImage: false,
+        isUploadingImage: false,
         product: undefined,
         stock: undefined
     },

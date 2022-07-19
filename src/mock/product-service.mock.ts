@@ -13,7 +13,6 @@ export class ProductServiceMock {
         return this._response || of({});
     }
     remove() {
-        this._isUpdated = true;
         return this._response || of({});
     }
     save() {
@@ -22,6 +21,9 @@ export class ProductServiceMock {
     }
     update() {
         this._isUpdated = true;
+        return this._response || of({});
+    }
+    uploadImage() {
         return this._response || of({});
     }
 

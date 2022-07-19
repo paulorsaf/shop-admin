@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
 import { AddStock, Stock } from 'src/app/model/product/stock';
@@ -18,14 +18,14 @@ export class StockService {
     return this.apiService.patch<void>(url, stock);
   }
 
-  findByProductId(id: string): Observable<Stock> {
-    const url = `${environment.apiUrl}/products/${id}/stocks`;
-    return this.apiService.get<Stock>(url);
-  }
-
   createStock(productId: string, stock: AddStock): Observable<void> {
     const url = `${environment.apiUrl}/products/${productId}/stocks`;
     return this.apiService.post<void>(url, stock);
+  }
+
+  findByProductId(id: string): Observable<Stock> {
+    const url = `${environment.apiUrl}/products/${id}/stocks`;
+    return this.apiService.get<Stock>(url);
   }
 
 }

@@ -1,0 +1,31 @@
+<h1>Imagens</h1>
+
+<div *ngIf="(isLoadingImages$ | async)" test-id="images-loader">
+    <ngx-skeleton-loader appearance="line" count="3"
+        [theme]="{height: '100px', width: '100%', 'margin-bottom': '5px'}">
+    </ngx-skeleton-loader>
+    <div align="right">
+        <ngx-skeleton-loader appearance="line" count="1"
+            [theme]="{height: '36px', width: '91px', 'margin-bottom': 0}">
+        </ngx-skeleton-loader>
+    </div>
+</div>
+<div *ngIf="!(isLoadingImages$ | async)" test-id="images-form">
+    <div *ngIf="(images$ | async)?.length === 0" align="middle" test-id="no-results-found">
+        Nenhuma imagem encontrada
+    </div>
+
+    <div *ngIf="(images$ | async)?.length !== 0" test-id="images">
+        <img [src]="image.imageUrl" *ngFor="let image of (images$ | async)" />
+    </div>
+    <button type="button" mat-raised-button color="primary" (change)="uploadImage($event)"
+        *ngIf="!(isUploadingImage$ | async)" test-id="add-image-button">
+        <input type="file" accept=".png, .jpg, .jpeg, .svg"/>
+        Adicionar
+    </button>
+    <button type="button" mat-button *ngIf="isUploadingImage$ | async">
+        <div align="center">
+            <mat-spinner color="primary" diameter="20" test-id="add-image-button-loader"></mat-spinner>
+        </div>
+    </button>
+</div>

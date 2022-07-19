@@ -23,23 +23,13 @@ export class ApiService {
 
     postMultipart<T>(url: string, file?: any, fileName?: string) : Observable<T>{
         let formData = new FormData();
-        formData.append('files', file, fileName);
+        formData.append('file', file, fileName);
 
         return this.http.post<T>(url, formData)
     }
 
     patch<T>(url: string, body?: any) : Observable<T>{
         return this.http.patch<T>(url, body);
-    }
-
-    private getOptions(token: string){
-        return {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': token
-            }
-        }
     }
 
 }

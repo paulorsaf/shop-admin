@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
@@ -238,6 +238,56 @@ describe('Product store', () => {
             error,
             isSavedStock: false,
             isSavingStock: false
+        });
+    });
+    
+    it('uploadImage', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isUploadedImage: true,
+            isUploadingImage: false
+        };
+
+        const state = productDetailReducer(initialState, uploadImage({image: {id: 1} as any}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error: null,
+            isUploadedImage: false,
+            isUploadingImage: true,
+        });
+    });
+    
+    it('uploadImageSuccess', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isUploadingImage: true
+        };
+
+        const state = productDetailReducer(initialState, uploadImageSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isUploadedImage: true,
+            isUploadingImage: false
+        });
+    });
+    
+    it('uploadImageFail', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isUploadingImage: true
+        };
+
+        const error = {error: "error"};
+        const state = productDetailReducer(initialState, uploadImageFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error,
+            isUploadedImage: false,
+            isUploadingImage: false
         });
     });
   

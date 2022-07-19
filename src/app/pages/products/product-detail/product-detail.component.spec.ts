@@ -91,6 +91,10 @@ describe('ProductDetailComponent', () => {
       })
     })
 
+    it('then hide product images', () => {
+      expect(page.querySelector('[test-id="product-images"]')).toBeNull();
+    })
+
   })
 
   describe('given update product', () => {
@@ -142,6 +146,10 @@ describe('ProductDetailComponent', () => {
   
       it('then show product detail', () => {
         expect(page.querySelector('[test-id="product"]')).not.toBeNull();
+      })
+
+      it('then show product images', () => {
+        expect(page.querySelector('[test-id="product-images"]')).not.toBeNull();
       })
 
     })
@@ -326,56 +334,8 @@ describe('ProductDetailComponent', () => {
         })
       })
 
-      it('then show stock loader', () => {
-        expect(page.querySelector('[test-id="stock-loader"]')).not.toBeNull();
-      })
-
-      it('then hide stock details', () => {
-        expect(page.querySelector('[test-id="stock-details"]')).toBeNull();
-      })
-
-    })
-
-    describe('when stock loaded', () => {
-  
-      beforeEach(() => {
-        loadProductAndStock();
-      })
-
-      it('then hide stock loader', () => {
-        expect(page.querySelector('[test-id="stock-loader"]')).toBeNull();
-      })
-
-      it('then show product stock details', () => {
-        expect(page.querySelector('[test-id="stock-details"]')).not.toBeNull();
-      })
-
-      it('then hide no results found for stock', () => {
-        expect(page.querySelector('[test-id="no-results-found"]')).toBeNull();
-      })
-
-      it('and stock is empty, then show no results found for stock', () => {
-        store.dispatch(loadStockSuccess({stock: {id: 1} as any}));
-        fixture.detectChanges();
-
-        expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
-      })
-
-    })
-
-    describe('when user clicks on add to stock button', () => {
-  
-      beforeEach(() => {
-        loadProductAndStock();
-      })
-      
-      beforeEach(() => {
-        page.querySelector('[test-id="add-stock-button"]').click();
-        fixture.detectChanges();
-      })
-
-      it('then show add to stock modal', () => {
-        expect(dialog.hasOpened).toBeTruthy();
+      it('then show stock', () => {
+        expect(page.querySelector('[test-id="stock"]')).not.toBeNull();
       })
 
     })

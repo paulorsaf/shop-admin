@@ -1,0 +1,11 @@
+.color {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.centralize {
+    flex-direction: row;
+    justify-content: start;
+}

@@ -6,7 +6,7 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { StockServiceMock } from "src/mock/stock-service.mock";
@@ -124,21 +124,6 @@ describe('ProductDetailEffects', () => {
 
     })
 
-    describe("Given save product detail success", () => {
-
-        beforeEach(() => {
-            actions$ = of(saveDetailSuccess());
-        })
-
-        it('then return clear product', (done) => {
-            effects.saveDetailSuccessEffect$.subscribe(response => {
-                expect(response).toEqual(clear());
-                done();
-            })
-        })
-
-    })
-
     describe("Given load stock", () => {
 
         beforeEach(() => {
@@ -218,6 +203,47 @@ describe('ProductDetailEffects', () => {
         it('then return load stock', (done) => {
             effects.saveStockSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadStock({id: '1'}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given upload image", () => {
+
+        beforeEach(() => {
+            actions$ = of(uploadImage({image: {} as any}));
+        })
+
+        it('when success, then return load stock success', (done) => {
+            productService._response = of({});
+    
+            effects.uploadImageEffect$.subscribe(response => {
+                expect(response).toEqual(uploadImageSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return load stock fail', (done) => {
+            productService._response = throwError(error);
+    
+            effects.uploadImageEffect$.subscribe(response => {
+                expect(response).toEqual(uploadImageFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given upload image success", () => {
+
+        beforeEach(() => {
+            actions$ = of(uploadImageSuccess());
+        })
+
+        it('then return load detail', (done) => {
+            effects.uploadImageSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadDetail({id: '1'}));
                 done();
             })
         })

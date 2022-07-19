@@ -1,18 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
 import { Category } from 'src/app/model/category/category';
 import { Product } from 'src/app/model/product/product';
-import { Stock } from 'src/app/model/product/stock';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { load } from '../../categories/store/categories.actions';
-import { AddStockComponent } from './add-stock/add-stock.component';
-import { loadDetail, loadStock, saveDetail } from './store/products/product-detail.actions';
+import { clear, loadDetail, loadStock, saveDetail } from './store/products/product-detail.actions';
 
 @Component({
   selector: 'app-product-detail',
@@ -21,60 +17,49 @@ import { loadDetail, loadStock, saveDetail } from './store/products/product-deta
 })
 export class ProductDetailComponent implements OnInit, OnDestroy {
 
-  dataSource!: MatTableDataSource<Stock[]>;
-  displayedColumns = ['amount', 'color', 'size'];
   form!: FormGroup;
 
   categories$!: Observable<Category[]>;
   isLoading$!: Observable<boolean>;
-  isLoadingStock$!: Observable<boolean>;
   isSaving$!: Observable<boolean>;
   product$!: Observable<Product | undefined>;
-  stock$!: Observable<any[]>;
 
   errorSubscription!: Subscription;
   saveSubscription!: Subscription;
-  stockSubscription!: Subscription;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private dialog: MatDialog,
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<Stock[]>([]);
+    this.store.dispatch(clear());
 
     this.categories$ = this.store.select(state => state.categories.categories);
     this.isLoading$ = this.store.select(state => state.productDetail.isLoading);
-    this.isLoadingStock$ = this.store.select(state => state.productDetail.isLoadingStock);
     this.isSaving$ = this.store.select(state => state.productDetail.isSaving);
     this.product$ = this.store.select(state => state.productDetail.product);
-    this.stock$ = this.store.select(state => state.productDetail.stock?.stockOptions || []);
 
     this.loadProductDetail();
-
     this.store.dispatch(load());
 
-    this.onError();
-    this.onCategorySaved();
-    this.onStockChange();
+    this.watchProductState();
   }
 
   ngOnDestroy(): void {
     this.errorSubscription.unsubscribe();
     this.saveSubscription.unsubscribe();
-    this.stockSubscription.unsubscribe();
   }
 
   save() {
     this.store.dispatch(saveDetail({product: this.form.value}));
   }
 
-  showAddToStock() {
-    this.dialog.open(AddStockComponent);
+  private watchProductState() {
+    this.onError();
+    this.onProductSaved();
   }
 
   private loadProductDetail() {
@@ -86,15 +71,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.store.dispatch(loadStock({id}));
       this.createFormOnProductDetailLoaded();
     }
-  }
-
-  private onStockChange() {
-    this.stockSubscription =
-      this.store
-        .select(state => state.productDetail.stock)
-        .subscribe(stock => {
-          this.dataSource = new MatTableDataSource<any>(stock?.stockOptions || []);
-        });
   }
 
   private isNew() {
@@ -136,14 +112,18 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onCategorySaved() {
+  private onProductSaved() {
     this.saveSubscription = this.store
       .select(state => state.productDetail.isSaved)
       .pipe(
         filter(isSaved => isSaved),
         take(1)
       )
-      .subscribe(() => window.history.back());
+      .subscribe(() => {
+        if (this.isNew()) {
+          window.history.back();
+        }
+      });
   }
 
 }

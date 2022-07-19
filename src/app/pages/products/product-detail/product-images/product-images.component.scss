@@ -1,0 +1,16 @@
+input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    height: -webkit-fill-available;
+    width: -webkit-fill-available;
+}
+
+button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+img {
+    max-width: -webkit-fill-available;
+}

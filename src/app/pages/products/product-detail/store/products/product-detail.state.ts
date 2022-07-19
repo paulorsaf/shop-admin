@@ -11,6 +11,8 @@ export type ProductDetailState = {
     isSaving: boolean;
     isSavedStock: boolean;
     isSavingStock: boolean;
+    isUploadedImage: boolean;
+    isUploadingImage: boolean;
     product?: Product;
     stock?: Stock;
 }

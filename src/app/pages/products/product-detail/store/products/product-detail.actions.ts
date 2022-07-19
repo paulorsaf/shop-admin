@@ -19,3 +19,7 @@ export const loadStockFail = createAction('[Product] load stock fail', props<{er
 export const saveStock = createAction('[Product] save stock', props<{stock: AddStock}>());
 export const saveStockSuccess = createAction('[Product] save stock success');
 export const saveStockFail = createAction('[Product] save stock fail', props<{error: any}>());
+
+export const uploadImage = createAction('[Product] upload image', props<{image: File}>());
+export const uploadImageSuccess = createAction('[Product] upload image success');
+export const uploadImageFail = createAction('[Product] upload image fail', props<{error: any}>());
