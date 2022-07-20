@@ -12,7 +12,7 @@ import { StockService } from "src/app/services/stock/stock.service";
 import { StockServiceMock } from "src/mock/stock-service.mock";
 import { AppState } from "src/app/store/app-state";
 
-fdescribe('ProductDetailEffects', () => {
+describe('ProductDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: ProductDetailEffects;

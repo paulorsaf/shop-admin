@@ -9,7 +9,7 @@ import { loadDetail, loadDetailSuccess, removeImageSuccess, uploadImage } from '
 import { productDetailReducer } from '../store/products/product-detail.reducers';
 import { ProductImagesComponent } from './product-images.component';
 
-fdescribe('ProductImagesComponent', () => {
+describe('ProductImagesComponent', () => {
   let component: ProductImagesComponent;
   let fixture: ComponentFixture<ProductImagesComponent>;
   let store: Store<AppState>;
