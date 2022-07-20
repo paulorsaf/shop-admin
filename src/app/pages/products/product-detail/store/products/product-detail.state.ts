@@ -3,6 +3,8 @@ import { Stock } from "src/app/model/product/stock";
 
 export type ProductDetailState = {
     error: any;
+    isEditedStock: boolean;
+    isEditingStock: boolean;
     isLoaded: boolean;
     isLoading: boolean;
     isLoadedStock: boolean;
@@ -13,6 +15,8 @@ export type ProductDetailState = {
     isSaving: boolean;
     isSavedStock: boolean;
     isSavingStock: boolean;
+    isUpdatedStock: boolean;
+    isUpdatingStock: boolean;
     isUploadedImage: boolean;
     isUploadingImage: boolean;
     product?: Product;

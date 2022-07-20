@@ -45,11 +45,21 @@ export class StockListComponent implements OnInit, OnDestroy {
   }
 
   showAddToStock() {
-    this.dialog.open(AddStockComponent);
+    this.dialog.open(AddStockComponent, {
+      width: '400px'
+    })
   }
 
-  askRemove($event: any, stockOption: StockOption) {
-    $event.stopPropagation();
+  edit(stockOption: StockOption) {
+    this.dialog.open(AddStockComponent, {
+      width: '400px',
+      data: {
+        stockOption
+      }
+    })
+  }
+
+  askRemove(stockOption: StockOption) {
     this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {

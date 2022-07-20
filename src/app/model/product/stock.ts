@@ -15,3 +15,7 @@ export type AddStock = {
     quantity: number;
     size: string;
 }
+
+export type UpdateStockOption = {
+    id: string;
+} & AddStock

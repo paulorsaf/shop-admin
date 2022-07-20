@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from './product-detail.actions';
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from './product-detail.actions';
 import { ProductDetailState } from './product-detail.state';
 
 const initialState: ProductDetailState = AppInitialState.productDetail;
@@ -86,7 +86,7 @@ const _productDetailReducer = createReducer(initialState,
             isLoadingStock: false
         };
     }),
-    on(saveStock, (state) => {
+    on(saveStockOption, (state) => {
         return {
             ...state,
             error: null,
@@ -94,14 +94,14 @@ const _productDetailReducer = createReducer(initialState,
             isSavingStock: true
         };
     }),
-    on(saveStockSuccess, (state) => {
+    on(saveStockOptionSuccess, (state) => {
         return {
             ...state,
             isSavedStock: true,
             isSavingStock: false
         };
     }),
-    on(saveStockFail, (state, action) => {
+    on(saveStockOptionFail, (state, action) => {
         return {
             ...state,
             error: action.error,
@@ -153,6 +153,42 @@ const _productDetailReducer = createReducer(initialState,
             error: action.error,
             isRemovedStock: false,
             isRemovingStock: false
+        };
+    }),
+    on(updateStockOption, (state) => {
+        return {
+            ...state,
+            error: null,
+            isUpdatedStock: false,
+            isUpdatingStock: true
+        };
+    }),
+    on(updateStockOptionSuccess, (state) => {
+        return {
+            ...state,
+            isUpdatedStock: true,
+            isUpdatingStock: false
+        };
+    }),
+    on(updateStockOptionFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isUpdatedStock: false,
+            isUpdatingStock: false
+        };
+    }),
+    on(resetFlags, state => {
+        return {
+            ...state,
+            isEditedStock: false,
+            isEditingStock: false,
+            isRemovedStock: false,
+            isRemovingStock: false,
+            isSavedStock: false,
+            isSavingStock: false,
+            isUpdatedStock: false,
+            isUpdatingStock: false
         };
     })
 );

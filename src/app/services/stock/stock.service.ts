@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
-import { AddStock, Stock, StockOption } from 'src/app/model/product/stock';
+import { AddStock, Stock, UpdateStockOption } from 'src/app/model/product/stock';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +31,11 @@ export class StockService {
   removeStockOption(productId: string, stockId: string, stockOptionId: string): Observable<void> {
     const url = `${environment.apiUrl}/products/${productId}/stocks/${stockId}/stockoptions/${stockOptionId}`;
     return this.apiService.delete<void>(url);
+  }
+
+  updateStockOption(productId: string, stockId: string, stockOption: UpdateStockOption): Observable<void> {
+    const url = `${environment.apiUrl}/products/${productId}/stocks/${stockId}/stockoptions/${stockOption.id}`;
+    return this.apiService.patch<void>(url, stockOption);
   }
 
 }

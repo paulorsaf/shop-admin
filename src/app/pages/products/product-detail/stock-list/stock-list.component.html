@@ -22,7 +22,9 @@
         test-id="stock-details">
         <ng-container matColumnDef="amount">
             <th mat-header-cell *matHeaderCellDef>Quantidade</th>
-            <td mat-cell *matCellDef="let element">{{element.quantity}}</td>
+            <td mat-cell *matCellDef="let element">
+                {{element.quantity}}
+            </td>
         </ng-container>
         <ng-container matColumnDef="color">
             <th mat-header-cell *matHeaderCellDef>Cor</th>
@@ -40,10 +42,16 @@
         <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
-                <button type="button" mat-icon-button color="warn" class="display-on-hover"
-                    (click)="askRemove($event, element)" test-id="remove-product-button">
-                    <mat-icon>delete_forver</mat-icon>
-                </button>
+                <div class='action-buttons'>
+                    <button type="button" mat-icon-button color="primary" class="display-on-hover"
+                        (click)="edit(element)" test-id="edit-product-stock-button">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button color="warn" class="display-on-hover"
+                        (click)="askRemove(element)" test-id="remove-product-stock-button">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                </div>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

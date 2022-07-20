@@ -26,6 +26,8 @@ export const AppInitialState: AppState = {
     },
     productDetail: {
         error: null,
+        isEditedStock: false,
+        isEditingStock: false,
         isLoaded: false,
         isLoading: false,
         isLoadedStock: false,
@@ -36,6 +38,8 @@ export const AppInitialState: AppState = {
         isSaving: false,
         isSavedStock: false,
         isSavingStock: false,
+        isUpdatedStock: false,
+        isUpdatingStock: false,
         isUploadedImage: false,
         isUploadingImage: false,
         product: undefined,

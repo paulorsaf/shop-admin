@@ -14,7 +14,6 @@ import { ProductDetailComponent } from './product-detail/product-detail.componen
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryNamePipeModule } from 'src/app/pipes/category-name/category-name.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 import { AddStockComponent } from './product-detail/add-stock/add-stock.component';
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';

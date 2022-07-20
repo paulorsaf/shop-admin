@@ -106,7 +106,7 @@ describe('StockListComponent', () => {
     })
 
     it('then ask user to confirm', () => {
-      page.querySelector('[test-id="remove-product-button"]').click();
+      page.querySelector('[test-id="remove-product-stock-button"]').click();
       fixture.detectChanges();
 
       expect(dialog.hasOpened).toBeTruthy();
@@ -115,7 +115,7 @@ describe('StockListComponent', () => {
     it('when user cancels, then do not remove stock option', done => {
       dialog.response = null;
 
-      page.querySelector('[test-id="remove-product-button"]').click();
+      page.querySelector('[test-id="remove-product-stock-button"]').click();
       fixture.detectChanges();
 
       store.select('productDetail').subscribe(state => {
@@ -127,13 +127,28 @@ describe('StockListComponent', () => {
     it('when user confirms, then remove stock option', done => {
       dialog.response = 'YES';
 
-      page.querySelector('[test-id="remove-product-button"]').click();
+      page.querySelector('[test-id="remove-product-stock-button"]').click();
       fixture.detectChanges();
 
       store.select('productDetail').subscribe(state => {
         expect(state.isRemovingStock).toBeTruthy();
         done();
       })
+    })
+
+  })
+
+  describe('given user clicks on edit button', () => {
+
+    beforeEach(() => {
+      dispatchLoadStockSuccess();
+    })
+
+    it('then show edit modal', () => {
+      page.querySelector('[test-id="edit-product-stock-button"]').click();
+      fixture.detectChanges();
+
+      expect(dialog.hasOpened).toBeTruthy();
     })
 
   })

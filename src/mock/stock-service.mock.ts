@@ -20,5 +20,8 @@ export class StockServiceMock {
     removeStockOption() {
         return this._response || of({});
     }
+    updateStockOption() {
+        return this._response || of({});
+    }
 
 }

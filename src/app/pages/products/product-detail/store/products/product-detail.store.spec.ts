@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
@@ -172,7 +172,7 @@ describe('Product store', () => {
         });
     });
     
-    it('saveStock', () => {
+    it('saveStockOption', () => {
         const initialState: ProductDetailState = {
             ...AppInitialState.productDetail,
             error: {},
@@ -181,7 +181,7 @@ describe('Product store', () => {
         };
 
         const stock = {id: 1} as any;
-        const state = productDetailReducer(initialState, saveStock({stock}));
+        const state = productDetailReducer(initialState, saveStockOption({stock}));
 
         expect(state).toEqual({
             ...AppInitialState.productDetail,
@@ -191,13 +191,13 @@ describe('Product store', () => {
         });
     });
     
-    it('saveStockSuccess', () => {
+    it('saveStockOptionSuccess', () => {
         const initialState: ProductDetailState = {
             ...AppInitialState.productDetail,
             isSavingStock: true
         };
 
-        const state = productDetailReducer(initialState, saveStockSuccess());
+        const state = productDetailReducer(initialState, saveStockOptionSuccess());
 
         expect(state).toEqual({
             ...AppInitialState.productDetail,
@@ -206,14 +206,14 @@ describe('Product store', () => {
         });
     });
     
-    it('saveStockFail', () => {
+    it('saveStockOptionFail', () => {
         const initialState: ProductDetailState = {
             ...AppInitialState.productDetail,
             isSavingStock: true
         };
 
         const error = {error: "error"};
-        const state = productDetailReducer(initialState, saveStockFail({error}));
+        const state = productDetailReducer(initialState, saveStockOptionFail({error}));
 
         expect(state).toEqual({
             ...AppInitialState.productDetail,
@@ -338,6 +338,84 @@ describe('Product store', () => {
 
         expect(state).toEqual({
             ...AppInitialState.productDetail
+        });
+    });
+    
+    it('updateStockOption', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isUpdatedStock: true,
+            isUpdatingStock: false
+        };
+
+        const state = productDetailReducer(initialState, updateStockOption({stockOption: {id: 1} as any}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error: null,
+            isUpdatedStock: false,
+            isUpdatingStock: true
+        });
+    });
+    
+    it('updateStockOptionSuccess', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isUpdatingStock: true
+        };
+
+        const state = productDetailReducer(initialState, updateStockOptionSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isUpdatedStock: true,
+            isUpdatingStock: false
+        });
+    });
+    
+    it('updateStockOptionFail', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isUpdatingStock: true
+        };
+
+        const error = {error: "error"};
+        const state = productDetailReducer(initialState, updateStockOptionFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error,
+            isUpdatedStock: false,
+            isUpdatingStock: false
+        });
+    });
+    
+    it('resetFlags', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isEditedStock: true,
+            isEditingStock: true,
+            isRemovedStock: true,
+            isRemovingStock: true,
+            isSavedStock: true,
+            isSavingStock: true,
+            isUpdatedStock: true,
+            isUpdatingStock: true
+        };
+
+        const state = productDetailReducer(initialState, resetFlags());
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isEditedStock: false,
+            isEditingStock: false,
+            isRemovedStock: false,
+            isRemovingStock: false,
+            isSavedStock: false,
+            isSavingStock: false,
+            isUpdatedStock: false,
+            isUpdatingStock: false
         });
     });
   

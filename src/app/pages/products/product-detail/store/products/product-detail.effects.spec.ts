@@ -6,7 +6,7 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { StockServiceMock } from "src/mock/stock-service.mock";
@@ -156,13 +156,13 @@ describe('ProductDetailEffects', () => {
     describe("Given save stock", () => {
 
         beforeEach(() => {
-            actions$ = of(saveStock({stock: {id: 1} as any}));
+            actions$ = of(saveStockOption({stock: {id: 1} as any}));
         })
 
         it('when stock doesnt have an id, then create stock', done => {
             stockService._response = of(stock);
     
-            effects.saveStockEffect$.subscribe(() => {
+            effects.saveStockOptionEffect$.subscribe(() => {
                 expect(stockService._isCreated).toBeTruthy()
                 done();
             })
@@ -171,7 +171,7 @@ describe('ProductDetailEffects', () => {
         it('when stock has an id, then add stock', done => {
             stockService._response = of(stock);
     
-            effects.saveStockEffect$.subscribe(() => {
+            effects.saveStockOptionEffect$.subscribe(() => {
                 expect(stockService._isAdded).toBeTruthy()
                 done();
             })
@@ -180,8 +180,8 @@ describe('ProductDetailEffects', () => {
         it('when success, then return save stock success', (done) => {
             stockService._response = of(stock);
     
-            effects.saveStockEffect$.subscribe(response => {
-                expect(response).toEqual(saveStockSuccess());
+            effects.saveStockOptionEffect$.subscribe(response => {
+                expect(response).toEqual(saveStockOptionSuccess());
                 done();
             })
         })
@@ -189,8 +189,8 @@ describe('ProductDetailEffects', () => {
         it('when fail, then return save stock fail', (done) => {
             stockService._response = throwError(error);
     
-            effects.saveStockEffect$.subscribe(response => {
-                expect(response).toEqual(saveStockFail({error}));
+            effects.saveStockOptionEffect$.subscribe(response => {
+                expect(response).toEqual(saveStockOptionFail({error}));
                 done();
             })
         })
@@ -200,11 +200,11 @@ describe('ProductDetailEffects', () => {
     describe("Given save stock success", () => {
 
         beforeEach(() => {
-            actions$ = of(saveStockSuccess());
+            actions$ = of(saveStockOptionSuccess());
         })
 
         it('then return load stock', (done) => {
-            effects.saveStockSuccessEffect$.subscribe(response => {
+            effects.saveStockOptionSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadStock({id: '1'}));
                 done();
             })
@@ -287,6 +287,47 @@ describe('ProductDetailEffects', () => {
 
         it('then return load detail', (done) => {
             effects.removeStockSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadStock({id: '1'}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given update stock option", () => {
+
+        beforeEach(() => {
+            actions$ = of(updateStockOption({stockOption: {id: 1} as any}));
+        })
+
+        it('when success, then return update stock option success', (done) => {
+            stockService._response = of({});
+    
+            effects.updateStockOptionEffect$.subscribe(response => {
+                expect(response).toEqual(updateStockOptionSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return update stock option fail', (done) => {
+            stockService._response = throwError(error);
+    
+            effects.updateStockOptionEffect$.subscribe(response => {
+                expect(response).toEqual(updateStockOptionFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given update stock product success", () => {
+
+        beforeEach(() => {
+            actions$ = of(updateStockOptionSuccess());
+        })
+
+        it('then return load detail', (done) => {
+            effects.updateStockOptionSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadStock({id: '1'}));
                 done();
             })

@@ -7,7 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { AppState } from "src/app/store/app-state";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 
 @Injectable()
 export class ProductDetailEffects {
@@ -63,9 +63,9 @@ export class ProductDetailEffects {
         )
     )
 
-    saveStockEffect$ = createEffect(() =>
+    saveStockOptionEffect$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(saveStock),
+            ofType(saveStockOption),
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
                 iif(
@@ -73,23 +73,23 @@ export class ProductDetailEffects {
                     this.stockService.addStock(
                         storeState.productDetail.product!.id, action.stock
                     ).pipe(
-                        map(() => saveStockSuccess()),
-                        catchError(error => of(saveStockFail({error})))
+                        map(() => saveStockOptionSuccess()),
+                        catchError(error => of(saveStockOptionFail({error})))
                     ),
                     this.stockService.createStock(
                         storeState.productDetail.product!.id, action.stock
                     ).pipe(
-                        map(() => saveStockSuccess()),
-                        catchError(error => of(saveStockFail({error})))
+                        map(() => saveStockOptionSuccess()),
+                        catchError(error => of(saveStockOptionFail({error})))
                     )
                 )
             )
         )
     )
 
-    saveStockSuccessEffect$ = createEffect(() =>
+    saveStockOptionSuccessEffect$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(saveStockSuccess),
+            ofType(saveStockOptionSuccess),
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 of(loadStock({id: storeState.productDetail.product!.id})))
@@ -147,6 +147,44 @@ export class ProductDetailEffects {
             )
         )
     )
+
+    updateStockOptionEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(updateStockOption),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                this.stockService.updateStockOption(
+                    storeState.productDetail.product!.id,
+                    storeState.productDetail.stock!.id,
+                    action.stockOption
+                ).pipe(
+                    map(() => updateStockOptionSuccess()),
+                    catchError(error => of(updateStockOptionFail({error})))
+                )
+            )
+        )
+    )
+
+    updateStockOptionSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(updateStockOptionSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                of(loadStock({id: storeState.productDetail.product!.id}))
+            )
+        )
+    )
+
+    resetStockFlagsEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(
+                removeStockSuccess,
+                saveStockOptionSuccess,
+                updateStockOptionSuccess
+            ),
+            switchMap(() => of(resetFlags()))
+        )
+    );
 
     getStore(){
         return withLatestFrom(this.store);

@@ -11,9 +11,9 @@
             <mat-form-field>
                 <mat-label>Cor</mat-label>
                 <input matInput [ngxMatColorPicker]="picker" placeholder="Cor"
-                    formControlName="color">
+                    formControlName="color" #colorPickerInput>
                 <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
-                <ngx-mat-color-picker #picker></ngx-mat-color-picker>
+                <ngx-mat-color-picker #picker [color]='form.get("color")?.value'></ngx-mat-color-picker>
             </mat-form-field>
         </div>
         <div>
