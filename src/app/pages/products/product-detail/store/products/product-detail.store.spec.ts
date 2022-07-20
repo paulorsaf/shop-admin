@@ -1,9 +1,9 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
-describe('Product store', () => {
+fdescribe('Product store', () => {
     
     it('loadDetail', () => {
         const initialState: ProductDetailState = {
@@ -416,6 +416,57 @@ describe('Product store', () => {
             isSavingStock: false,
             isUpdatedStock: false,
             isUpdatingStock: false
+        });
+    });
+    
+    it('removeImage', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isRemovedImage: true,
+            isRemovingImage: false
+        };
+
+        const image = {id: 1} as any;
+        const state = productDetailReducer(initialState, removeImage({image}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error: null,
+            isRemovedImage: false,
+            isRemovingImage: true
+        });
+    });
+    
+    it('removeImageSuccess', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isRemovingImage: true
+        };
+
+        const state = productDetailReducer(initialState, removeImageSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isRemovedImage: true,
+            isRemovingImage: false
+        });
+    });
+    
+    it('removeImageFail', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isRemovingImage: true
+        };
+
+        const error = {error: "error"};
+        const state = productDetailReducer(initialState, removeImageFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error,
+            isRemovedImage: false,
+            isRemovingImage: false
         });
     });
   

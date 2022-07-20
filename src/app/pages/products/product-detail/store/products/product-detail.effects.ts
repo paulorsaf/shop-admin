@@ -7,7 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { AppState } from "src/app/store/app-state";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 
 @Injectable()
 export class ProductDetailEffects {
@@ -178,6 +178,7 @@ export class ProductDetailEffects {
     resetStockFlagsEffect$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
+                removeImageSuccess,
                 removeStockSuccess,
                 saveStockOptionSuccess,
                 updateStockOptionSuccess
@@ -185,6 +186,32 @@ export class ProductDetailEffects {
             switchMap(() => of(resetFlags()))
         )
     );
+
+    removeImageEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(removeImage),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                this.productService.removeImage(
+                    storeState.productDetail.product!.id,
+                    action.image.id
+                ).pipe(
+                    map(() => removeImageSuccess()),
+                    catchError(error => of(removeImageFail({error})))
+                )
+            )
+        )
+    )
+
+    removeImageSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(removeImageSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                of(loadStock({id: storeState.productDetail.product!.id}))
+            )
+        )
+    )
 
     getStore(){
         return withLatestFrom(this.store);

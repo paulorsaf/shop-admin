@@ -10,6 +10,7 @@ export type Product = {
 }
 
 export type ProductImage = {
+    id: string;
     fileName: string;
     imageUrl: string
 }

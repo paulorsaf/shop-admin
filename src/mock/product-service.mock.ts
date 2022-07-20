@@ -23,6 +23,9 @@ export class ProductServiceMock {
         this._isUpdated = true;
         return this._response || of({});
     }
+    removeImage() {
+        return this._response || of({});
+    }
     uploadImage() {
         return this._response || of({});
     }

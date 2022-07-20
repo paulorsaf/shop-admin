@@ -6,13 +6,13 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { StockServiceMock } from "src/mock/stock-service.mock";
 import { AppState } from "src/app/store/app-state";
 
-describe('ProductDetailEffects', () => {
+fdescribe('ProductDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: ProductDetailEffects;
@@ -328,6 +328,47 @@ describe('ProductDetailEffects', () => {
 
         it('then return load detail', (done) => {
             effects.updateStockOptionSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadStock({id: '1'}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given remove product image", () => {
+
+        beforeEach(() => {
+            actions$ = of(removeImage({image: {id: 1} as any}));
+        })
+
+        it('when success, then return remove image success', (done) => {
+            productService._response = of({});
+    
+            effects.removeImageEffect$.subscribe(response => {
+                expect(response).toEqual(removeImageSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return remove image fail', (done) => {
+            productService._response = throwError(error);
+    
+            effects.removeImageEffect$.subscribe(response => {
+                expect(response).toEqual(removeImageFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given remove image success", () => {
+
+        beforeEach(() => {
+            actions$ = of(removeImageSuccess());
+        })
+
+        it('then return load detail', (done) => {
+            effects.removeImageSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadStock({id: '1'}));
                 done();
             })

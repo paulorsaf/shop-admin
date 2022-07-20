@@ -1,19 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { Store, StoreModule } from '@ngrx/store';
 import { AppState } from 'src/app/store/app-state';
+import { MatDialogMock } from 'src/mock/mat-dialog.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { ProductsModule } from '../../products.module';
-import { loadDetail, loadDetailSuccess, uploadImage } from '../store/products/product-detail.actions';
+import { loadDetail, loadDetailSuccess, removeImageSuccess, uploadImage } from '../store/products/product-detail.actions';
 import { productDetailReducer } from '../store/products/product-detail.reducers';
 import { ProductImagesComponent } from './product-images.component';
 
-describe('ProductImagesComponent', () => {
+fdescribe('ProductImagesComponent', () => {
   let component: ProductImagesComponent;
   let fixture: ComponentFixture<ProductImagesComponent>;
   let store: Store<AppState>;
   let page: PageMock;
+  let dialog: MatDialogMock;
 
   beforeEach(async () => {
+    dialog = new MatDialogMock();
     await TestBed.configureTestingModule({
       imports: [
         ProductsModule,
@@ -21,6 +25,7 @@ describe('ProductImagesComponent', () => {
         StoreModule.forFeature('productDetail', productDetailReducer)
       ]
     })
+    .overrideProvider(MatDialog, {useValue: dialog})
     .compileComponents();
 
     fixture = TestBed.createComponent(ProductImagesComponent);
@@ -125,8 +130,83 @@ describe('ProductImagesComponent', () => {
 
   })
 
+  describe('given user clicks on remove image button', () => {
+
+    beforeEach(() => {
+      dispatchLoadDetails();
+    })
+
+    it('then show confirmation dialog', () => {
+      page.querySelector('[test-id="remove-image-button"]').click();
+      fixture.detectChanges();
+
+      expect(dialog.hasOpened).toBeTruthy();
+    })
+
+    it('when user cancels, then do not remove image', done => {
+      dialog.response = null;
+
+      page.querySelector('[test-id="remove-image-button"]').click();
+      fixture.detectChanges();
+
+      store.select('productDetail').subscribe(state => {
+        expect(state.isRemovingImage).toBeFalsy();
+        done();
+      })
+    })
+
+    it('when user accepts, then remove image', done => {
+      dialog.response = 'YES';
+
+      page.querySelector('[test-id="remove-image-button"]').click();
+      fixture.detectChanges();
+
+      store.select('productDetail').subscribe(state => {
+        expect(state.isRemovingImage).toBeTruthy();
+        done();
+      })
+    })
+
+    describe('when removing image', () => {
+
+      beforeEach(() => {
+        dialog.response = 'YES';
+  
+        page.querySelector('[test-id="remove-image-button"]').click();
+        fixture.detectChanges();
+      })
+
+      it('then show image loader', () => {
+        expect(page.querySelector('[test-id="images-loader"]')).not.toBeNull();
+      })
+    
+      it('then hide images', () => {
+        expect(page.querySelector('[test-id="images-form"]')).toBeNull();
+      })
+
+    })
+
+    describe('when image removed', () => {
+
+      beforeEach(() => {
+        store.dispatch(removeImageSuccess());
+        fixture.detectChanges();
+      })
+
+      it('then hide image loader', () => {
+        expect(page.querySelector('[test-id="images-loader"]')).toBeNull();
+      })
+    
+      it('then show images', () => {
+        expect(page.querySelector('[test-id="images-form"]')).not.toBeNull();
+      })
+
+    })
+
+  })
+
   function dispatchLoadDetails() {
-    const product = {images: ['image1', 'image2']} as any;
+    const product = {images: ['image1']} as any;
     store.dispatch(loadDetailSuccess({product}));
     fixture.detectChanges();
   }

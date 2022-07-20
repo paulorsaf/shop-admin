@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { Product } from "src/app/model/product/product";
+import { Product, ProductImage } from "src/app/model/product/product";
 import { AddStock, Stock, StockOption, UpdateStockOption } from "src/app/model/product/stock";
 
 export const clear = createAction('[Product] clear');
@@ -23,6 +23,10 @@ export const saveStockOptionFail = createAction('[Product] save stock fail', pro
 export const uploadImage = createAction('[Product] upload image', props<{image: File}>());
 export const uploadImageSuccess = createAction('[Product] upload image success');
 export const uploadImageFail = createAction('[Product] upload image fail', props<{error: any}>());
+
+export const removeImage = createAction('[Product] remove image', props<{image: ProductImage}>());
+export const removeImageSuccess = createAction('[Product] remove image success');
+export const removeImageFail = createAction('[Product] remove image fail', props<{error: any}>());
 
 export const removeStock = createAction('[Product] remove stock', props<{stockOption: StockOption}>());
 export const removeStockSuccess = createAction('[Product] remove stock success');

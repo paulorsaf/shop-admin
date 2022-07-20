@@ -16,7 +16,13 @@
     </div>
 
     <div *ngIf="(images$ | async)?.length !== 0" test-id="images">
-        <img [src]="image.imageUrl" *ngFor="let image of (images$ | async)" />
+        <div *ngFor="let image of (images$ | async)" class="image-wapper">
+            <button type="button" mat-raised-button color="warn" class="display-on-hover"
+                (click)="askRemoveImage(image)" test-id="remove-image-button">
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+            <img [src]="image.imageUrl" />
+        </div>
     </div>
     <button type="button" mat-raised-button color="primary" (change)="uploadImage($event)"
         *ngIf="!(isUploadingImage$ | async)" test-id="add-image-button">
