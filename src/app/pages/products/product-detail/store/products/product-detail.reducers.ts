@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from './product-detail.actions';
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from './product-detail.actions';
 import { ProductDetailState } from './product-detail.state';
 
 const initialState: ProductDetailState = AppInitialState.productDetail;
@@ -130,6 +130,29 @@ const _productDetailReducer = createReducer(initialState,
             error: action.error,
             isUploadedImage: false,
             isUploadingImage: false
+        };
+    }),
+    on(removeStock, (state) => {
+        return {
+            ...state,
+            error: null,
+            isRemovedStock: false,
+            isRemovingStock: true
+        };
+    }),
+    on(removeStockSuccess, (state) => {
+        return {
+            ...state,
+            isRemovedStock: true,
+            isRemovingStock: false
+        };
+    }),
+    on(removeStockFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isRemovedStock: false,
+            isRemovingStock: false
         };
     })
 );

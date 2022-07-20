@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
@@ -111,24 +111,6 @@ describe('Product store', () => {
             error,
             isSaved: false,
             isSaving: false
-        });
-    });
-    
-    it('clear', () => {
-        const initialState: ProductDetailState = {
-            ...AppInitialState.productDetail,
-            error: {},
-            isLoaded: true,
-            isLoading: true,
-            isSaved: true,
-            isSaving: true,
-            product: {} as any
-        };
-
-        const state = productDetailReducer(initialState, clear());
-
-        expect(state).toEqual({
-            ...AppInitialState.productDetail
         });
     });
     
@@ -288,6 +270,74 @@ describe('Product store', () => {
             error,
             isUploadedImage: false,
             isUploadingImage: false
+        });
+    });
+    
+    it('removeStock', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isRemovedStock: true,
+            isRemovingStock: false
+        };
+
+        const state = productDetailReducer(initialState, removeStock({stockOption: {id: 1} as any}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error: null,
+            isRemovedStock: false,
+            isRemovingStock: true
+        });
+    });
+    
+    it('removeStockSuccess', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isRemovingStock: true
+        };
+
+        const state = productDetailReducer(initialState, removeStockSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isRemovedStock: true,
+            isRemovingStock: false
+        });
+    });
+    
+    it('removeStockFail', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isRemovingStock: true
+        };
+
+        const error = {error: "error"};
+        const state = productDetailReducer(initialState, removeStockFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error,
+            isRemovedStock: false,
+            isRemovingStock: false
+        });
+    });
+    
+    it('clear', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isLoaded: true,
+            isLoading: true,
+            isSaved: true,
+            isSaving: true,
+            product: {} as any
+        };
+
+        const state = productDetailReducer(initialState, clear());
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail
         });
     });
   

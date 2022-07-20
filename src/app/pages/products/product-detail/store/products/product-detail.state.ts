@@ -7,6 +7,8 @@ export type ProductDetailState = {
     isLoading: boolean;
     isLoadedStock: boolean;
     isLoadingStock: boolean;
+    isRemovedStock: boolean;
+    isRemovingStock: boolean;
     isSaved: boolean;
     isSaving: boolean;
     isSavedStock: boolean;

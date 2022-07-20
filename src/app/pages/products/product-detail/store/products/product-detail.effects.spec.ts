@@ -6,7 +6,7 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { StockServiceMock } from "src/mock/stock-service.mock";
@@ -27,6 +27,9 @@ describe('ProductDetailEffects', () => {
         productDetail: {
             product: {
                 id: '1'
+            },
+            stock: {
+                id: '2'
             }
         }
     } as any;
@@ -244,6 +247,47 @@ describe('ProductDetailEffects', () => {
         it('then return load detail', (done) => {
             effects.uploadImageSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadDetail({id: '1'}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given remove stock option", () => {
+
+        beforeEach(() => {
+            actions$ = of(removeStock({stockOption: {id: 1} as any}));
+        })
+
+        it('when success, then return remove stock option success', (done) => {
+            stockService._response = of({});
+    
+            effects.removeStockEffect$.subscribe(response => {
+                expect(response).toEqual(removeStockSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return remove stock option fail', (done) => {
+            stockService._response = throwError(error);
+    
+            effects.removeStockEffect$.subscribe(response => {
+                expect(response).toEqual(removeStockFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given remove stock success", () => {
+
+        beforeEach(() => {
+            actions$ = of(removeStockSuccess());
+        })
+
+        it('then return load detail', (done) => {
+            effects.removeStockSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadStock({id: '1'}));
                 done();
             })
         })

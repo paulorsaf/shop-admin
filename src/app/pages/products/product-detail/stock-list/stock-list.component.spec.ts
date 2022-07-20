@@ -99,6 +99,45 @@ describe('StockListComponent', () => {
 
   })
 
+  describe('given user clicks on remove stock option button', () => {
+
+    beforeEach(() => {
+      dispatchLoadStockSuccess();
+    })
+
+    it('then ask user to confirm', () => {
+      page.querySelector('[test-id="remove-product-button"]').click();
+      fixture.detectChanges();
+
+      expect(dialog.hasOpened).toBeTruthy();
+    })
+
+    it('when user cancels, then do not remove stock option', done => {
+      dialog.response = null;
+
+      page.querySelector('[test-id="remove-product-button"]').click();
+      fixture.detectChanges();
+
+      store.select('productDetail').subscribe(state => {
+        expect(state.isRemovingStock).toBeFalsy();
+        done();
+      })
+    })
+
+    it('when user confirms, then remove stock option', done => {
+      dialog.response = 'YES';
+
+      page.querySelector('[test-id="remove-product-button"]').click();
+      fixture.detectChanges();
+
+      store.select('productDetail').subscribe(state => {
+        expect(state.isRemovingStock).toBeTruthy();
+        done();
+      })
+    })
+
+  })
+
   function dispatchLoadStockSuccess() {
     const stock: any = {id: 1, stockOptions: [{id: 1}]} as any;
     store.dispatch(loadStockSuccess({stock}));

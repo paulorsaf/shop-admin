@@ -37,6 +37,15 @@
             <th mat-header-cell *matHeaderCellDef>Tamanho</th>
             <td mat-cell *matCellDef="let element">{{element.size}}</td>
         </ng-container>
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button type="button" mat-icon-button color="warn" class="display-on-hover"
+                    (click)="askRemove($event, element)" test-id="remove-product-button">
+                    <mat-icon>delete_forver</mat-icon>
+                </button>
+            </td>
+        </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>

@@ -30,6 +30,8 @@ export const AppInitialState: AppState = {
         isLoading: false,
         isLoadedStock: false,
         isLoadingStock: false,
+        isRemovedStock: false,
+        isRemovingStock: false,
         isSaved: false,
         isSaving: false,
         isSavedStock: false,

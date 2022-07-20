@@ -17,5 +17,8 @@ export class StockServiceMock {
     findByProductId() {
         return this._response || of({});
     }
+    removeStockOption() {
+        return this._response || of({});
+    }
 
 }

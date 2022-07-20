@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Product } from "src/app/model/product/product";
-import { AddStock, Stock } from "src/app/model/product/stock";
+import { AddStock, Stock, StockOption } from "src/app/model/product/stock";
 
 export const clear = createAction('[Product] clear');
 
@@ -23,3 +23,7 @@ export const saveStockFail = createAction('[Product] save stock fail', props<{er
 export const uploadImage = createAction('[Product] upload image', props<{image: File}>());
 export const uploadImageSuccess = createAction('[Product] upload image success');
 export const uploadImageFail = createAction('[Product] upload image fail', props<{error: any}>());
+
+export const removeStock = createAction('[Product] remove stock', props<{stockOption: StockOption}>());
+export const removeStockSuccess = createAction('[Product] remove stock success');
+export const removeStockFail = createAction('[Product] remove stock fail', props<{error: any}>());

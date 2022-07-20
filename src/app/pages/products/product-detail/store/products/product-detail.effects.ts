@@ -7,7 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { AppState } from "src/app/store/app-state";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStock, saveStockFail, saveStockSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 
 @Injectable()
 export class ProductDetailEffects {
@@ -117,6 +117,33 @@ export class ProductDetailEffects {
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 of(loadDetail({id: storeState.productDetail.product!.id}))
+            )
+        )
+    )
+
+    removeStockEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(removeStock),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                this.stockService.removeStockOption(
+                    storeState.productDetail.product!.id,
+                    storeState.productDetail.stock!.id,
+                    action.stockOption.id
+                ).pipe(
+                    map(() => removeStockSuccess()),
+                    catchError(error => of(removeStockFail({error})))
+                )
+            )
+        )
+    )
+
+    removeStockSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(removeStockSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                of(loadStock({id: storeState.productDetail.product!.id}))
             )
         )
     )
