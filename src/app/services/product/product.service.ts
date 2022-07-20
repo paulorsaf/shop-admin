@@ -38,8 +38,8 @@ export class ProductService {
     return this.apiService.patch<Product[]>(url, product);
   }
 
-  removeImage(productId: string, imageId: string): Observable<void> {
-    const url = `${environment.apiUrl}/products/${productId}/images/${imageId}`;
+  removeImage(productId: string, imageName: string): Observable<void> {
+    const url = `${environment.apiUrl}/products/${productId}/images/${imageName}`;
     return this.apiService.delete<void>(url);
   }
 

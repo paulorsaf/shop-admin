@@ -194,7 +194,7 @@ export class ProductDetailEffects {
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 this.productService.removeImage(
                     storeState.productDetail.product!.id,
-                    action.image.id
+                    action.image.fileName
                 ).pipe(
                     map(() => removeImageSuccess()),
                     catchError(error => of(removeImageFail({error})))
