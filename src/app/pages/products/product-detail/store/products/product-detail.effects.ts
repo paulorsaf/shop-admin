@@ -208,7 +208,7 @@ export class ProductDetailEffects {
             ofType(removeImageSuccess),
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
-                of(loadStock({id: storeState.productDetail.product!.id}))
+                of(loadDetail({id: storeState.productDetail.product!.id}))
             )
         )
     )

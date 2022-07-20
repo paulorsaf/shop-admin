@@ -369,7 +369,7 @@ describe('ProductDetailEffects', () => {
 
         it('then return load detail', (done) => {
             effects.removeImageSuccessEffect$.subscribe(response => {
-                expect(response).toEqual(loadStock({id: '1'}));
+                expect(response).toEqual(loadDetail({id: '1'}));
                 done();
             })
         })
