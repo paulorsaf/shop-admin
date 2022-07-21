@@ -21,6 +21,7 @@ import { StockListComponent } from './product-detail/stock-list/stock-list.compo
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ProductImagesComponent } from './product-detail/product-images/product-images.component';
+import { ProductDetailLoadingComponent } from './product-detail/product-detail-loading/product-detail-loading.component';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -33,7 +34,8 @@ const routes: Routes = [
     ProductDetailComponent,
     AddStockComponent,
     StockListComponent,
-    ProductImagesComponent
+    ProductImagesComponent,
+    ProductDetailLoadingComponent
   ],
   imports: [
     CommonModule,

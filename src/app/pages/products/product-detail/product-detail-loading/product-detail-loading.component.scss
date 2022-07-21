@@ -1,0 +1,15 @@
+.loader-wrapper {
+    display: flex;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+
+    .main {
+        width: 100%;
+        padding: 10px;
+    }
+    .side {
+        width: 220px;
+        height: 100vw;
+    }
+}
