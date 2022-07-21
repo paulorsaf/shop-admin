@@ -3,6 +3,16 @@ button {
     margin-right: 10px;
 }
 
+mat-form-field,
+input {
+    min-width: 30%;
+}
+
+mat-form-field.description,
+textarea {
+    min-width: calc(60% + 10px);
+}
+
 button {
     margin-top: 10px;
 }

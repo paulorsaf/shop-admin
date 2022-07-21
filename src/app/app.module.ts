@@ -18,10 +18,14 @@ import { AddTokenHeaderHttpRequestInterceptor } from './interceptors/add-token-h
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { BannersComponent } from './pages/banners/banners.component';
+import { TrendingComponent } from './pages/trending/trending.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BannersComponent,
+    TrendingComponent
   ],
   imports: [
     BrowserModule,

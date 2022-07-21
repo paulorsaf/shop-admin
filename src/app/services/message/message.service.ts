@@ -10,6 +10,12 @@ export class MessageService {
     private snackbar: MatSnackBar
   ) { }
 
+  showAlert(message: string) {
+    this.snackbar.open(message, undefined, {
+      duration: 5000,
+    });
+  }
+
   showError(error: any) {
     this.snackbar.open(error.message, undefined, {
       duration: 5000

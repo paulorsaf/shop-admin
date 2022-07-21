@@ -1,12 +1,11 @@
 export type Product = {
     categoryId: string;
-    colors: string[];
+    description: string;
     id: string;
     images: ProductImage[];
     name: string;
     price: number;
     priceWithDiscount: number;
-    sizes: string[];
 }
 
 export type ProductImage = {

@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { Store, StoreModule } from '@ngrx/store';
+import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { MatDialogMock } from 'src/mock/mat-dialog.mock';
+import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { ProductsModule } from '../../products.module';
 import { loadDetail, loadDetailSuccess, removeImageSuccess, uploadImage } from '../store/products/product-detail.actions';
@@ -15,9 +17,12 @@ describe('ProductImagesComponent', () => {
   let store: Store<AppState>;
   let page: PageMock;
   let dialog: MatDialogMock;
+  let messageService: MessageServiceMock;
 
   beforeEach(async () => {
     dialog = new MatDialogMock();
+    messageService = new MessageServiceMock();
+
     await TestBed.configureTestingModule({
       imports: [
         ProductsModule,
@@ -26,6 +31,7 @@ describe('ProductImagesComponent', () => {
       ]
     })
     .overrideProvider(MatDialog, {useValue: dialog})
+    .overrideProvider(MessageService, {useValue: messageService})
     .compileComponents();
 
     fixture = TestBed.createComponent(ProductImagesComponent);
@@ -105,8 +111,15 @@ describe('ProductImagesComponent', () => {
       fixture.detectChanges();
     })
 
+    it('when image selected is larger than 400kb, then show error message', () => {
+      component.uploadImage({target: {files: [{size: 400001}]}});
+      fixture.detectChanges();
+
+      expect(messageService._hasShownAlert).toBeTruthy();
+    })
+
     it('when image selected, then upload image', done => {
-      component.uploadImage({target: {files: ['file1']}});
+      component.uploadImage({target: {files: [{size: 399999}]}});
       fixture.detectChanges();
 
       store.select('productDetail').subscribe(state => {

@@ -92,13 +92,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   private createForm(product?: Product) {
     this.form = this.formBuilder.group({
+      description: [product?.description || ''],
       id: [product?.id || null],
       name: [product?.name || '', [Validators.required]],
       categoryId: [product?.categoryId || '', [Validators.required]],
       price: [product?.price || 0, [Validators.required]],
       priceWithDiscount: [product?.priceWithDiscount || 0]
     });
-    console.log(this.form.value)
   }
 
   private onError() {

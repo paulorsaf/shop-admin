@@ -64,7 +64,6 @@ export class AddStockComponent implements OnInit, OnDestroy {
 
   private getInputColor() {
     const color = this.form.value.color;
-    console.log(color)
     if (typeof color === 'string') {
       return color;
     }

@@ -83,6 +83,7 @@ describe('ProductDetailComponent', () => {
 
     it('then create form with product detail empty values', () => {
       expect(component.form.value).toEqual({
+        description: '',
         id: null,
         name: "",
         categoryId: "",
@@ -132,6 +133,7 @@ describe('ProductDetailComponent', () => {
 
       it('then create form with product detail values', () => {
         expect(component.form.value).toEqual({
+          description: 'anyDescription',
           id: 1,
           name: "name",
           categoryId: "1",
@@ -352,7 +354,7 @@ describe('ProductDetailComponent', () => {
 
   function dispatchLoadDetailSuccess() {
     const product: Product = {
-      id: 1, name: "name", categoryId: '1', price: 10, priceWithDiscount: 5
+      description: 'anyDescription', id: 1, name: "name", categoryId: '1', price: 10, priceWithDiscount: 5
     } as any;
     store.dispatch(loadDetailSuccess({product}));
     fixture.detectChanges();
