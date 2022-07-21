@@ -1,4 +1,4 @@
-<h1>Imagens</h1>
+<h2>Imagens</h2>
 
 <div *ngIf="(isLoadingImages$ | async)" test-id="images-loader">
     <ngx-skeleton-loader appearance="line" count="3"
@@ -10,6 +10,7 @@
         </ngx-skeleton-loader>
     </div>
 </div>
+
 <div *ngIf="!(isLoadingImages$ | async)" test-id="images-form">
     <div *ngIf="(images$ | async)?.length === 0" align="middle" test-id="no-results-found">
         Nenhuma imagem encontrada
@@ -17,7 +18,7 @@
 
     <div *ngIf="(images$ | async)?.length !== 0" test-id="images">
         <div *ngFor="let image of (images$ | async)" class="image-wapper">
-            <button type="button" mat-raised-button color="warn" class="display-on-hover"
+            <button type="button" mat-icon-button color="warn" class="display-on-hover"
                 (click)="askRemoveImage(image)" test-id="remove-image-button">
                 <mat-icon>delete_forever</mat-icon>
             </button>
@@ -27,7 +28,7 @@
     <button type="button" mat-raised-button color="primary" (change)="uploadImage($event)"
         *ngIf="!(isUploadingImage$ | async)" test-id="add-image-button">
         <input type="file" accept=".png, .jpg, .jpeg, .svg"/>
-        Adicionar
+        Adicionar imagem
     </button>
     <button type="button" mat-button *ngIf="isUploadingImage$ | async">
         <div align="center">

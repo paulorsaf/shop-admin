@@ -1,5 +1,6 @@
 <mat-drawer-container>
-    <mat-drawer mode="side" opened position="end" *ngIf="(product$ | async)" test-id="product-images">
+    <mat-drawer mode="side" opened position="end" *ngIf="(product$ | async)" class="hide-on-mobile"
+        test-id="product-images">
         <app-product-images></app-product-images>
     </mat-drawer>
     <mat-drawer-content>
@@ -64,7 +65,7 @@
         
                 <button type="button" mat-raised-button color="primary" (click)="save()"
                     [disabled]="!form.valid" *ngIf="!(isSaving$ | async)" test-id="save-button">
-                    Salvar
+                    Salvar detalhes
                 </button>
                 <button type="button" mat-button *ngIf="isSaving$ | async">
                     <mat-spinner color="primary" diameter="20" test-id="save-loader"></mat-spinner>
@@ -73,7 +74,12 @@
         
             <section *ngIf="(product$ | async)" test-id="stock">
                 <mat-divider></mat-divider>
-                <app-stock-list></app-stock-list>
+                <div class="stock-list">
+                    <app-stock-list></app-stock-list>
+                </div>
+                <div class='show-on-mobile'>
+                    <app-product-images></app-product-images>
+                </div>
             </section>
         </section>
     </mat-drawer-content>

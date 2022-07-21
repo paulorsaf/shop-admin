@@ -21,7 +21,10 @@
     <table mat-table [dataSource]="dataSource"
         test-id="stock-details">
         <ng-container matColumnDef="amount">
-            <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+            <th mat-header-cell *matHeaderCellDef>
+                <span class='hide-on-mobile'>Quantidade</span>
+                <span class='show-on-mobile'>Qtd</span>
+            </th>
             <td mat-cell *matCellDef="let element">
                 {{element.quantity}}
             </td>
@@ -47,7 +50,7 @@
                         (click)="edit(element)" test-id="edit-product-stock-button">
                         <mat-icon>edit</mat-icon>
                     </button>
-                    <button type="button" mat-button color="warn" class="display-on-hover"
+                    <button type="button" mat-icon-button color="warn" class="display-on-hover"
                         (click)="askRemove(element)" test-id="remove-product-stock-button">
                         <mat-icon>delete_forever</mat-icon>
                     </button>
