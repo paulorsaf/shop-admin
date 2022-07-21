@@ -5,12 +5,16 @@
 <mat-drawer-container *ngIf="!(isVerifyingUserLogged$ | async)">
     <mat-drawer mode="side" opened *ngIf="user$ | async">
         <mat-list>
-            <mat-list-item (click)="goToCategoriesPage()" test-id="categories-button">
+            <mat-list-item (click)="goToPage('/home')">
+                <mat-icon mat-list-icon>home</mat-icon>
+                <div mat-line>Home</div>
+            </mat-list-item>
+            <mat-list-item (click)="goToPage('/categories')" test-id="categories-button">
                 <mat-icon mat-list-icon>category</mat-icon>
                 <div mat-line>Categorias</div>
             </mat-list-item>
             <mat-divider></mat-divider>
-            <mat-list-item (click)="goToProductsPage()" test-id="products-button">
+            <mat-list-item (click)="goToPage('/products')" test-id="products-button">
                 <mat-icon mat-list-icon>shopping_bag</mat-icon>
                 <div mat-line>Produtos</div>
             </mat-list-item>
@@ -36,12 +40,16 @@
                         </button>
                     </mat-card-title>
                     <mat-list>
-                        <mat-list-item (click)="goToCategoriesPage()" test-id="categories-button">
+                        <mat-list-item (click)="goToPage('/home')">
+                            <mat-icon mat-list-icon>home</mat-icon>
+                            <div mat-line>Home</div>
+                        </mat-list-item>
+                        <mat-list-item (click)="goToPage('/categories')" test-id="categories-button">
                             <mat-icon mat-list-icon>category</mat-icon>
                             <div mat-line>Categorias</div>
                         </mat-list-item>
                         <mat-divider></mat-divider>
-                        <mat-list-item (click)="goToProductsPage()" test-id="products-button">
+                        <mat-list-item (click)="goToPage('/products')" test-id="products-button">
                             <mat-icon mat-list-icon>shopping_bag</mat-icon>
                             <div mat-line>Produtos</div>
                         </mat-list-item>

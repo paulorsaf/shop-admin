@@ -36,14 +36,9 @@ export class AppComponent implements OnInit {
     this.store.dispatch(logout());
   }
 
-  goToProductsPage() {
+  goToPage(page: string) {
     this.showMenu = false;
-    this.router.navigate(['products']);
-  }
-
-  goToCategoriesPage() {
-    this.showMenu = false;
-    this.router.navigate(['categories']);
+    this.router.navigate([page]);
   }
 
   private onVerifiedUserLogged() {
