@@ -15,6 +15,7 @@ import { CategoryDetailComponent } from './category-detail/category-detail.compo
 import { ConfirmDialogModule } from 'src/app/components/confirm-dialog/confirm-dialog.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { PageListLoaderModule } from 'src/app/components/page-list-loader/page-list-loader.module';
 
 const routes: Routes = [
   { path: '', component: CategoriesComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     ConfirmDialogModule,
 
+    PageListLoaderModule,
     NgxSkeletonLoaderModule,
 
     MatButtonModule,

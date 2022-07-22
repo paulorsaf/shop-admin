@@ -9,7 +9,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProductsComponent } from './products.component';
 import { MatTableModule } from '@angular/material/table';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryNamePipeModule } from 'src/app/pipes/category-name/category-name.module';
@@ -22,6 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ProductImagesComponent } from './product-detail/product-images/product-images.component';
 import { ProductDetailLoadingComponent } from './product-detail/product-detail-loading/product-detail-loading.component';
+import { PageListLoaderModule } from 'src/app/components/page-list-loader/page-list-loader.module';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -43,6 +44,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes),
 
+    PageListLoaderModule,
     NgxSkeletonLoaderModule,
 
     MatButtonModule,

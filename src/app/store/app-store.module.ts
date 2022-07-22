@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { BannersEffects } from '../pages/banners/store/banners.effects';
+import { bannersReducer } from '../pages/banners/store/banners.reducers';
 import { CategoryDetailEffects } from '../pages/categories/category-detail/store/category-detail.effects';
 import { categoryDetailReducer } from '../pages/categories/category-detail/store/category-detail.reducers';
 import { CategoriesEffects } from '../pages/categories/store/categories.effects';
@@ -18,6 +20,7 @@ import { userReducer } from './user/user.reducers';
 @NgModule({
   imports: [
     StoreModule.forRoot([]),
+    StoreModule.forFeature('banners', bannersReducer),
     StoreModule.forFeature('categories', categoriesReducer),
     StoreModule.forFeature('categoryDetail', categoryDetailReducer),
     StoreModule.forFeature('login', loginReducer),
@@ -27,6 +30,7 @@ import { userReducer } from './user/user.reducers';
     StoreDevtoolsModule.instrument({maxAge: 25}),
 
     EffectsModule.forRoot([
+      BannersEffects,
       CategoriesEffects,
       CategoryDetailEffects,
       LoginEffects,
