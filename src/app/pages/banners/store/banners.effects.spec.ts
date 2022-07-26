@@ -9,7 +9,7 @@ import { loadBanners, loadBannersFail, loadBannersSuccess, removeBanner, removeB
 import { BannersServiceMock } from "src/mock/banners-service.mock";
 import { BannersService } from "src/app/services/banners/banners.service";
 
-fdescribe('BannersEffects', () => {
+describe('BannersEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: BannersEffects;

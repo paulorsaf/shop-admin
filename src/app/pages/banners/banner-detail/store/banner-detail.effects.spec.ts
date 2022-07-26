@@ -10,7 +10,7 @@ import { BannersService } from "src/app/services/banners/banners.service";
 import { loadBannerDetail, loadBannerDetailFail, loadBannerDetailSuccess, saveBannerDetail, saveBannerDetailFail, saveBannerDetailSuccess } from "./banner-detail.actions";
 import { SaveBanner } from "src/app/model/banner/banner";
 
-fdescribe('BannerDetailEffects', () => {
+describe('BannerDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: BannerDetailEffects;

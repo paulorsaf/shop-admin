@@ -16,7 +16,7 @@ import { BannerDetailComponent } from './banner-detail.component';
 import { loadBannerDetailFail, loadBannerDetailSuccess, saveBannerDetailFail, saveBannerDetailSuccess } from './store/banner-detail.actions';
 import { bannerDetailReducer } from './store/banner-detail.reducers';
 
-fdescribe('BannerDetailComponent', () => {
+describe('BannerDetailComponent', () => {
   let component: BannerDetailComponent;
   let fixture: ComponentFixture<BannerDetailComponent>;
   let store: Store<AppState>;

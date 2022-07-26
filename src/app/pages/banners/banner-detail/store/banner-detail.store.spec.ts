@@ -3,7 +3,7 @@ import { clearBannerDetail, loadBannerDetail, loadBannerDetailFail, loadBannerDe
 import { bannerDetailReducer } from "./banner-detail.reducers";
 import { BannerDetailState } from "./banner-detail.state";
 
-fdescribe('Banner detail store', () => {
+describe('Banner detail store', () => {
     
     it('loadBannerDetail', () => {
         const initialState: BannerDetailState = {
