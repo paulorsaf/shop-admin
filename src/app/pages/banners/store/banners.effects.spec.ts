@@ -5,11 +5,11 @@ import { Action } from '@ngrx/store';
 import { BannersEffects } from './banners.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { loadBanners, loadBannersFail, loadBannersSuccess } from "./banners.actions";
+import { loadBanners, loadBannersFail, loadBannersSuccess, removeBanner, removeBannerFail, removeBannerSuccess } from "./banners.actions";
 import { BannersServiceMock } from "src/mock/banners-service.mock";
 import { BannersService } from "src/app/services/banners/banners.service";
 
-describe('BannersEffects', () => {
+fdescribe('BannersEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: BannersEffects;
@@ -57,6 +57,47 @@ describe('BannersEffects', () => {
     
             effects.loadBannersEffect$.subscribe(response => {
                 expect(response).toEqual(loadBannersFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given remove banner", () => {
+
+        beforeEach(() => {
+            actions$ = of(removeBanner({banner: {id: "anyId"} as any}));
+        })
+
+        it('when success, then return remove banner success', (done) => {
+            bannersService._response = of(banners);
+    
+            effects.removeBannerEffect$.subscribe(response => {
+                expect(response).toEqual(removeBannerSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return remove banner fail', (done) => {
+            bannersService._response = throwError(error);
+    
+            effects.removeBannerEffect$.subscribe(response => {
+                expect(response).toEqual(removeBannerFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given banner removed", () => {
+
+        beforeEach(() => {
+            actions$ = of(removeBannerSuccess());
+        })
+
+        it('then return load banners', (done) => {
+            effects.removeBannerSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadBanners());
                 done();
             })
         })

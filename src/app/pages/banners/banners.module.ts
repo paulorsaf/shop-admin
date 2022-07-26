@@ -13,10 +13,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { BannersComponent } from './banners.component';
 import { BannerDetailComponent } from './banner-detail/banner-detail.component';
 import { PageListLoaderModule } from 'src/app/components/page-list-loader/page-list-loader.module';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 const routes: Routes = [
   { path: '', component: BannersComponent },
-  { path: ':uid', component: BannerDetailComponent },
+  { path: ':id', component: BannerDetailComponent },
 ];
 
 @NgModule({
@@ -32,6 +34,7 @@ const routes: Routes = [
     ConfirmDialogModule,
 
     PageListLoaderModule,
+    NgxSkeletonLoaderModule,
 
     MatButtonModule,
     MatCardModule,
@@ -39,6 +42,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     MatTableModule
   ],
   exports: [BannersComponent]

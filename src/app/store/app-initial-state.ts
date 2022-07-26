@@ -1,6 +1,14 @@
 import { AppState } from "./app-state";
 
 export const AppInitialState: AppState = {
+    bannerDetail: {
+        banner: undefined,
+        error: null,
+        isLoaded: false,
+        isLoading: false,
+        isSaved: false,
+        isSaving: false
+    },
     banners: {
         banners: [],
         error: null,
