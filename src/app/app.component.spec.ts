@@ -1,5 +1,4 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
@@ -170,16 +169,6 @@ describe('AppComponent', () => {
   
       setTimeout(() => {
         expect(location.path()).toEqual('/banners');
-        done();
-      }, 100);
-    })
-  
-    it('given user clicks on trending button, then go to trending page', done => {
-      page.querySelector('[test-id="trending-button"]').click();
-      fixture.detectChanges();
-  
-      setTimeout(() => {
-        expect(location.path()).toEqual('/trending');
         done();
       }, 100);
     })
