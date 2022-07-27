@@ -27,7 +27,7 @@
     </div>
     <button type="button" mat-raised-button color="primary" (change)="uploadImage($event)"
         *ngIf="!(isUploadingImage$ | async)" test-id="add-image-button">
-        <input type="file" accept=".png, .jpg, .jpeg, .svg"/>
+        <input type="file" accept=".png, .jpg"/>
         Adicionar imagem
     </button>
     <button type="button" mat-button *ngIf="isUploadingImage$ | async">
