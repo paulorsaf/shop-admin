@@ -1,11 +1,11 @@
 import { Color } from '@angular-material-components/color-picker';
-import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
-import { AddStock, StockOption } from 'src/app/model/product/stock';
+import { AddStock, Stock } from 'src/app/model/product/stock';
 import { AppState } from 'src/app/store/app-state';
 import { saveStockOption, updateStockOption } from '../store/products/product-detail.actions';
 
@@ -28,10 +28,9 @@ export class AddStockComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {stockOption: StockOption},
+    @Inject(MAT_DIALOG_DATA) public data: {stockOption: Stock},
     private formBuilder: FormBuilder,
-    private store: Store<AppState>,
-    private changeRef: ChangeDetectorRef
+    private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {

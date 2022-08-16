@@ -256,7 +256,7 @@ describe('ProductDetailEffects', () => {
     describe("Given remove stock option", () => {
 
         beforeEach(() => {
-            actions$ = of(removeStock({stockOption: {id: 1} as any}));
+            actions$ = of(removeStock({stock: {id: 1} as any}));
         })
 
         it('when success, then return remove stock option success', (done) => {

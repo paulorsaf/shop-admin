@@ -74,7 +74,7 @@ describe('StockListComponent', () => {
     })
 
     it('and stock is empty, then show no results found for stock', () => {
-      store.dispatch(loadStockSuccess({stock: {id: 1} as any}));
+      store.dispatch(loadStockSuccess({stock: []}));
       fixture.detectChanges();
 
       expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
@@ -154,7 +154,7 @@ describe('StockListComponent', () => {
   })
 
   function dispatchLoadStockSuccess() {
-    const stock: any = {id: 1, stockOptions: [{id: 1}]} as any;
+    const stock: any = [{id: 1}] as any;
     store.dispatch(loadStockSuccess({stock}));
     fixture.detectChanges();
   }

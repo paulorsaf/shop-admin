@@ -69,7 +69,7 @@ export class ProductDetailEffects {
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
                 iif(
-                    () => !!storeState.productDetail.stock?.id,
+                    () => !!action.stock.id,
                     this.stockService.addStock(
                         storeState.productDetail.product!.id, action.stock
                     ).pipe(
@@ -128,8 +128,7 @@ export class ProductDetailEffects {
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 this.stockService.removeStockOption(
                     storeState.productDetail.product!.id,
-                    storeState.productDetail.stock!.id,
-                    action.stockOption.id
+                    action.stock.id
                 ).pipe(
                     map(() => removeStockSuccess()),
                     catchError(error => of(removeStockFail({error})))
@@ -155,7 +154,6 @@ export class ProductDetailEffects {
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 this.stockService.updateStockOption(
                     storeState.productDetail.product!.id,
-                    storeState.productDetail.stock!.id,
                     action.stockOption
                 ).pipe(
                     map(() => updateStockOptionSuccess()),

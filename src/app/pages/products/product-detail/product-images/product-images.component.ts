@@ -39,7 +39,6 @@ export class ProductImagesComponent implements OnInit {
       this.messageService.showAlert('Imagem não pode ser maior do que 400kb');
       return;
     }
-    console.log(file)
     this.store.dispatch(uploadImage({image: file}));
     $event.target.value = "";
   }

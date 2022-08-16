@@ -23,18 +23,18 @@ export class StockService {
     return this.apiService.post<void>(url, stock);
   }
 
-  findByProductId(id: string): Observable<Stock> {
+  findByProductId(id: string): Observable<Stock[]> {
     const url = `${environment.apiUrl}/products/${id}/stocks`;
-    return this.apiService.get<Stock>(url);
+    return this.apiService.get<Stock[]>(url);
   }
 
-  removeStockOption(productId: string, stockId: string, stockOptionId: string): Observable<void> {
-    const url = `${environment.apiUrl}/products/${productId}/stocks/${stockId}/stockoptions/${stockOptionId}`;
+  removeStockOption(productId: string, stockId: string): Observable<void> {
+    const url = `${environment.apiUrl}/products/${productId}/stocks/${stockId}`;
     return this.apiService.delete<void>(url);
   }
 
-  updateStockOption(productId: string, stockId: string, stockOption: UpdateStockOption): Observable<void> {
-    const url = `${environment.apiUrl}/products/${productId}/stocks/${stockId}/stockoptions/${stockOption.id}`;
+  updateStockOption(productId: string, stockOption: UpdateStockOption): Observable<void> {
+    const url = `${environment.apiUrl}/products/${productId}/stocks/${stockOption.id}`;
     return this.apiService.patch<void>(url, stockOption);
   }
 

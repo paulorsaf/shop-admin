@@ -22,5 +22,5 @@ export type ProductDetailState = {
     isUploadedImage: boolean;
     isUploadingImage: boolean;
     product?: Product;
-    stock?: Stock;
+    stock?: Stock[];
 }

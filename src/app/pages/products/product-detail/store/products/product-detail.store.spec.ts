@@ -281,7 +281,7 @@ describe('Product store', () => {
             isRemovingStock: false
         };
 
-        const state = productDetailReducer(initialState, removeStock({stockOption: {id: 1} as any}));
+        const state = productDetailReducer(initialState, removeStock({stock:  {id: 1} as any}));
 
         expect(state).toEqual({
             ...AppInitialState.productDetail,

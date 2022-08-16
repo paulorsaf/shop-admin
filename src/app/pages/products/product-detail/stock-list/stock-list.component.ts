@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
-import { Stock, StockOption } from 'src/app/model/product/stock';
+import { Stock } from 'src/app/model/product/stock';
 import { AppState } from 'src/app/store/app-state';
 import { AddStockComponent } from '../add-stock/add-stock.component';
 import { removeStock } from '../store/products/product-detail.actions';
@@ -20,7 +20,7 @@ export class StockListComponent implements OnInit, OnDestroy {
   displayedColumns = ['amount', 'color', 'size', 'delete'];
 
   isLoadingStock$!: Observable<boolean>;
-  stock$!: Observable<StockOption[]>;
+  stock$!: Observable<Stock[]>;
 
   stockSubscription!: Subscription;
 
@@ -35,7 +35,7 @@ export class StockListComponent implements OnInit, OnDestroy {
     this.isLoadingStock$ = this.store.select(state =>
       state.productDetail.isLoadingStock || state.productDetail.isRemovingStock
     );
-    this.stock$ = this.store.select(state => state.productDetail.stock?.stockOptions || []);
+    this.stock$ = this.store.select(state => state.productDetail.stock || []);
 
     this.onStockChange();
   }
@@ -50,16 +50,16 @@ export class StockListComponent implements OnInit, OnDestroy {
     })
   }
 
-  edit(stockOption: StockOption) {
+  edit(stock: Stock) {
     this.dialog.open(AddStockComponent, {
       width: '400px',
       data: {
-        stockOption
+        stockOption: stock
       }
     })
   }
 
-  askRemove(stockOption: StockOption) {
+  askRemove(stock: Stock) {
     this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
@@ -68,7 +68,7 @@ export class StockListComponent implements OnInit, OnDestroy {
       }
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.store.dispatch(removeStock({stockOption}));
+        this.store.dispatch(removeStock({stock}));
       }
     });
   }
@@ -78,7 +78,7 @@ export class StockListComponent implements OnInit, OnDestroy {
       this.store
         .select(state => state.productDetail.stock)
         .subscribe(stock => {
-          this.dataSource = new MatTableDataSource<any>(stock?.stockOptions || []);
+          this.dataSource = new MatTableDataSource<any>(stock || []);
         });
   }
 
