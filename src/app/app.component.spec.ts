@@ -31,7 +31,8 @@ describe('AppComponent', () => {
           { path: "products", component: BlankComponent },
           { path: "categories", component: BlankComponent },
           { path: "banners", component: BlankComponent },
-          { path: "trending", component: BlankComponent }
+          { path: "trending", component: BlankComponent },
+          { path: "purchases", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('user', userReducer)
@@ -169,6 +170,16 @@ describe('AppComponent', () => {
   
       setTimeout(() => {
         expect(location.path()).toEqual('/banners');
+        done();
+      }, 100);
+    })
+  
+    it('given user clicks on purchases button, then go to banners page', done => {
+      page.querySelector('[test-id="purchases-button"]').click();
+      fixture.detectChanges();
+  
+      setTimeout(() => {
+        expect(location.path()).toEqual('/purchases');
         done();
       }, 100);
     })

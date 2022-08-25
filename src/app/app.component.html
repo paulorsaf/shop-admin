@@ -25,6 +25,11 @@
                 <div mat-line>Banners</div>
             </mat-list-item>
             <mat-divider></mat-divider>
+            <mat-list-item (click)="goToPage('/purchases')" test-id="purchases-button">
+                <mat-icon mat-list-icon>shopping_cart</mat-icon>
+                <div mat-line>Compras</div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
             <mat-list-item (click)="logout()" test-id="logout-button">
                 <mat-icon mat-list-icon>logout</mat-icon>
                 <div mat-line>Sair</div>

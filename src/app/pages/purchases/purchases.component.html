@@ -1,0 +1,18 @@
+<section *ngIf="isLoading$ | async" class="page-loading" test-id="purchases-loader">
+    <app-page-list-loader></app-page-list-loader>
+</section>
+
+<section *ngIf="(isLoading$ | async) === false" class="page" test-id="purchases">
+    <h1>Compras</h1>
+    <table *ngIf="(purchases$ | async)?.length" mat-table [dataSource]="[]">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Data</th>
+          <td mat-cell *matCellDef="let element"></td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div *ngIf="(purchases$ | async)?.length === 0" align="middle" test-id="no-results-found">
+        Nenhum resultado encontrado
+    </div>
+</section>

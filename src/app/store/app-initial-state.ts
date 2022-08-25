@@ -71,6 +71,12 @@ export const AppInitialState: AppState = {
         isRemoving: false,
         products: []
     },
+    purchases: {
+        error: null,
+        isLoaded: false,
+        isLoading: false,
+        purchases: []
+    },
     user: {
         isLoggedOut: false,
         isLoggingOut: false,

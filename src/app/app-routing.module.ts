@@ -17,6 +17,9 @@ const routes: Routes = [
   }, {
     path: "banners",
     loadChildren: () => import('./pages/banners/banners.module').then((m) => m.BannersModule),
+  }, {
+    path: "purchases",
+    loadChildren: () => import('./pages/purchases/purchases.module').then((m) => m.PurchasesModule),
   }
 ];
 
