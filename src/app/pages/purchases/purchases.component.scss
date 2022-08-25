@@ -1,0 +1,13 @@
+table th,
+table td {
+    text-align: center;
+}
+
+.payment-details {
+    display: flex;
+    justify-content: center;
+
+    mat-icon {
+        margin-left: 0.5rem;
+    }
+}

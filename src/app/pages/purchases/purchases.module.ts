@@ -11,6 +11,9 @@ import { PurchasesComponent } from './purchases.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { PageListLoaderModule } from 'src/app/components/page-list-loader/page-list-loader.module';
 import { MatTableModule } from '@angular/material/table';
+import { StatusNamePipeModule } from 'src/app/pipes/status-name/status-name.module';
+import { PaymentTypeNamePipeModule } from 'src/app/pipes/payment-type-name/payment-type-name.module';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [{
   path: '',
@@ -30,9 +33,13 @@ const routes: Routes = [{
     PageListLoaderModule,
     NgxSkeletonLoaderModule,
 
+    StatusNamePipeModule,
+    PaymentTypeNamePipeModule,
+
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
     MatTableModule

@@ -84,6 +84,38 @@ describe('PurchasesComponent', () => {
 
       expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
     });
+
+    it('when purchase payment doesnt have error, then hide payment error', () => {
+      const purchases = [{payment: {}}] as any;
+      store.dispatch(loadPurchasesSuccess({purchases}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="payment-error"]')).toBeNull();
+    });
+
+    it('when purchase payment has error, then show payment error', () => {
+      const purchases = [{payment: {error: "any error"}}] as any;
+      store.dispatch(loadPurchasesSuccess({purchases}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="payment-error"]')).not.toBeNull();
+    });
+
+    it('when purchase payment is pix, then show receipt', () => {
+      const purchases = [{payment: {receiptUrl: "anyReceiptUrl", type: "PIX"}}] as any;
+      store.dispatch(loadPurchasesSuccess({purchases}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="pix-receipt"]')).not.toBeNull();
+    });
+
+    it('when purchase payment is not pix, then hide receipt', () => {
+      const purchases = [{payment: {type: "ANY"}}] as any;
+      store.dispatch(loadPurchasesSuccess({purchases}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="pix-receipt"]')).toBeNull();
+    });
     
   });
 

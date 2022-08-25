@@ -17,7 +17,7 @@ export class PurchasesComponent implements OnInit {
   purchases$!: Observable<Purchase[]>;
 
   dataSource!: MatTableDataSource<Purchase[]>;
-  displayedColumns = ['date'];
+  displayedColumns = ['user', 'totalAmount', 'totalPrice', 'status', 'payment', 'date'];
 
   purchasesSubscription!: Subscription;
 
@@ -34,6 +34,10 @@ export class PurchasesComponent implements OnInit {
     this.onPurchasesChange();
 
     this.store.dispatch(loadPurchases());
+  }
+
+  openReceipt(receiptUrl: string) {
+    window.open(receiptUrl, '_blank')
   }
 
   private onPurchasesChange() {
