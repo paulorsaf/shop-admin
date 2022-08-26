@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
@@ -14,6 +15,7 @@ describe('PurchasesComponent', () => {
   let fixture: ComponentFixture<PurchasesComponent>;
   let page: PageMock;
   let store: Store<AppState>;
+  let location: Location;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -31,6 +33,7 @@ describe('PurchasesComponent', () => {
 
     fixture = TestBed.createComponent(PurchasesComponent);
     store = TestBed.inject(Store);
+    location = TestBed.inject(Location);
 
     component = fixture.componentInstance;
     page = fixture.debugElement.nativeElement;
@@ -60,7 +63,7 @@ describe('PurchasesComponent', () => {
   describe('given purchases loaded', () => {
 
     beforeEach(() => {
-      const purchases = [{id: 1}];
+      const purchases = [{id: 1}] as any;
       store.dispatch(loadPurchasesSuccess({purchases}));
       fixture.detectChanges();
     })
@@ -116,6 +119,16 @@ describe('PurchasesComponent', () => {
 
       expect(page.querySelector('[test-id="pix-receipt"]')).toBeNull();
     });
+
+    it('given user clicks on purchase, then go to purchase details page', done => {
+      page.querySelectorAll('table tbody tr')[0].click();
+      fixture.detectChanges();
+  
+      setTimeout(() => {
+        expect(location.path()).toEqual('/purchases/1');
+        done();
+      }, 100)
+    })
     
   });
 

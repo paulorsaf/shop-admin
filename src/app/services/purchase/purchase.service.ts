@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
+import { PurchaseSummary } from 'src/app/model/purchase/purchase-summary';
 import { Purchase } from 'src/app/model/purchase/purchase';
 
 @Injectable({
@@ -13,9 +14,14 @@ export class PurchaseService {
     private apiService: ApiService
   ) { }
 
-  find(): Observable<Purchase[]> {
+  find(): Observable<PurchaseSummary[]> {
     const url = `${environment.apiUrl}/purchases`;
-    return this.apiService.get<Purchase[]>(url);
+    return this.apiService.get<PurchaseSummary[]>(url);
+  }
+
+  findById(id: string): Observable<Purchase> {
+    const url = `${environment.apiUrl}/purchases/${id}`;
+    return this.apiService.get<Purchase>(url);
   }
 
 }

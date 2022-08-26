@@ -19,6 +19,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding: 10px;
 }
 
+.link {
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
 table {
     width: 100%;
     tr.mat-row {

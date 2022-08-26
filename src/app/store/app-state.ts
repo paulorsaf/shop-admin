@@ -5,6 +5,7 @@ import { CategoriesState } from "../pages/categories/store/categories.state";
 import { LoginState } from "../pages/login/store/login.state";
 import { ProductDetailState } from "../pages/products/product-detail/store/products/product-detail.state";
 import { ProductsState } from "../pages/products/store/products/products.state";
+import { PurchaseDetailState } from "../pages/purchases/purchase-detail/store/purchase-detail.state";
 import { PurchasesState } from "../pages/purchases/store/purchases.state";
 import { UserState } from "./user/user.state";
 
@@ -16,6 +17,7 @@ export type AppState = {
     login: LoginState;
     productDetail: ProductDetailState;
     products: ProductsState;
+    purchaseDetail: PurchaseDetailState;
     purchases: PurchasesState;
     user: UserState;
 }

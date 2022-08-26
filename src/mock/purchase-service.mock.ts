@@ -7,5 +7,9 @@ export class PurchaseServiceMock {
     find() {
         return this._response || of({});
     }
+
+    findById() {
+        return this._response || of({});
+    }
     
 }

@@ -14,15 +14,23 @@ import { MatTableModule } from '@angular/material/table';
 import { StatusNamePipeModule } from 'src/app/pipes/status-name/status-name.module';
 import { PaymentTypeNamePipeModule } from 'src/app/pipes/payment-type-name/payment-type-name.module';
 import { MatIconModule } from '@angular/material/icon';
+import { PurchaseDetailComponent } from './purchase-detail/purchase-detail.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatSelectModule } from '@angular/material/select';
 
 const routes: Routes = [{
   path: '',
   component: PurchasesComponent
+}, {
+  path: ':id',
+  component: PurchaseDetailComponent
 }];
 
 @NgModule({
   declarations: [
-    PurchasesComponent
+    PurchasesComponent,
+    PurchaseDetailComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +49,10 @@ const routes: Routes = [{
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatListModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
     MatTableModule
   ],
   exports: [PurchasesComponent]

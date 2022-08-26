@@ -16,6 +16,8 @@ import { ProductDetailEffects } from '../pages/products/product-detail/store/pro
 import { productDetailReducer } from '../pages/products/product-detail/store/products/product-detail.reducers';
 import { ProductsEffects } from '../pages/products/store/products/products.effects';
 import { productsReducer } from '../pages/products/store/products/products.reducers';
+import { PurchaseDetailEffects } from '../pages/purchases/purchase-detail/store/purchase-detail.effects';
+import { purchaseDetailReducer } from '../pages/purchases/purchase-detail/store/purchase-detail.reducers';
 import { PurchasesEffects } from '../pages/purchases/store/purchases.effects';
 import { purchasesReducer } from '../pages/purchases/store/purchases.reducers';
 import { UserEffects } from './user/user.effects';
@@ -31,6 +33,7 @@ import { userReducer } from './user/user.reducers';
     StoreModule.forFeature('login', loginReducer),
     StoreModule.forFeature('productDetail', productDetailReducer),
     StoreModule.forFeature('products', productsReducer),
+    StoreModule.forFeature('purchaseDetail', purchaseDetailReducer),
     StoreModule.forFeature('purchases', purchasesReducer),
     StoreModule.forFeature('user', userReducer),
     StoreDevtoolsModule.instrument({maxAge: 25}),
@@ -43,6 +46,7 @@ import { userReducer } from './user/user.reducers';
       LoginEffects,
       ProductDetailEffects,
       ProductsEffects,
+      PurchaseDetailEffects,
       PurchasesEffects,
       UserEffects
     ])
