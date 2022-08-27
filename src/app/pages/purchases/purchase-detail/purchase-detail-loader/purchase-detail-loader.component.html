@@ -1,0 +1,66 @@
+<mat-drawer-container>
+    <mat-drawer mode="side" opened position="start" class="hide-on-mobile">
+        <div class="label">
+            <label>Usuário:</label>
+            <div>
+                <ngx-skeleton-loader appearance="line"
+                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
+                </ngx-skeleton-loader>
+            </div>
+        </div>
+        <div class="label">
+            <label>Criado em:</label>
+            <div>
+                <ngx-skeleton-loader appearance="line"
+                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
+                </ngx-skeleton-loader>
+            </div>
+        </div>
+        <div class="label">
+            <label>Pagamento:</label>
+            <div>
+                <ngx-skeleton-loader appearance="line"
+                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
+                </ngx-skeleton-loader>
+            </div>
+            <div>
+                <ngx-skeleton-loader appearance="line"
+                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
+                </ngx-skeleton-loader>
+            </div>
+        </div>
+        <div class="label">
+            <label>Estado:</label>
+            <div>
+                <ngx-skeleton-loader appearance="line"
+                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
+                </ngx-skeleton-loader>
+            </div>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content>
+        <section class="page-loading">
+            <mat-list role="list">
+                <mat-list-item *ngFor="let array of [1, 2, 3, 4, 5, 6]">
+                    <span class="total-product-price">
+                        <ngx-skeleton-loader appearance="line"
+                            [theme]="{height: '20px', width: '100px', 'margin-bottom': 0}">
+                        </ngx-skeleton-loader>
+                    </span>
+                    <div mat-line>
+                        <ngx-skeleton-loader appearance="line"
+                            [theme]="{height: '15px', width: '250px', 'margin-bottom': 0}">
+                        </ngx-skeleton-loader>
+                    </div>
+                    <div mat-line>
+                        <span>
+                            <ngx-skeleton-loader appearance="line"
+                                [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
+                            </ngx-skeleton-loader>
+                        </span>
+                    </div>
+                </mat-list-item>
+            </mat-list>
+        </section>
+    </mat-drawer-content>
+</mat-drawer-container>

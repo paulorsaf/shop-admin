@@ -1,49 +1,6 @@
-<mat-drawer-container *ngIf="isLoading$ | async">
-    <mat-drawer mode="side" opened position="start" class="hide-on-mobile">
-        <div class="label">
-            <label>Usuário:</label>
-            <div>
-                <ngx-skeleton-loader appearance="line"
-                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
-                </ngx-skeleton-loader>
-            </div>
-        </div>
-        <div class="label">
-            <label>Criado em:</label>
-            <div>
-                <ngx-skeleton-loader appearance="line"
-                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
-                </ngx-skeleton-loader>
-            </div>
-        </div>
-        <div class="label">
-            <label>Pagamento:</label>
-            <div>
-                <ngx-skeleton-loader appearance="line"
-                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
-                </ngx-skeleton-loader>
-            </div>
-            <div>
-                <ngx-skeleton-loader appearance="line"
-                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
-                </ngx-skeleton-loader>
-            </div>
-        </div>
-        <div class="label">
-            <label>Estado:</label>
-            <div>
-                <ngx-skeleton-loader appearance="line"
-                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
-                </ngx-skeleton-loader>
-            </div>
-        </div>
-    </mat-drawer>
-    <mat-drawer-content>
-        <section class="page-loading" test-id="purchase-detail-loader">
-            loading...
-        </section>
-    </mat-drawer-content>
-</mat-drawer-container>
+<section *ngIf="isLoading$ | async" test-id="purchase-detail-loader">
+    <app-purchase-detail-loader></app-purchase-detail-loader>
+</section>
 
 <div *ngIf="(purchase$ | async); let purchase">
     <mat-drawer-container *ngIf="(isLoading$ | async) === false">
@@ -70,7 +27,7 @@
             <div class="label">
                 <label>Estado:</label>
                 <div>
-                    <select [(ngModel)]="status" (change)="changeStatus()">
+                    <select [(ngModel)]="status" (change)="changeStatus()" test-id="status-select">
                         <option value="CREATED">Solicitado</option>
                         <option value="VERIFYING_PAYMENT">Verificando pagamento</option>
                         <option value="PAID">Pago</option>

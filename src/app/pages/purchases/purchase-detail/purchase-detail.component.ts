@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
+import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { Purchase } from 'src/app/model/purchase/purchase';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { loadPurchaseDetail } from './store/purchase-detail.actions';
+import { loadPurchaseDetail, updatePurchaseStatus } from './store/purchase-detail.actions';
 
 @Component({
   selector: 'app-purchase-detail',
@@ -21,19 +23,24 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
 
   errorSubscription!: Subscription;
   loadedSubscription!: Subscription;
+  updateSubscription!: Subscription;
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private dialog: MatDialog,
     private messageService: MessageService,
     private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.select(state => state.purchaseDetail.isLoading);
+    this.isLoading$ = this.store.select(
+      state => state.purchaseDetail.isLoading || state.purchaseDetail.isUpdating
+    );
     this.purchase$ = this.store.select(state => state.purchaseDetail.purchase);
 
     this.onError();
     this.onLoaded();
+    this.onUpdated();
 
     this.store.dispatch(loadPurchaseDetail({id: this.getId()}))
   }
@@ -41,6 +48,7 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.errorSubscription.unsubscribe();
     this.loadedSubscription.unsubscribe();
+    this.updateSubscription.unsubscribe();
   }
 
   showReceipt() {
@@ -50,7 +58,20 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
   }
 
   changeStatus() {
-    
+    this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: "Deseja mudar o estado da compra?"
+      },
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.store.dispatch(updatePurchaseStatus({status: this.status}));
+      } else {
+        this.purchase$.pipe(take(1)).subscribe(purchase => {
+          this.status = purchase?.status || "";
+        });
+      }
+    });
   }
 
   private getId() {
@@ -78,6 +99,15 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
       .subscribe(error => {
         this.messageService.showError(error.error)
       });
+  }
+
+  private onUpdated() {
+    this.updateSubscription = this.store
+      .select(state => state.purchaseDetail.isUpdated)
+      .pipe(filter(isUpdated => isUpdated))
+      .subscribe(() => {
+        this.messageService.showSuccess('Estado da compra atualizado com sucesso')
+      })
   }
   
 }

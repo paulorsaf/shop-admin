@@ -75,6 +75,8 @@ export const AppInitialState: AppState = {
         error: null,
         isLoaded: false,
         isLoading: false,
+        isUpdated: false,
+        isUpdating: false,
         purchase: undefined
     },
     purchases: {

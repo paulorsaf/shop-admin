@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess } from './purchase-detail.actions';
+import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './purchase-detail.actions';
 import { PurchaseDetailState } from './purchase-detail.state';
 
 const initialState: PurchaseDetailState = AppInitialState.purchaseDetail;
@@ -12,6 +12,8 @@ const _purchaseDetailReducer = createReducer(initialState,
             error: null,
             isLoaded: false,
             isLoading: true,
+            isUpdated: false,
+            isUpdating: false,
             purchase: undefined
         };
     }),
@@ -29,6 +31,29 @@ const _purchaseDetailReducer = createReducer(initialState,
             error: action.error,
             isLoaded: false,
             isLoading: false
+        };
+    }),
+    on(updatePurchaseStatus, (state) => {
+        return {
+            ...state,
+            error: null,
+            isUpdated: false,
+            isUpdating: true
+        };
+    }),
+    on(updatePurchaseStatusSuccess, (state) => {
+        return {
+            ...state,
+            isUpdated: true,
+            isUpdating: false
+        };
+    }),
+    on(updatePurchaseStatusFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isUpdated: false,
+            isUpdating: false
         };
     })
 );

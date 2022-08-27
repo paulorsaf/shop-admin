@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess } from "./purchase-detail.actions";
+import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { purchaseDetailReducer } from "./purchase-detail.reducers";
 import { PurchaseDetailState } from "./purchase-detail.state";
 
@@ -11,6 +11,8 @@ fdescribe('Purchase detail store', () => {
             error: {},
             isLoaded: true,
             isLoading: false,
+            isUpdated: true,
+            isUpdating: true,
             purchase: {} as any
         };
 
@@ -21,6 +23,8 @@ fdescribe('Purchase detail store', () => {
             error: null,
             isLoaded: false,
             isLoading: true,
+            isUpdated: false,
+            isUpdating: false,
             purchase: undefined
         });
     });
@@ -56,6 +60,57 @@ fdescribe('Purchase detail store', () => {
             error,
             isLoaded: false,
             isLoading: false
+        });
+    });
+    
+    it('updatePurchaseStatus', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            error: {},
+            isUpdated: true,
+            isUpdating: false
+        };
+
+        const state = purchaseDetailReducer(initialState, updatePurchaseStatus({status: "anyStatus"}));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error: null,
+            isUpdated: false,
+            isUpdating: true
+        });
+    });
+    
+    it('updatePurchaseStatusSuccess', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isUpdating: true
+        };
+
+        const purchase = {id: 1} as any;
+        const state = purchaseDetailReducer(initialState, updatePurchaseStatusSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            isUpdated: true,
+            isUpdating: false
+        });
+    });
+    
+    it('updatePurchaseStatusFail', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isUpdating: true
+        };
+
+        const error = {error: "error"};
+        const state = purchaseDetailReducer(initialState, updatePurchaseStatusFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error,
+            isUpdated: false,
+            isUpdating: false
         });
     });
   

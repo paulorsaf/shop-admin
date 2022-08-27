@@ -18,6 +18,8 @@ import { PurchaseDetailComponent } from './purchase-detail/purchase-detail.compo
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { PurchaseDetailLoaderComponent } from './purchase-detail/purchase-detail-loader/purchase-detail-loader.component';
 
 const routes: Routes = [{
   path: '',
@@ -30,7 +32,8 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     PurchasesComponent,
-    PurchaseDetailComponent
+    PurchaseDetailComponent,
+    PurchaseDetailLoaderComponent
   ],
   imports: [
     CommonModule,
@@ -46,6 +49,7 @@ const routes: Routes = [{
 
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,

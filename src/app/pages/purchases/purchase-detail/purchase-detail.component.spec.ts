@@ -1,16 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
+import { of } from 'rxjs';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { ActivatedRouteMock } from 'src/mock/activated-route.mock';
+import { MatDialogMock } from 'src/mock/mat-dialog.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { PurchasesModule } from '../purchases.module';
 import { PurchaseDetailComponent } from './purchase-detail.component';
-import { loadPurchaseDetailFail, loadPurchaseDetailSuccess } from './store/purchase-detail.actions';
+import { loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './store/purchase-detail.actions';
 import { purchaseDetailReducer } from './store/purchase-detail.reducers';
 
 fdescribe('PurchaseDetailComponent', () => {
@@ -20,9 +23,11 @@ fdescribe('PurchaseDetailComponent', () => {
   let store: Store<AppState>;
   let activatedRoute: ActivatedRouteMock;
   let messageService: MessageServiceMock;
+  let dialog: MatDialogMock;
 
   beforeEach(async () => {
     activatedRoute = new ActivatedRouteMock();
+    dialog = new MatDialogMock();
     messageService = new MessageServiceMock();
 
     await TestBed.configureTestingModule({
@@ -36,6 +41,7 @@ fdescribe('PurchaseDetailComponent', () => {
       ]
     })
     .overrideProvider(ActivatedRoute, {useValue: activatedRoute})
+    .overrideProvider(MatDialog, {useValue: dialog})
     .overrideProvider(MessageService, {useValue: messageService})
     .compileComponents();
 
@@ -152,8 +158,115 @@ fdescribe('PurchaseDetailComponent', () => {
 
     describe('when user changes purchase status', () => {
 
-      xit('then ask for user confirmation', () => {
-        expect(false).toBeTruthy();
+      beforeEach(() => {
+        fixture.detectChanges();
+
+        const purchase = {status: "anyStatus"} as any;
+        store.dispatch(loadPurchaseDetailSuccess({purchase}));
+        fixture.detectChanges();
+
+        component.status = "anyOtherStatus";
+      })
+
+      it('then ask for user confirmation', done => {
+        component.changeStatus();
+        fixture.detectChanges();
+
+        setTimeout(() => {
+          expect(dialog.hasOpened).toBeTruthy();
+          done();
+        }, 100)
+      })
+
+      it('when user cancels status change, then dont change status', () => {
+        component.changeStatus();
+        fixture.detectChanges();
+
+        expect(component.status).toEqual("anyStatus");
+      })
+
+      it('when user confirms status change, then change status', done => {
+        dialog.response = "YES";
+        
+        component.changeStatus();
+        fixture.detectChanges();
+
+        store.select('purchaseDetail').subscribe(state => {
+          expect(state.isUpdating).toBeTruthy();
+          done();
+        })
+      })
+
+      describe('when updating status', () => {
+
+        beforeEach(() => {
+          dialog.response = "YES";
+          
+          component.changeStatus();
+          fixture.detectChanges();
+        })
+
+        it('then show purchase detail loader', () => {
+          expect(page.querySelector('[test-id="purchase-detail-loader"]')).not.toBeNull();
+        })
+
+        it('then hide purchase detail', () => {
+          expect(page.querySelector('[test-id="purchase-detail"]')).toBeNull();
+        })
+
+      })
+
+      describe('when status updated', () => {
+
+        beforeEach(() => {
+          dialog.response = "YES";
+          
+          component.changeStatus();
+          fixture.detectChanges();
+
+          store.dispatch(updatePurchaseStatusSuccess());
+          fixture.detectChanges();
+        })
+
+        it('then hide purchase detail loader', () => {
+          expect(page.querySelector('[test-id="purchase-detail-loader"]')).toBeNull();
+        })
+
+        it('then show purchase detail', () => {
+          expect(page.querySelector('[test-id="purchase-detail"]')).not.toBeNull();
+        })
+
+        it('then show success message', () => {
+          expect(messageService._hasShownSuccess).toBeTruthy();
+        })
+
+      })
+
+      describe('when error on status update', () => {
+
+        beforeEach(() => {
+          dialog.response = "YES";
+          
+          component.changeStatus();
+          fixture.detectChanges();
+
+          const error = {error: 'error'}
+          store.dispatch(updatePurchaseStatusFail({error}));
+          fixture.detectChanges();
+        })
+
+        it('then hide purchase detail loader', () => {
+          expect(page.querySelector('[test-id="purchase-detail-loader"]')).toBeNull();
+        })
+
+        it('then show purchase detail', () => {
+          expect(page.querySelector('[test-id="purchase-detail"]')).not.toBeNull();
+        })
+
+        it('then show error', () => {
+          expect(messageService._hasShownError).toBeTruthy();
+        })
+
       })
 
     })
