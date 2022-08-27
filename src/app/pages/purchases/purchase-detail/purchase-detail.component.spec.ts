@@ -16,7 +16,7 @@ import { PurchaseDetailComponent } from './purchase-detail.component';
 import { loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './store/purchase-detail.actions';
 import { purchaseDetailReducer } from './store/purchase-detail.reducers';
 
-fdescribe('PurchaseDetailComponent', () => {
+describe('PurchaseDetailComponent', () => {
   let component: PurchaseDetailComponent;
   let fixture: ComponentFixture<PurchaseDetailComponent>;
   let page: PageMock;

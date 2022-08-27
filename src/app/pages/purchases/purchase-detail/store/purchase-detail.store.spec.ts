@@ -3,7 +3,7 @@ import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, 
 import { purchaseDetailReducer } from "./purchase-detail.reducers";
 import { PurchaseDetailState } from "./purchase-detail.state";
 
-fdescribe('Purchase detail store', () => {
+describe('Purchase detail store', () => {
     
     it('loadPurchaseDetail', () => {
         const initialState: PurchaseDetailState = {
