@@ -28,6 +28,22 @@ describe('Status name pipe', () => {
     expect(pipe.transform("VERIFYING_PAYMENT")).toEqual("Verificando pagamento");
   })
 
+  it('given status is FINISHED, then return Finalizado', () => {
+    expect(pipe.transform("FINISHED")).toEqual("Finalizado");
+  })
+
+  it('given status is PAID, then return Pago', () => {
+    expect(pipe.transform("PAID")).toEqual("Pago");
+  })
+
+  it('given status is SORTING_OUT, then return Empacotando', () => {
+    expect(pipe.transform("SORTING_OUT")).toEqual("Empacotando");
+  })
+
+  it('given status is READY, then return Pronto', () => {
+    expect(pipe.transform("READY")).toEqual("Pronto");
+  })
+
   it('given status is an unknown status, then return the unknown status', () => {
     expect(pipe.transform("UNKNOWN")).toEqual("UNKNOWN");
   })

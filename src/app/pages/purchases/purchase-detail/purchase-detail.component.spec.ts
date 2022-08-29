@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
-import { of } from 'rxjs';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { ActivatedRouteMock } from 'src/mock/activated-route.mock';
@@ -77,17 +76,19 @@ describe('PurchaseDetailComponent', () => {
 
   describe('given purchase detail loaded', () => {
 
-    beforeEach(() => {
+    it('then hide loader', () => {
       const purchase = {id: 1} as any;
       store.dispatch(loadPurchaseDetailSuccess({purchase}));
       fixture.detectChanges();
-    })
 
-    it('then hide loader', () => {
       expect(page.querySelector('[test-id="purchase-detail-loader"]')).toBeNull();
     })
 
     it('then show purchase detail', () => {
+      const purchase = {id: 1} as any;
+      store.dispatch(loadPurchaseDetailSuccess({purchase}));
+      fixture.detectChanges();
+
       expect(page.querySelector('[test-id="purchase-detail"]')).not.toBeNull();
     })
 
@@ -112,12 +113,34 @@ describe('PurchaseDetailComponent', () => {
         expect(window.open).toHaveBeenCalled();
       })
 
+      it('then set status list', () => {
+        expect(component.statusList.map(s => s.key)).toEqual([
+          "CREATED", "VERIFYING_PAYMENT", "PAID", "SORTING_OUT", "READY", "FINISHED"
+        ]);
+      })
+
+    })
+
+    describe('when purchase payment is by money', () => {
+
+      beforeEach(() => {
+        const purchase = {id: 1, payment: {type: "MONEY"}} as any;
+        store.dispatch(loadPurchaseDetailSuccess({purchase}));
+        fixture.detectChanges();
+      })
+
+      it('then set status list', () => {
+        expect(component.statusList.map(s => s.key)).toEqual([
+          "CREATED", "SORTING_OUT", "READY", "FINISHED"
+        ]);
+      })
+
     })
 
     describe('when purchase detail payment is not pix', () => {
 
       beforeEach(() => {
-        const purchase = {id: 1, payment: {type: "MONEY"}} as any;
+        const purchase = {id: 1, payment: {type: "ANY_OTHER"}} as any;
         store.dispatch(loadPurchaseDetailSuccess({purchase}));
         fixture.detectChanges();
       })

@@ -11,6 +11,18 @@ export class StatusNamePipe implements PipeTransform {
     if (value === "VERIFYING_PAYMENT") {
       return "Verificando pagamento";
     }
+    if (value === "FINISHED") {
+      return "Finalizado";
+    }
+    if (value === "PAID") {
+      return "Pago";
+    }
+    if (value === "SORTING_OUT") {
+      return "Empacotando";
+    }
+    if (value === "READY") {
+      return "Pronto";
+    }
     return value || "";
   }
 

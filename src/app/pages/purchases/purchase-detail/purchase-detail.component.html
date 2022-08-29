@@ -28,12 +28,9 @@
                 <label>Estado:</label>
                 <div>
                     <select [(ngModel)]="status" (change)="changeStatus()" test-id="status-select">
-                        <option value="CREATED">Solicitado</option>
-                        <option value="VERIFYING_PAYMENT">Verificando pagamento</option>
-                        <option value="PAID">Pago</option>
-                        <option value="SORTING_OUT">Separando</option>
-                        <option value="READY">Pronto</option>
-                        <option value="FINISHED">Finalizado</option>
+                        <option *ngFor="let status of statusList" [value]="status.key">
+                            {{status.value}}
+                        </option>
                     </select>
                 </div>
             </div>

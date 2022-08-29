@@ -20,6 +20,7 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
   purchase$!: Observable<Purchase | undefined>;
 
   status = "";
+  statusList: {key: string, value: string}[] = [];
 
   errorSubscription!: Subscription;
   loadedSubscription!: Subscription;
@@ -39,10 +40,11 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
     this.purchase$ = this.store.select(state => state.purchaseDetail.purchase);
 
     this.onError();
-    this.onLoaded();
     this.onUpdated();
 
-    this.store.dispatch(loadPurchaseDetail({id: this.getId()}))
+    this.store.dispatch(loadPurchaseDetail({id: this.getId()}));
+
+    this.onLoaded();
   }
 
   ngOnDestroy(): void {
@@ -87,7 +89,20 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
       )
       .subscribe(purchase => {
         this.status = purchase?.status || "";
+
+        this.setStatusList(purchase!);
       });
+  }
+
+  private setStatusList(purchase: Purchase) {
+    this.statusList.push({key: "CREATED", value: "Solicitado"});
+    if (purchase?.payment?.type === "PIX") {
+      this.statusList.push({key: "VERIFYING_PAYMENT", value: "Verificando pagamento"});
+      this.statusList.push({key: "PAID", value: "Pago"});
+    }
+    this.statusList.push({key: "SORTING_OUT", value: "Empacotando"});
+    this.statusList.push({key: "READY", value: "Pronto"});
+    this.statusList.push({key: "FINISHED", value: "Finalizado"});
   }
 
   private onError() {
