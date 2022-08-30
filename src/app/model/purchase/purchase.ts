@@ -1,4 +1,5 @@
 export type Purchase = {
+    address: any;
     createdAt: string;
     id: string;
     payment: {

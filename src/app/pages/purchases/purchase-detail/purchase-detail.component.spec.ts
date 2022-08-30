@@ -137,6 +137,14 @@ describe('PurchaseDetailComponent', () => {
 
     })
 
+    it('when purchase has address, then add DELIVERYING to status list', () => {
+      const purchase = {id: 1, payment: {type: "MONEY"}, address: {}} as any;
+      store.dispatch(loadPurchaseDetailSuccess({purchase}));
+      fixture.detectChanges();
+
+      expect(component.statusList.some(s => s.key === "DELIVERYING")).toBeTruthy();
+    })
+
     describe('when purchase detail payment is not pix', () => {
 
       beforeEach(() => {
