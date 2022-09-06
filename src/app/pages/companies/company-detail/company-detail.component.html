@@ -1,0 +1,105 @@
+<div class="page">
+    <section *ngIf="isLoading$ | async" test-id="company-loader">
+        <ngx-skeleton-loader appearance="line"
+            [theme]="{height: '174px', width: '100%', 'margin-bottom': '10px'}">
+        </ngx-skeleton-loader>
+        <ngx-skeleton-loader appearance="line"
+            [theme]="{height: '288px', width: '100%', 'margin-bottom': '10px'}">
+        </ngx-skeleton-loader>
+    </section>
+    <section *ngIf="!(isLoading$ | async)" test-id="company">
+        <mat-card class="company-details">
+            <mat-card-title>Dados da empresa</mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="companyForm">
+                    <div>
+                        <mat-form-field class="width-2">
+                            <mat-label>Nome</mat-label>
+                            <input matInput placeholder="Nome" formControlName="name">
+                            <mat-error *ngIf="companyForm.get('name')?.hasError('required')">
+                                Nome é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <button mat-raised-button color="primary" [disabled]="!companyForm.valid"
+                        (click)="saveCompany()"  *ngIf="!(isSaving$ | async)"
+                        test-id="save-company-button">
+                        Salvar
+                    </button>
+                    <mat-spinner color="primary" diameter="20" *ngIf="isSaving$ | async"
+                        test-id="save-company-loader">
+                    </mat-spinner>
+                </form>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-title>Endereço</mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="addressForm">
+                    <div>
+                        <mat-form-field>
+                            <mat-label>CEP</mat-label>
+                            <input matInput placeholder="CEP" formControlName="zipCode">
+                            <mat-error *ngIf="addressForm.get('zipCode')?.hasError('required')">
+                                CEP é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field class="width-2">
+                            <mat-label>Logradouro</mat-label>
+                            <input matInput placeholder="Logradouro" formControlName="street">
+                            <mat-error *ngIf="addressForm.get('street')?.hasError('required')">
+                                Logradouro é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Número</mat-label>
+                            <input matInput placeholder="Número" formControlName="number">
+                            <mat-error *ngIf="addressForm.get('number')?.hasError('required')">
+                                Número é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Complemento</mat-label>
+                            <input matInput placeholder="Complemento" formControlName="complement">
+                            <mat-error *ngIf="addressForm.get('complement')?.hasError('required')">
+                                Complemento é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="width-2">
+                            <mat-label>Bairro</mat-label>
+                            <input matInput placeholder="Bairro" formControlName="neighborhood">
+                            <mat-error *ngIf="addressForm.get('neighborhood')?.hasError('required')">
+                                Bairro é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Cidade</mat-label>
+                            <input matInput placeholder="Cidade" formControlName="city">
+                            <mat-error *ngIf="addressForm.get('city')?.hasError('required')">
+                                Cidade é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Estado</mat-label>
+                            <input matInput placeholder="Estado" formControlName="state">
+                            <mat-error *ngIf="addressForm.get('state')?.hasError('required')">
+                                Estado é obrigatório
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <button mat-raised-button color="primary" [disabled]="!addressForm.valid"
+                        (click)="saveAddress()" *ngIf="!(isSavingAddress$ | async)"
+                        test-id="save-address-button">
+                        Salvar endereço
+                    </button>
+                    <mat-spinner color="primary" diameter="20" *ngIf="(isSavingAddress$ | async)"
+                        test-id="save-address-loader">
+                    </mat-spinner>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </section>
+</div>

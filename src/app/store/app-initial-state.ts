@@ -33,6 +33,16 @@ export const AppInitialState: AppState = {
         isSaving: false,
         category: undefined
     },
+    companyDetail: {
+        company: undefined,
+        error: undefined,
+        isLoaded: false,
+        isLoading: false,
+        isSavedAddress: false,
+        isSavingAddress: false,
+        isSavedCompany: false,
+        isSavingCompany: false
+    },
     login: {
         error: null,
         isLoggedIn: false,

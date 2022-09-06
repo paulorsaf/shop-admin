@@ -1,0 +1,27 @@
+mat-form-field {
+    margin-right: 10px;
+}
+
+.width-2 {
+    width: 360px;
+}
+
+mat-card {
+    margin-bottom: 10px;
+    mat-card-content {
+        padding-top: 10px;
+    }
+    button {
+        margin-top: 10px;
+    }
+}
+
+mat-spinner {
+    margin: 13px 50px;
+}
+
+.company-details {
+    mat-spinner {
+        margin: 13px 25px;
+    }
+}

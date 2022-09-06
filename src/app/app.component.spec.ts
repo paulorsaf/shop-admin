@@ -32,7 +32,8 @@ describe('AppComponent', () => {
           { path: "categories", component: BlankComponent },
           { path: "banners", component: BlankComponent },
           { path: "trending", component: BlankComponent },
-          { path: "purchases", component: BlankComponent }
+          { path: "purchases", component: BlankComponent },
+          { path: "companies", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('user', userReducer)
@@ -134,7 +135,7 @@ describe('AppComponent', () => {
       fixture.detectChanges();
     })
 
-    it('given user clicks on logout, then logout', done => {
+    it('when user clicks on logout, then logout', done => {
       page.querySelector('[test-id="logout-button"]').click();
       fixture.detectChanges();
   
@@ -144,7 +145,7 @@ describe('AppComponent', () => {
       })
     })
   
-    it('given user clicks on products button, then go to products page', done => {
+    it('when user clicks on products button, then go to products page', done => {
       page.querySelector('[test-id="products-button"]').click();
       fixture.detectChanges();
   
@@ -164,7 +165,7 @@ describe('AppComponent', () => {
       }, 100);
     })
   
-    it('given user clicks on banners button, then go to banners page', done => {
+    it('when user clicks on banners button, then go to banners page', done => {
       page.querySelector('[test-id="banners-button"]').click();
       fixture.detectChanges();
   
@@ -174,12 +175,22 @@ describe('AppComponent', () => {
       }, 100);
     })
   
-    it('given user clicks on purchases button, then go to banners page', done => {
+    it('when user clicks on purchases button, then go to banners page', done => {
       page.querySelector('[test-id="purchases-button"]').click();
       fixture.detectChanges();
   
       setTimeout(() => {
         expect(location.path()).toEqual('/purchases');
+        done();
+      }, 100);
+    })
+  
+    it('when user clicks on my company button, then go to company page', done => {
+      page.querySelector('[test-id="company-button"]').click();
+      fixture.detectChanges();
+  
+      setTimeout(() => {
+        expect(location.path()).toEqual('/companies');
         done();
       }, 100);
     })

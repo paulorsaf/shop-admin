@@ -10,6 +10,11 @@
                 <div mat-line>Home</div>
             </mat-list-item>
             <mat-divider></mat-divider>
+            <mat-list-item (click)="goToPage('/companies')" test-id="company-button">
+                <mat-icon mat-list-icon>store</mat-icon>
+                <div mat-line>Empresa</div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
             <mat-list-item (click)="goToPage('/categories')" test-id="categories-button">
                 <mat-icon mat-list-icon>category</mat-icon>
                 <div mat-line>Categorias</div>
