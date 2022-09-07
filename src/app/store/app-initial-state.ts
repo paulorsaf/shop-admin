@@ -34,10 +34,13 @@ export const AppInitialState: AppState = {
         category: undefined
     },
     companyDetail: {
+        address: undefined,
         company: undefined,
         error: undefined,
         isLoaded: false,
         isLoading: false,
+        isLoadedAddress: false,
+        isLoadingAddress: false,
         isSavedAddress: false,
         isSavingAddress: false,
         isSavedCompany: false,

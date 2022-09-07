@@ -6,7 +6,7 @@ import { AppState } from 'src/app/store/app-state';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { CompanyDetailComponent } from './company-detail.component';
-import { loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './store/company-detail.actions';
+import { loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './store/company-detail.actions';
 import { companyDetailReducer } from './store/company-detail.reducers';
 
 describe('CompanyDetailComponent', () => {
@@ -15,6 +15,16 @@ describe('CompanyDetailComponent', () => {
   let store: Store<AppState>;
   let page: PageMock;
   let messageService: MessageServiceMock;
+
+  const address = {
+    street: "anyStreet",
+    number: "anyNumber",
+    complement: "anyComplement",
+    neighborhood: "anyNeighborhood",
+    zipCode: "anyZipCode",
+    city: "anyCity",
+    state: "anyState"
+  } as any;
 
   beforeEach(async () => {
     messageService = new MessageServiceMock();
@@ -191,16 +201,6 @@ describe('CompanyDetailComponent', () => {
   })
 
   describe('given company loaded', () => {
-
-    const address = {
-      street: "anyStreet",
-      number: "anyNumber",
-      complement: "anyComplement",
-      neighborhood: "anyNeighborhood",
-      zipCode: "anyZipCode",
-      city: "anyCity",
-      state: "anyState"
-    };
 
     beforeEach(() => {
       const company = {
@@ -525,6 +525,76 @@ describe('CompanyDetailComponent', () => {
 
       it('then show error message', () => {
         expect(messageService._hasShownError).toBeTruthy();
+      })
+
+    })
+
+  })
+
+  describe('given user changes zip code', () => {
+
+    beforeEach(() => {
+      const company = {id: "anyCompany"} as any;
+      store.dispatch(loadCompanyDetailSuccess({company}));
+      fixture.detectChanges();
+
+      component.findByZipCode();
+      fixture.detectChanges();
+    })
+
+    it('then load address by zip code', done => {
+      store.select('companyDetail').subscribe(state => {
+        expect(state.isLoadingAddress).toBeTruthy();
+        done();
+      })
+    })
+
+    describe('given loading address', () => {
+
+      it('then show address loader', () => {
+        expect(page.querySelector('[test-id="address-loader"]')).not.toBeNull();
+      })
+
+      it('then hide zip code', () => {
+        expect(page.querySelector('[test-id="zip-code"]')).toBeNull();
+      })
+
+    })
+
+    describe('given address loaded', () => {
+
+      beforeEach(() => {
+        store.dispatch(loadAddressByZipCodeSuccess({address}));
+        fixture.detectChanges();
+      })
+
+      it('then hide address loader', () => {
+        expect(page.querySelector('[test-id="address-loader"]')).toBeNull();
+      })
+
+      it('then show zip code', () => {
+        expect(page.querySelector('[test-id="zip-code"]')).not.toBeNull();
+      })
+
+      it('then fill address form with address', () => {
+        expect(component.addressForm.value).toEqual(address);
+      })
+
+    })
+
+    describe('given error on load address', () => {
+
+      beforeEach(() => {
+        const error = {error: "error"};
+        store.dispatch(loadAddressByZipCodeFail({error}));
+        fixture.detectChanges();
+      })
+
+      it('then show error message', done => {
+        setTimeout(() => {
+          expect(messageService._hasShownError).toBeTruthy();
+          done();
+        }, 100)
       })
 
     })

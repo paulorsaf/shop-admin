@@ -18,6 +18,9 @@ mat-card {
 
 mat-spinner {
     margin: 13px 50px;
+    &.zip-code-loader {
+        margin-bottom: 25px;
+    }
 }
 
 .company-details-wrapper {
@@ -30,6 +33,10 @@ mat-spinner {
             margin: 13px 25px;
         }
     }
+}
+
+input[readonly="true"] {
+    opacity: 0.6;
 }
 
 .logo-wrapper {

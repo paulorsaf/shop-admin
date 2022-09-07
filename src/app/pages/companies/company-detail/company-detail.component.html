@@ -49,18 +49,22 @@
             <mat-card-content>
                 <form [formGroup]="addressForm">
                     <div>
-                        <mat-form-field>
+                        <mat-form-field *ngIf="!(isLoadingAddress$ | async)" test-id="zip-code">
                             <mat-label>CEP</mat-label>
-                            <input matInput placeholder="CEP" formControlName="zipCode">
+                            <input matInput placeholder="CEP" formControlName="zipCode" (change)="findByZipCode()">
                             <mat-error *ngIf="addressForm.get('zipCode')?.hasError('required')">
                                 CEP é obrigatório
                             </mat-error>
                         </mat-form-field>
+                        
+                        <mat-spinner *ngIf="isLoadingAddress$ | async" color="primary" diameter="20"
+                            class="zip-code-loader" test-id="address-loader">
+                        </mat-spinner>
                     </div>
                     <div>
                         <mat-form-field class="width-2">
                             <mat-label>Logradouro</mat-label>
-                            <input matInput placeholder="Logradouro" formControlName="street">
+                            <input matInput placeholder="Logradouro" formControlName="street" readonly="true">
                             <mat-error *ngIf="addressForm.get('street')?.hasError('required')">
                                 Logradouro é obrigatório
                             </mat-error>
@@ -81,21 +85,21 @@
                         </mat-form-field>
                         <mat-form-field class="width-2">
                             <mat-label>Bairro</mat-label>
-                            <input matInput placeholder="Bairro" formControlName="neighborhood">
+                            <input matInput placeholder="Bairro" formControlName="neighborhood" readonly="true">
                             <mat-error *ngIf="addressForm.get('neighborhood')?.hasError('required')">
                                 Bairro é obrigatório
                             </mat-error>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Cidade</mat-label>
-                            <input matInput placeholder="Cidade" formControlName="city">
+                            <input matInput placeholder="Cidade" formControlName="city" readonly="true">
                             <mat-error *ngIf="addressForm.get('city')?.hasError('required')">
                                 Cidade é obrigatório
                             </mat-error>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Estado</mat-label>
-                            <input matInput placeholder="Estado" formControlName="state">
+                            <input matInput placeholder="Estado" formControlName="state" readonly="true">
                             <mat-error *ngIf="addressForm.get('state')?.hasError('required')">
                                 Estado é obrigatório
                             </mat-error>

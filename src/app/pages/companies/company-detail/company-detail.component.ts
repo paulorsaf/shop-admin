@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
-import { Company } from 'src/app/model/company/company';
+import { Address } from 'src/app/model/address/address';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailLogo } from './store/company-detail.actions';
+import { loadAddressByZipCode, loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailLogo } from './store/company-detail.actions';
 
 @Component({
   selector: 'app-company-detail',
@@ -16,6 +16,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
 
   logoStyle$!: Observable<object>;
   isLoading$!: Observable<boolean>;
+  isLoadingAddress$!: Observable<boolean>;
   isSaving$!: Observable<boolean>;
   isSavingAddress$!: Observable<boolean>;
   isUploadingLogo$!: Observable<boolean>;
@@ -25,6 +26,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
 
   companySubscription!: Subscription;
   errorSubscription!: Subscription;
+  zipCodeSubscription!: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,14 +35,9 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.logoStyle$ = this.store.select(state => {
-      const logo = state.companyDetail.company?.logo?.imageUrl;
-      if (logo) {
-        return {'background-image': `url(${logo})`};
-      }
-      return {};
-    });
+    this.logoStyle$ = this.getLogoStyle();
     this.isLoading$ = this.store.select(state => state.companyDetail.isLoading);
+    this.isLoadingAddress$ = this.store.select(state => state.companyDetail.isLoadingAddress);
     this.isSaving$ = this.store.select(state => state.companyDetail.isSavingCompany);
     this.isSavingAddress$ = this.store.select(state => state.companyDetail.isSavingAddress);
     this.isUploadingLogo$ = this.store.select(state => state.companyDetail.isUploadingLogo);
@@ -51,11 +48,13 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     
     this.watchError();
     this.watchCompanyLoaded();
+    this.watchZipCodeLoaded();
   }
 
   ngOnDestroy(): void {
     this.companySubscription.unsubscribe();
     this.errorSubscription.unsubscribe();
+    this.zipCodeSubscription.unsubscribe();
   }
 
   saveAddress() {
@@ -74,6 +73,20 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     }
     this.store.dispatch(saveCompanyDetailLogo({file}));
     $event.target.value = "";
+  }
+
+  findByZipCode() {
+    this.store.dispatch(loadAddressByZipCode({zipCode: this.addressForm.value.zipCode}));
+  }
+
+  private getLogoStyle() {
+    return this.store.select(state => {
+      const logo = state.companyDetail.company?.logo?.imageUrl;
+      if (logo) {
+        return {'background-image': `url(${logo})`};
+      }
+      return {};
+    });;
   }
 
   private createForm() {
@@ -109,15 +122,30 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
       .subscribe(company => {
         this.companyForm.get('name')?.setValue(company?.name);
         if (company?.address) {
-          this.addressForm.get('street')?.setValue(company.address.street);
-          this.addressForm.get('number')?.setValue(company.address.number);
-          this.addressForm.get('city')?.setValue(company.address.city);
-          this.addressForm.get('complement')?.setValue(company.address.complement);
-          this.addressForm.get('neighborhood')?.setValue(company.address.neighborhood);
-          this.addressForm.get('state')?.setValue(company.address.state);
-          this.addressForm.get('zipCode')?.setValue(company.address.zipCode);
+          this.fillAddressForm(company.address);
         }
       })
+  }
+
+  private watchZipCodeLoaded() {
+    this.zipCodeSubscription = this.store.select('companyDetail')
+      .pipe(filter(state => state.isLoadedAddress))
+      .subscribe(state => {
+        if (state.address) {
+          this.fillAddressForm(state.address);
+          this.addressForm.markAllAsTouched();
+        }
+      })
+  }
+
+  private fillAddressForm(address: Address) {
+    this.addressForm.get('street')?.setValue(address.street);
+    this.addressForm.get('number')?.setValue(address.number);
+    this.addressForm.get('city')?.setValue(address.city);
+    this.addressForm.get('complement')?.setValue(address.complement);
+    this.addressForm.get('neighborhood')?.setValue(address.neighborhood);
+    this.addressForm.get('state')?.setValue(address.state);
+    this.addressForm.get('zipCode')?.setValue(address.zipCode);
   }
 
 }

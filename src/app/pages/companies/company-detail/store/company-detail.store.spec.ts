@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 import { companyDetailReducer } from "./company-detail.reducers";
 import { CompanyDetailState } from "./company-detail.state";
 
@@ -13,7 +13,9 @@ describe('Company detail store', () => {
             isLoaded: true,
             isLoading: false,
             isUploadedLogo: true,
-            isUploadingLogo: true
+            isUploadingLogo: true,
+            isLoadedAddress: true,
+            isLoadingAddress: true
         };
 
         const id = "anyId";
@@ -26,7 +28,9 @@ describe('Company detail store', () => {
             isLoaded: false,
             isLoading: true,
             isUploadedLogo: false,
-            isUploadingLogo: false
+            isUploadingLogo: false,
+            isLoadedAddress: false,
+            isLoadingAddress: false
         });
     });
     
@@ -213,6 +217,80 @@ describe('Company detail store', () => {
             error,
             isUploadedLogo: false,
             isUploadingLogo: false
+        });
+    });
+    
+    it('loadAddressByZipCode', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            error: {},
+            isLoadedAddress: true,
+            isLoadingAddress: false
+        };
+
+        const zipCode = "anyZipCode";
+        const state = companyDetailReducer(initialState, loadAddressByZipCode({zipCode}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            address: undefined,
+            error: undefined,
+            isLoadedAddress: false,
+            isLoadingAddress: true
+        });
+    });
+    
+    it('loadAddressByZipCodeSuccess', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isLoadingAddress: true
+        };
+
+        const address = {id: "anyAddress"} as any;
+        const state = companyDetailReducer(initialState, loadAddressByZipCodeSuccess({address}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            address,
+            isLoadedAddress: true,
+            isLoadingAddress: false
+        });
+    });
+    
+    it('loadAddressByZipCodeSuccess', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isLoadingAddress: true
+        };
+
+        const error = {error: "error"} as any;
+        const state = companyDetailReducer(initialState, loadAddressByZipCodeFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error,
+            isLoadedAddress: false,
+            isLoadingAddress: false
+        });
+    });
+    
+    it('clearAddressByZip', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            address: {} as any,
+            error: {} as any,
+            isLoadedAddress: true,
+            isLoadingAddress: true
+        };
+
+        const state = companyDetailReducer(initialState, clearAddressByZip());
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            address: undefined,
+            error: undefined,
+            isLoadedAddress: false,
+            isLoadingAddress: false
         });
     });
   

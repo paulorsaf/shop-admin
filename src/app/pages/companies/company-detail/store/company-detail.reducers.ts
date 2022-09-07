@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
 import { CompanyDetailState } from './company-detail.state';
 
 const initialState: CompanyDetailState = AppInitialState.companyDetail;
@@ -14,7 +14,9 @@ const _companyDetailReducer = createReducer(initialState,
             isLoaded: false,
             isLoading: true,
             isUploadedLogo: false,
-            isUploadingLogo: false
+            isUploadingLogo: false,
+            isLoadedAddress: false,
+            isLoadingAddress: false
         };
     }),
     on(loadCompanyDetailSuccess, (state, action) => {
@@ -100,6 +102,40 @@ const _companyDetailReducer = createReducer(initialState,
             error: action.error,
             isUploadedLogo: false,
             isUploadingLogo: false
+        };
+    }),
+    on(loadAddressByZipCode, (state) => {
+        return {
+            ...state,
+            address: undefined,
+            error: undefined,
+            isLoadedAddress: false,
+            isLoadingAddress: true
+        };
+    }),
+    on(loadAddressByZipCodeSuccess, (state, action) => {
+        return {
+            ...state,
+            address: action.address,
+            isLoadedAddress: true,
+            isLoadingAddress: false
+        };
+    }),
+    on(loadAddressByZipCodeFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isLoadedAddress: false,
+            isLoadingAddress: false
+        };
+    }),
+    on(clearAddressByZip, (state) => {
+        return {
+            ...state,
+            address: undefined,
+            error: undefined,
+            isLoadedAddress: false,
+            isLoadingAddress: false
         };
     })
 );

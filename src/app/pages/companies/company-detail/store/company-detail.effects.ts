@@ -4,14 +4,16 @@ import { Store } from "@ngrx/store";
 import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { Address } from "src/app/model/address/address";
+import { AddressService } from "src/app/services/address/address.service";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AppState } from "src/app/store/app-state";
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 
 @Injectable()
 export class CompanyDetailEffects {
 
     constructor(
+        private addressService: AddressService,
         private companyService: CompanyService,
         private actions$: Actions,
         private store: Store<AppState>
@@ -85,6 +87,25 @@ export class CompanyDetailEffects {
             switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
                 of(loadCompanyDetail({id: storeState.companyDetail.company?.id || ""}))
             )
+        )
+    )
+
+    loadAddressByZipCodeEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadAddressByZipCode),
+            switchMap((params: {zipCode: string}) =>
+                this.addressService.findByZipCode(params.zipCode).pipe(
+                    map(address => loadAddressByZipCodeSuccess({address})),
+                    catchError(error => of(loadAddressByZipCodeFail({error})))
+                )
+            )
+        )
+    )
+
+    loadAddressByZipCodeSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadAddressByZipCodeSuccess),
+            switchMap(() => of(clearAddressByZip()))
         )
     )
 

@@ -5,20 +5,24 @@ import { Action } from '@ngrx/store';
 import { CompanyDetailEffects } from './company-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 import { CompanyServiceMock } from "src/mock/company-service.mock";
 import { CompanyService } from "src/app/services/company/company.service";
+import { AddressServiceMock } from "src/mock/address-service.mock";
+import { AddressService } from "src/app/services/address/address.service";
 
 describe('CompanyDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: CompanyDetailEffects;
+    let addressService: AddressServiceMock;
     let companyService: CompanyServiceMock;
 
     const company = {id: "anyId"} as any;
     const error = {error: "error"};
 
     beforeEach(() => {
+        addressService = new AddressServiceMock();
         companyService = new CompanyServiceMock();
 
         TestBed.configureTestingModule({
@@ -38,6 +42,7 @@ describe('CompanyDetailEffects', () => {
                 provideMockActions(() => actions$)
             ],
         })
+        .overrideProvider(AddressService, {useValue: addressService})
         .overrideProvider(CompanyService, {useValue: companyService});
 
         effects = TestBed.get(CompanyDetailEffects);
@@ -156,6 +161,49 @@ describe('CompanyDetailEffects', () => {
         it('then return load company detail', (done) => {
             effects.saveCompanyDetailLogoSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadCompanyDetail({id: "anyCompanyId"}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given load address by zip code", () => {
+
+        beforeEach(() => {
+            actions$ = of(loadAddressByZipCode({zipCode: "anyZipCode"}));
+        })
+
+        it('when success, then return load address by zip code success', (done) => {
+            const address = {id: "anyAddress"} as any;
+            addressService._response = of(address);
+    
+            effects.loadAddressByZipCodeEffect$.subscribe(response => {
+                expect(response).toEqual(loadAddressByZipCodeSuccess({address}));
+                done();
+            })
+        })
+    
+        it('when fail, then return load address by zip code fail', (done) => {
+            addressService._response = throwError(error);
+    
+            effects.loadAddressByZipCodeEffect$.subscribe(response => {
+                expect(response).toEqual(loadAddressByZipCodeFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given load address by zip code success", () => {
+
+        beforeEach(() => {
+            const address = {id: "anyAddress"} as any;
+            actions$ = of(loadAddressByZipCodeSuccess({address}));
+        })
+
+        it('then return clear address by zip code', (done) => {
+            effects.loadAddressByZipCodeSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(clearAddressByZip());
                 done();
             })
         })

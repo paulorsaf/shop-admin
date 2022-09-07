@@ -6,6 +6,11 @@ export const loadCompanyDetail = createAction('[Company detail] load', props<{id
 export const loadCompanyDetailSuccess = createAction('[Company detail] load success', props<{company: Company}>());
 export const loadCompanyDetailFail = createAction('[Company detail] load fail', props<{error: any}>());
 
+export const loadAddressByZipCode = createAction('[Company detail] load address by zip code', props<{zipCode: string}>());
+export const loadAddressByZipCodeSuccess = createAction('[Company detail] load address by zip code success', props<{address: Address}>());
+export const loadAddressByZipCodeFail = createAction('[Company detail] load address by zip code fail', props<{error: any}>());
+export const clearAddressByZip = createAction('[Company detail] clear address by zip code');
+
 export const saveCompanyDetailAddress = createAction('[Company detail] save address', props<{address: Address}>());
 export const saveCompanyDetailAddressSuccess = createAction('[Company detail] save address success');
 export const saveCompanyDetailAddressFail = createAction('[Company detail] save address fail', props<{error: any}>());
