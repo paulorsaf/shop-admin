@@ -3,7 +3,7 @@ import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, sav
 import { companyDetailReducer } from "./company-detail.reducers";
 import { CompanyDetailState } from "./company-detail.state";
 
-fdescribe('Company detail store', () => {
+describe('Company detail store', () => {
     
     it('loadCompanyDetail', () => {
         const initialState: CompanyDetailState = {

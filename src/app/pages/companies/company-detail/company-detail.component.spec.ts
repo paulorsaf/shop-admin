@@ -9,7 +9,7 @@ import { CompanyDetailComponent } from './company-detail.component';
 import { loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './store/company-detail.actions';
 import { companyDetailReducer } from './store/company-detail.reducers';
 
-fdescribe('CompanyDetailComponent', () => {
+describe('CompanyDetailComponent', () => {
   let component: CompanyDetailComponent;
   let fixture: ComponentFixture<CompanyDetailComponent>;
   let store: Store<AppState>;
