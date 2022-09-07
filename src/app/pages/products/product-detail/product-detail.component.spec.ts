@@ -88,7 +88,8 @@ describe('ProductDetailComponent', () => {
         name: "",
         categoryId: "",
         price: 0,
-        priceWithDiscount: 0
+        priceWithDiscount: 0,
+        weight: ''
       })
     })
 
@@ -138,7 +139,8 @@ describe('ProductDetailComponent', () => {
           name: "name",
           categoryId: "1",
           price: 10,
-          priceWithDiscount: 5
+          priceWithDiscount: 5,
+          weight: 1
         })
       })
 
@@ -215,10 +217,25 @@ describe('ProductDetailComponent', () => {
       expect(page.querySelector('[test-id="save-button"]').disabled).toBeTruthy();
     })
 
+    it('when product weight is empty, then product weight should be invalid', () => {
+      component.form.get('weight')?.setValue('');
+      fixture.detectChanges();
+
+      expect(component.form.get('weight')?.valid).toBeFalsy();
+    })
+
+    it('when product weight is not empty, then product weight should be valid', () => {
+      component.form.get('weight')?.setValue('anyWeight');
+      fixture.detectChanges();
+
+      expect(component.form.get('weight')?.valid).toBeTruthy();
+    })
+
     it('when form is valid, then enable save button', () => {
       component.form.get('name')?.setValue('anyName');
       component.form.get('categoryId')?.setValue('anyCategory');
       component.form.get('price')?.setValue('anyPrice');
+      component.form.get('weight')?.setValue('anyWeight');
       fixture.detectChanges();
 
       expect(page.querySelector('[test-id="save-button"]').disabled).toBeFalsy();
@@ -344,17 +361,10 @@ describe('ProductDetailComponent', () => {
 
   })
 
-  function loadProductAndStock() {
-    activatedRoute.value = "1";
-    fixture.detectChanges();
-    
-    dispatchLoadDetailSuccess();
-    dispatchLoadStockSuccess();
-  }
-
   function dispatchLoadDetailSuccess() {
     const product: Product = {
-      description: 'anyDescription', id: 1, name: "name", categoryId: '1', price: 10, priceWithDiscount: 5
+      description: 'anyDescription', id: 1, name: "name", categoryId: '1', price: 10,
+      priceWithDiscount: 5, weight: 1
     } as any;
     store.dispatch(loadDetailSuccess({product}));
     fixture.detectChanges();

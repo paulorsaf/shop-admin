@@ -19,8 +19,6 @@
                             Nome é obrigatório
                         </mat-error>
                     </mat-form-field>
-                </div>
-                <div>
                     <mat-form-field>
                         <mat-label>Categoria</mat-label>
                         <mat-select formControlName="categoryId">
@@ -53,6 +51,15 @@
                             formControlName="priceWithDiscount">
                         <mat-error *ngIf="form.get('priceWithDiscount')?.hasError('required')">
                             Preço com desconto é obrigatório
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field>
+                        <mat-label>Peso (kg)</mat-label>
+                        <input matInput type="number" placeholder="Peso (kg)" formControlName="weight">
+                        <mat-error *ngIf="form.get('weight')?.hasError('required')">
+                            Peso (kg) é obrigatório
                         </mat-error>
                     </mat-form-field>
                 </div>

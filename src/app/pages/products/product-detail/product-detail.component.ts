@@ -97,7 +97,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       name: [product?.name || '', [Validators.required]],
       categoryId: [product?.categoryId || '', [Validators.required]],
       price: [product?.price || 0, [Validators.required]],
-      priceWithDiscount: [product?.priceWithDiscount || 0]
+      priceWithDiscount: [product?.priceWithDiscount || 0],
+      weight: [product?.weight || '', [Validators.required]]
     });
   }
 
