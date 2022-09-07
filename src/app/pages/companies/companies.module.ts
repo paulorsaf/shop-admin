@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule, Routes } from '@angular/router';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
 
@@ -31,7 +32,9 @@ const routes: Routes = [{
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+
+    AngularEditorModule
   ],
   exports: [CompanyDetailComponent]
 })

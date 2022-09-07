@@ -8,6 +8,8 @@ export type CompanyDetailState = {
     isLoading: boolean;
     isLoadedAddress: boolean;
     isLoadingAddress: boolean;
+    isSavedAboutUs: boolean;
+    isSavingAboutUs: boolean;
     isSavedAddress: boolean;
     isSavingAddress: boolean;
     isSavedCompany: boolean;

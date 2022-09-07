@@ -1,12 +1,14 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { Store, StoreModule } from '@ngrx/store';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { CompanyDetailComponent } from './company-detail.component';
-import { loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './store/company-detail.actions';
+import { loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './store/company-detail.actions';
 import { companyDetailReducer } from './store/company-detail.reducers';
 
 describe('CompanyDetailComponent', () => {
@@ -33,6 +35,8 @@ describe('CompanyDetailComponent', () => {
       declarations: [ CompanyDetailComponent ],
       imports: [
         ReactiveFormsModule,
+        AngularEditorModule,
+        HttpClientTestingModule,
         StoreModule.forRoot([]),
         StoreModule.forFeature('companyDetail', companyDetailReducer)
       ]
@@ -56,6 +60,10 @@ describe('CompanyDetailComponent', () => {
         expect(state.isLoading).toBeTruthy();
         done();
       })
+    });
+
+    it('then create about us form', () => {
+      expect(component.aboutUsForm).not.toBeUndefined();
     });
 
     it('then create address form', () => {
@@ -206,7 +214,8 @@ describe('CompanyDetailComponent', () => {
       const company = {
         id: "anyCompany",
         name: "anyCompanyName",
-        address 
+        address,
+        aboutUs: "anyHtml"
       } as any;
       store.dispatch(loadCompanyDetailSuccess({company}));
       fixture.detectChanges();
@@ -227,6 +236,12 @@ describe('CompanyDetailComponent', () => {
     it('then populate company form', () => {
       expect(component.companyForm.value).toEqual({
         name: "anyCompanyName"
+      });
+    })
+
+    it('then populate about us form', () => {
+      expect(component.aboutUsForm.value).toEqual({
+        html: "anyHtml"
       });
     })
 
@@ -597,6 +612,72 @@ describe('CompanyDetailComponent', () => {
         }, 100)
       })
 
+    })
+
+  })
+
+  describe('given user clicks to save about us', () => {
+
+    beforeEach(() => {
+      const company = {id: "anyCompany"} as any;
+      store.dispatch(loadCompanyDetailSuccess({company}));
+      fixture.detectChanges();
+
+      page.querySelector('[test-id="save-about-us-button"]').click();
+      fixture.detectChanges();
+    })
+
+    it('then save about us', done => {
+      store.select('companyDetail').subscribe(state => {
+        expect(state.isSavingAboutUs).toBeTruthy();
+        done();
+      })
+    })
+
+    describe('when saving', () => {
+  
+      it('then show about us loader', () => {
+        expect(page.querySelector('[test-id="about-us-loader"]')).not.toBeNull();
+      })
+  
+      it('then hide about us save button', () => {
+        expect(page.querySelector('[test-id="save-about-us-button"]')).toBeNull();
+      })
+  
+    })
+
+    describe('when saved', () => {
+
+      beforeEach(() => {
+        store.dispatch(saveCompanyDetailAboutUsSuccess());
+        fixture.detectChanges();
+      })
+  
+      it('then hide about us loader', () => {
+        expect(page.querySelector('[test-id="about-us-loader"]')).toBeNull();
+      })
+  
+      it('then show about us save button', () => {
+        expect(page.querySelector('[test-id="save-about-us-button"]')).not.toBeNull();
+      })
+  
+    })
+
+    describe('when error on save', () => {
+
+      beforeEach(() => {
+        const error = {error: "error"};
+        store.dispatch(saveCompanyDetailAboutUsFail({error}));
+        fixture.detectChanges();
+      })
+  
+      it('then show error message', done => {
+        setTimeout(() => {
+          expect(messageService._hasShownError).toBeTruthy();
+          done();
+        }, 100)
+      })
+  
     })
 
   })

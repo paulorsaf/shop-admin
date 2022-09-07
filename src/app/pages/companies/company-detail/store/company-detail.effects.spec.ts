@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { CompanyDetailEffects } from './company-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 import { CompanyServiceMock } from "src/mock/company-service.mock";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AddressServiceMock } from "src/mock/address-service.mock";
@@ -204,6 +204,32 @@ describe('CompanyDetailEffects', () => {
         it('then return clear address by zip code', (done) => {
             effects.loadAddressByZipCodeSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(clearAddressByZip());
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save company detail about us", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveCompanyDetailAboutUs({html: "anyHtml"}));
+        })
+
+        it('when success, then return save company detail about us success', (done) => {
+            companyService._response = of({});
+    
+            effects.saveCompanyDetailAboutUsEffect$.subscribe(response => {
+                expect(response).toEqual(saveCompanyDetailAboutUsSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save company detail about us fail', (done) => {
+            companyService._response = throwError(error);
+    
+            effects.saveCompanyDetailAboutUsEffect$.subscribe(response => {
+                expect(response).toEqual(saveCompanyDetailAboutUsFail({error}));
                 done();
             })
         })

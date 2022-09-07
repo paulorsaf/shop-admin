@@ -10,6 +10,9 @@ export class CompanyServiceMock {
     update() {
         return this._response || of({});
     }
+    updateAboutUs() {
+        return this._response || of({});
+    }
     updateAddress() {
         return this._response || of({});
     }

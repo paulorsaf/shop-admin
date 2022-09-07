@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
 import { CompanyDetailState } from './company-detail.state';
 
 const initialState: CompanyDetailState = AppInitialState.companyDetail;
@@ -136,6 +136,29 @@ const _companyDetailReducer = createReducer(initialState,
             error: undefined,
             isLoadedAddress: false,
             isLoadingAddress: false
+        };
+    }),
+    on(saveCompanyDetailAboutUs, (state) => {
+        return {
+            ...state,
+            error: undefined,
+            isSavedAboutUs: false,
+            isSavingAboutUs: true
+        };
+    }),
+    on(saveCompanyDetailAboutUsSuccess, (state) => {
+        return {
+            ...state,
+            isSavedAboutUs: true,
+            isSavingAboutUs: false
+        };
+    }),
+    on(saveCompanyDetailAboutUsFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isSavedAboutUs: false,
+            isSavingAboutUs: false
         };
     })
 );

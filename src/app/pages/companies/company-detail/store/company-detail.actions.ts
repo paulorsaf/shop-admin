@@ -22,3 +22,7 @@ export const saveCompanyDetailFail = createAction('[Company detail] save fail', 
 export const saveCompanyDetailLogo = createAction('[Company detail] upload logo', props<{file: any}>());
 export const saveCompanyDetailLogoSuccess = createAction('[Company detail] upload logo success');
 export const saveCompanyDetailLogoFail = createAction('[Company detail] upload logo fail', props<{error: any}>());
+
+export const saveCompanyDetailAboutUs = createAction('[Company detail] save about us', props<{html: string}>());
+export const saveCompanyDetailAboutUsSuccess = createAction('[Company detail] save about us success');
+export const saveCompanyDetailAboutUsFail = createAction('[Company detail] save about us fail', props<{error: any}>());

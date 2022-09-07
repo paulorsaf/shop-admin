@@ -7,7 +7,7 @@ import { Address } from "src/app/model/address/address";
 import { AddressService } from "src/app/services/address/address.service";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AppState } from "src/app/store/app-state";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 
 @Injectable()
 export class CompanyDetailEffects {
@@ -106,6 +106,22 @@ export class CompanyDetailEffects {
         this.actions$.pipe(
             ofType(loadAddressByZipCodeSuccess),
             switchMap(() => of(clearAddressByZip()))
+        )
+    )
+
+    saveCompanyDetailAboutUsEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(saveCompanyDetailAboutUs),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
+                this.companyService.updateAboutUs(
+                    storeState.companyDetail.company?.id || "",
+                    action.html
+                ).pipe(
+                    map(() => saveCompanyDetailAboutUsSuccess()),
+                    catchError(error => of(saveCompanyDetailAboutUsFail({error})))
+                )
+            )
         )
     )
 

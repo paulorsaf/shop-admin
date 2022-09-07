@@ -19,14 +19,19 @@ export class CompanyService {
     return this.apiService.get<Company>(url);
   }
 
-  updateAddress(id: string, address: Address): Observable<void> {
-    const url = `${environment.apiUrl}/companies/${id}/address`;
-    return this.apiService.patch<void>(url, address);
-  }
-
   update(id: string, name: string): Observable<void> {
     const url = `${environment.apiUrl}/companies/${id}`;
     return this.apiService.patch<void>(url, {name});
+  }
+
+  updateAboutUs(id: string, html: string): Observable<void> {
+    const url = `${environment.apiUrl}/companies/${id}/aboutus`;
+    return this.apiService.patch<void>(url, {html});
+  }
+
+  updateAddress(id: string, address: Address): Observable<void> {
+    const url = `${environment.apiUrl}/companies/${id}/address`;
+    return this.apiService.patch<void>(url, address);
   }
 
   updateLogo(id: string, image: File): Observable<void> {

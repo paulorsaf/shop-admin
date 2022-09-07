@@ -5,7 +5,7 @@ import { filter, Observable, Subscription, take } from 'rxjs';
 import { Address } from 'src/app/model/address/address';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { loadAddressByZipCode, loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailLogo } from './store/company-detail.actions';
+import { loadAddressByZipCode, loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAddress, saveCompanyDetailLogo } from './store/company-detail.actions';
 
 @Component({
   selector: 'app-company-detail',
@@ -18,9 +18,11 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   isLoading$!: Observable<boolean>;
   isLoadingAddress$!: Observable<boolean>;
   isSaving$!: Observable<boolean>;
+  isSavingAboutUs$!: Observable<boolean>;
   isSavingAddress$!: Observable<boolean>;
   isUploadingLogo$!: Observable<boolean>;
 
+  aboutUsForm!: FormGroup;
   addressForm!: FormGroup;
   companyForm!: FormGroup;
 
@@ -39,6 +41,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select(state => state.companyDetail.isLoading);
     this.isLoadingAddress$ = this.store.select(state => state.companyDetail.isLoadingAddress);
     this.isSaving$ = this.store.select(state => state.companyDetail.isSavingCompany);
+    this.isSavingAboutUs$ = this.store.select(state => state.companyDetail.isSavingAboutUs);
     this.isSavingAddress$ = this.store.select(state => state.companyDetail.isSavingAddress);
     this.isUploadingLogo$ = this.store.select(state => state.companyDetail.isUploadingLogo);
 
@@ -90,6 +93,10 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   }
 
   private createForm() {
+    this.aboutUsForm = this.formBuilder.group({
+      html: ['']
+    })
+
     this.addressForm = this.formBuilder.group({
       street: ['', [Validators.required]],
       number: ['', [Validators.required]],
@@ -103,6 +110,10 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     this.companyForm = this.formBuilder.group({
       name: ['', [Validators.required]]
     });
+  }
+
+  saveAboutUs() {
+    this.store.dispatch(saveCompanyDetailAboutUs({html: this.aboutUsForm.value.html}));
   }
 
   private watchError() {
@@ -120,6 +131,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
         take(1)
       )
       .subscribe(company => {
+        this.aboutUsForm.get('html')?.setValue(company?.aboutUs);
         this.companyForm.get('name')?.setValue(company?.name);
         if (company?.address) {
           this.fillAddressForm(company.address);
