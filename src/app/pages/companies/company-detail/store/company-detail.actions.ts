@@ -13,3 +13,7 @@ export const saveCompanyDetailAddressFail = createAction('[Company detail] save 
 export const saveCompanyDetail = createAction('[Company detail] save', props<{name: string}>());
 export const saveCompanyDetailSuccess = createAction('[Company detail] save success');
 export const saveCompanyDetailFail = createAction('[Company detail] save fail', props<{error: any}>());
+
+export const saveCompanyDetailLogo = createAction('[Company detail] upload logo', props<{file: any}>());
+export const saveCompanyDetailLogoSuccess = createAction('[Company detail] upload logo success');
+export const saveCompanyDetailLogoFail = createAction('[Company detail] upload logo fail', props<{error: any}>());

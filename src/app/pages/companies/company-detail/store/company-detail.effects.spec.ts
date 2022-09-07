@@ -5,11 +5,11 @@ import { Action } from '@ngrx/store';
 import { CompanyDetailEffects } from './company-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 import { CompanyServiceMock } from "src/mock/company-service.mock";
 import { CompanyService } from "src/app/services/company/company.service";
 
-describe('CompanyDetailEffects', () => {
+fdescribe('CompanyDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: CompanyDetailEffects;
@@ -115,6 +115,47 @@ describe('CompanyDetailEffects', () => {
     
             effects.saveCompanyDetailAddressEffect$.subscribe(response => {
                 expect(response).toEqual(saveCompanyDetailAddressFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save company detail logo", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveCompanyDetailLogo({file: {id: "anyFile"} as any}));
+        })
+
+        it('when success, then return save company detail logo success', (done) => {
+            companyService._response = of({});
+    
+            effects.saveCompanyDetailLogoEffect$.subscribe(response => {
+                expect(response).toEqual(saveCompanyDetailLogoSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save company detail logo fail', (done) => {
+            companyService._response = throwError(error);
+    
+            effects.saveCompanyDetailLogoEffect$.subscribe(response => {
+                expect(response).toEqual(saveCompanyDetailLogoFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save company detail logo success", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveCompanyDetailLogoSuccess());
+        })
+
+        it('then return load company detail', (done) => {
+            effects.saveCompanyDetailLogoSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadCompanyDetail({id: "anyCompanyId"}));
                 done();
             })
         })

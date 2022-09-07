@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailSuccess } from './company-detail.actions';
+import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
 import { CompanyDetailState } from './company-detail.state';
 
 const initialState: CompanyDetailState = AppInitialState.companyDetail;
@@ -12,7 +12,9 @@ const _companyDetailReducer = createReducer(initialState,
             company: undefined,
             error: undefined,
             isLoaded: false,
-            isLoading: true
+            isLoading: true,
+            isUploadedLogo: false,
+            isUploadingLogo: false
         };
     }),
     on(loadCompanyDetailSuccess, (state, action) => {
@@ -75,6 +77,29 @@ const _companyDetailReducer = createReducer(initialState,
             error: action.error,
             isSavedCompany: false,
             isSavingCompany: false
+        };
+    }),
+    on(saveCompanyDetailLogo, (state) => {
+        return {
+            ...state,
+            error: undefined,
+            isUploadedLogo: false,
+            isUploadingLogo: true
+        };
+    }),
+    on(saveCompanyDetailLogoSuccess, (state) => {
+        return {
+            ...state,
+            isUploadedLogo: true,
+            isUploadingLogo: false
+        };
+    }),
+    on(saveCompanyDetailLogoFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isUploadedLogo: false,
+            isUploadingLogo: false
         };
     })
 );

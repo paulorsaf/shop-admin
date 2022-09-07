@@ -20,8 +20,49 @@ mat-spinner {
     margin: 13px 50px;
 }
 
-.company-details {
-    mat-spinner {
-        margin: 13px 25px;
+.company-details-wrapper {
+    display: flex;
+    gap: 10px;
+
+    .company-details {
+        width: -webkit-fill-available;
+        mat-spinner {
+            margin: 13px 25px;
+        }
+    }
+}
+
+.logo-wrapper {
+    width: 200px;
+    height: 200px;
+    background: url("/assets/no-image-available.jpeg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    mat-card-subtitle {
+        margin: 0;
+    }
+
+    .logo {
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: -webkit-fill-available;
+    
+        input {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            opacity: 0;
+            z-index: 9;
+            cursor: pointer;
+        }
+
+        ion-spinner {
+            height: 100%;
+            width: 100%;
+        }
     }
 }

@@ -8,5 +8,7 @@ export type CompanyDetailState = {
     isSavingAddress: boolean;
     isSavedCompany: boolean;
     isSavingCompany: boolean;
+    isUploadedLogo: boolean;
+    isUploadingLogo: boolean;
     company?: Company;
 }

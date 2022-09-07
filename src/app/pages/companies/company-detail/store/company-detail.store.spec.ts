@@ -1,9 +1,9 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 import { companyDetailReducer } from "./company-detail.reducers";
 import { CompanyDetailState } from "./company-detail.state";
 
-describe('Company detail store', () => {
+fdescribe('Company detail store', () => {
     
     it('loadCompanyDetail', () => {
         const initialState: CompanyDetailState = {
@@ -11,7 +11,9 @@ describe('Company detail store', () => {
             company: {} as any,
             error: {},
             isLoaded: true,
-            isLoading: false
+            isLoading: false,
+            isUploadedLogo: true,
+            isUploadingLogo: true
         };
 
         const id = "anyId";
@@ -22,7 +24,9 @@ describe('Company detail store', () => {
             company: undefined,
             error: undefined,
             isLoaded: false,
-            isLoading: true
+            isLoading: true,
+            isUploadedLogo: false,
+            isUploadingLogo: false
         });
     });
     
@@ -158,6 +162,57 @@ describe('Company detail store', () => {
             error,
             isSavedCompany: false,
             isSavingCompany: false
+        });
+    });
+    
+    it('saveCompanyDetailLogo', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            error: {},
+            isUploadedLogo: true,
+            isUploadingLogo: false
+        };
+
+        const file = {id: "anyfile"} as any;
+        const state = companyDetailReducer(initialState, saveCompanyDetailLogo({file}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error: undefined,
+            isUploadedLogo: false,
+            isUploadingLogo: true
+        });
+    });
+    
+    it('saveCompanyDetailLogoSuccess', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isUploadingLogo: true
+        };
+
+        const state = companyDetailReducer(initialState, saveCompanyDetailLogoSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            isUploadedLogo: true,
+            isUploadingLogo: false
+        });
+    });
+    
+    it('saveCompanyDetailLogoFail', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isUploadingLogo: true
+        };
+
+        const error = {error: "error"};
+        const state = companyDetailReducer(initialState, saveCompanyDetailLogoFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error,
+            isUploadedLogo: false,
+            isUploadingLogo: false
         });
     });
   

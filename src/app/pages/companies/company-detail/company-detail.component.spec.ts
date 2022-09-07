@@ -6,10 +6,10 @@ import { AppState } from 'src/app/store/app-state';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { CompanyDetailComponent } from './company-detail.component';
-import { loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailSuccess } from './store/company-detail.actions';
+import { loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './store/company-detail.actions';
 import { companyDetailReducer } from './store/company-detail.reducers';
 
-describe('CompanyDetailComponent', () => {
+fdescribe('CompanyDetailComponent', () => {
   let component: CompanyDetailComponent;
   let fixture: ComponentFixture<CompanyDetailComponent>;
   let store: Store<AppState>;
@@ -444,6 +444,89 @@ describe('CompanyDetailComponent', () => {
         expect(messageService._hasShownError).toBeTruthy();
         done();
       }, 100)
+    })
+
+  })
+
+  describe('given clicks to upload logo', () => {
+
+    beforeEach(() => {
+      const company = {id: "anyCompany", name: "anyCompanyName"} as any;
+      store.dispatch(loadCompanyDetailSuccess({company}));
+      fixture.detectChanges();
+    })
+
+    it('when file is larger than 400kb, then do not upload', done => {
+      component.uploadLogo({target: {files: [{size: 400001}]}});
+      fixture.detectChanges();
+
+      store.select('companyDetail').subscribe(state => {
+        expect(state.isUploadingLogo).toBeFalsy();
+        done();
+      })
+    })
+
+    it('when file is lower than 400kb, then do upload', done => {
+      component.uploadLogo({target: {files: [{size: 399999}]}});
+      fixture.detectChanges();
+
+      store.select('companyDetail').subscribe(state => {
+        expect(state.isUploadingLogo).toBeTruthy();
+        done();
+      })
+    })
+
+    describe('when uploading logo', () => {
+
+      beforeEach(() => {
+        component.uploadLogo({target: {files: [{size: 399999}]}});
+        fixture.detectChanges();
+      })
+
+      it('then show logo upload loader', () => {
+        expect(page.querySelector('[test-id="logo-upload"]')).not.toBeNull();
+      })
+
+      it('then hide logo upload input', () => {
+        expect(page.querySelector('[test-id="logo-upload-input"]')).toBeNull();
+      })
+
+    })
+
+    describe('when logo uploaded', () => {
+
+      beforeEach(() => {
+        component.uploadLogo({target: {files: [{size: 399999}]}});
+        fixture.detectChanges();
+
+        store.dispatch(saveCompanyDetailLogoSuccess());
+        fixture.detectChanges();
+      })
+
+      it('then hide logo upload loader', () => {
+        expect(page.querySelector('[test-id="logo-upload"]')).toBeNull();
+      })
+
+      it('then show logo upload input', () => {
+        expect(page.querySelector('[test-id="logo-upload-input"]')).not.toBeNull();
+      })
+
+    })
+
+    describe('when error on logo upload', () => {
+
+      beforeEach(() => {
+        component.uploadLogo({target: {files: [{size: 399999}]}});
+        fixture.detectChanges();
+
+        store.dispatch(saveCompanyDetailLogoFail({error: "error"}));
+        fixture.detectChanges();
+      })
+
+      it('then show error message', () => {
+        expect(messageService._hasShownError).toBeTruthy();
+      })
+
     })
 
   })

@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
+import { Company } from 'src/app/model/company/company';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAddress } from './store/company-detail.actions';
+import { loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailLogo } from './store/company-detail.actions';
 
 @Component({
   selector: 'app-company-detail',
@@ -13,9 +14,11 @@ import { loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAddress } from '
 })
 export class CompanyDetailComponent implements OnInit, OnDestroy {
 
+  logoStyle$!: Observable<object>;
   isLoading$!: Observable<boolean>;
   isSaving$!: Observable<boolean>;
   isSavingAddress$!: Observable<boolean>;
+  isUploadingLogo$!: Observable<boolean>;
 
   addressForm!: FormGroup;
   companyForm!: FormGroup;
@@ -30,9 +33,17 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.logoStyle$ = this.store.select(state => {
+      const logo = state.companyDetail.company?.logo?.imageUrl;
+      if (logo) {
+        return {'background-image': `url(${logo})`};
+      }
+      return {};
+    });
     this.isLoading$ = this.store.select(state => state.companyDetail.isLoading);
     this.isSaving$ = this.store.select(state => state.companyDetail.isSavingCompany);
     this.isSavingAddress$ = this.store.select(state => state.companyDetail.isSavingAddress);
+    this.isUploadingLogo$ = this.store.select(state => state.companyDetail.isUploadingLogo);
 
     this.createForm();
 
@@ -53,6 +64,16 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
 
   saveCompany() {
     this.store.dispatch(saveCompanyDetail({name: this.companyForm.value.name}));
+  }
+
+  uploadLogo($event: any) {
+    const file = $event.target.files[0];
+    if (file.size > 400000) {
+      this.messageService.showAlert('Imagem não pode ser maior do que 400kb');
+      return;
+    }
+    this.store.dispatch(saveCompanyDetailLogo({file}));
+    $event.target.value = "";
   }
 
   private createForm() {

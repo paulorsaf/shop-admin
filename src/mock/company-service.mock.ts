@@ -13,5 +13,8 @@ export class CompanyServiceMock {
     updateAddress() {
         return this._response || of({});
     }
+    updateLogo() {
+        return this._response || of({});
+    }
     
 }

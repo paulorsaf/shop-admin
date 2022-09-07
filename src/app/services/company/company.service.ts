@@ -29,4 +29,31 @@ export class CompanyService {
     return this.apiService.patch<void>(url, {name});
   }
 
+  updateLogo(id: string, image: File): Observable<void> {
+    return new Observable<void>(observer => {
+      this.toBase64(image).then(result => {
+        const url = `${environment.apiUrl}/companies/${id}/logos`;
+        this.apiService.patch<void>(url, {file: result, name: image.name}).subscribe(() => {
+          observer.next();
+          observer.complete();
+        }, error => {
+          observer.error(error);
+          observer.complete();
+        });
+      }).catch(error => {
+        observer.error(error);
+        observer.complete();
+      })
+    })
+  }
+
+  private toBase64(image: File) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    })
+  }
+
 }

@@ -6,7 +6,7 @@ import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { Address } from "src/app/model/address/address";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AppState } from "src/app/store/app-state";
-import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 
 @Injectable()
 export class CompanyDetailEffects {
@@ -58,6 +58,32 @@ export class CompanyDetailEffects {
                     map(() => saveCompanyDetailSuccess()),
                     catchError(error => of(saveCompanyDetailFail({error})))
                 )
+            )
+        )
+    )
+
+    saveCompanyDetailLogoEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(saveCompanyDetailLogo),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
+                this.companyService.updateLogo(
+                    storeState.companyDetail.company?.id || "",
+                    action.file
+                ).pipe(
+                    map(() => saveCompanyDetailLogoSuccess()),
+                    catchError(error => of(saveCompanyDetailLogoFail({error})))
+                )
+            )
+        )
+    )
+
+    saveCompanyDetailLogoSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(saveCompanyDetailLogoSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
+                of(loadCompanyDetail({id: storeState.companyDetail.company?.id || ""}))
             )
         )
     )
