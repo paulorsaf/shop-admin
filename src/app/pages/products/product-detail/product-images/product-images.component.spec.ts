@@ -100,6 +100,17 @@ describe('ProductImagesComponent', () => {
 
     })
 
+    it('when product has less than 3 images, then enable add image button', () => {
+      expect(page.querySelector('[test-id="add-image-button"]').disabled).toBeFalsy();
+    })
+
+    it('when product has 3 images, then disable add image button', () => {
+      const product = {images: [{}, {}, {}]} as any;
+      store.dispatch(loadDetailSuccess({product}));
+      fixture.detectChanges();
+      expect(page.querySelector('[test-id="add-image-button"]').disabled).toBeTruthy();
+    })
+
   })
 
   describe('given user clicks on add image button', () => {
