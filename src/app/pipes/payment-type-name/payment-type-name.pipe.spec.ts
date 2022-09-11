@@ -28,6 +28,10 @@ describe('Payment type name pipe', () => {
     expect(pipe.transform("MONEY")).toEqual("Dinheiro");
   })
 
+  it('given payment type is CREDIT_CARD, then return Cartão de crédito', () => {
+    expect(pipe.transform("CREDIT_CARD")).toEqual("Cartão de crédito");
+  })
+
   it('given payment type is an unknown type, then return the unknown type', () => {
     expect(pipe.transform("UNKNOWN")).toEqual("UNKNOWN");
   })

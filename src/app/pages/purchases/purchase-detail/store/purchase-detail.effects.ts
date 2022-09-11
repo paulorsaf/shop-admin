@@ -36,7 +36,8 @@ export class PurchaseDetailEffects {
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 this.purchaseService.updateStatus(
                     storeState.purchaseDetail.purchase?.id || "",
-                    action.status
+                    action.status,
+                    action.reason
                 ).pipe(
                     map(() => updatePurchaseStatusSuccess()),
                     catchError(error => of(updatePurchaseStatusFail({error})))

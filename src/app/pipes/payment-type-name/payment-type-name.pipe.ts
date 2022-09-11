@@ -11,6 +11,9 @@ export class PaymentTypeNamePipe implements PipeTransform {
     if (value === "MONEY") {
       return "Dinheiro";
     }
+    if (value === "CREDIT_CARD") {
+      return "Cartão de crédito";
+    }
     return value;
   }
 

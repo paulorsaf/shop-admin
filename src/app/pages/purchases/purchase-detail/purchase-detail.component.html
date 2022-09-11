@@ -53,11 +53,23 @@
                             </span>
                         </div>
                     </mat-list-item>
+                    <mat-list-item role="listitem" *ngIf="purchase.price?.delivery">
+                        <span class="total-product-price">
+                            {{purchase.price?.delivery | currency: "R$ "}}
+                        </span>
+                        <div mat-line>Taxa de entrega</div>
+                    </mat-list-item>
+                    <mat-list-item role="listitem" *ngIf="purchase.price?.paymentFee">
+                        <span class="total-product-price">
+                            {{purchase.price?.paymentFee | currency: "R$ "}}
+                        </span>
+                        <div mat-line>Taxa do cartão de crédito</div>
+                    </mat-list-item>
                 </mat-list>
                 <mat-list role="list">
                     <mat-list-item role="listitem">
                         <span class="total-product-price">
-                            <b>{{purchase.totalPrice | currency: "R$ "}}</b>
+                            <b>{{purchase.price?.totalWithPaymentFee | currency: "R$ "}}</b>
                         </span>
                         <div mat-line>
                             <b>

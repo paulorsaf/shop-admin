@@ -8,7 +8,7 @@ export type PurchaseSummary = {
     }
     status: string;
     totalAmount: number;
-    totalPrice: number;
+    totalWithPaymentFee: number;
     user: {
         email: string;
         id: string;

@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -8,12 +8,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ConfirmDialogComponent implements OnInit {
 
+  input: string = "";
+
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {title: string, description: string},
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
   ) { }
 
   ngOnInit(): void {
+    console.log(this.data);
   }
 
   no() {
@@ -21,7 +24,19 @@ export class ConfirmDialogComponent implements OnInit {
   }
 
   yes() {
-    this.dialogRef.close("YES");
+    this.dialogRef.close(this.data.input ? {
+      value: this.input
+    } : "YES");
   }
 
+}
+
+type ConfirmDialogData = {
+  description: string;
+  input: ConfirmDialogInputData;
+  title: string;
+}
+
+type ConfirmDialogInputData = {
+  label: string
 }

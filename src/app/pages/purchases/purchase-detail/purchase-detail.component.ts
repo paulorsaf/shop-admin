@@ -63,11 +63,17 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
     this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
+        input: this.status === "CANCELLED" ? {
+          label: "Motivo:"
+        } : undefined,
         title: "Deseja mudar o estado da compra?"
       },
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.store.dispatch(updatePurchaseStatus({status: this.status}));
+        this.store.dispatch(updatePurchaseStatus({
+          reason: result?.value,
+          status: this.status,
+        }));
       } else {
         this.purchase$.pipe(take(1)).subscribe(purchase => {
           this.status = purchase?.status || "";
@@ -96,7 +102,7 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
 
   private setStatusList(purchase: Purchase) {
     this.statusList.push({key: "CREATED", value: "Solicitado"});
-    if (purchase?.payment?.type === "PIX") {
+    if (purchase?.payment?.type !== "MONEY") {
       this.statusList.push({key: "VERIFYING_PAYMENT", value: "Verificando pagamento"});
       this.statusList.push({key: "PAID", value: "Pago"});
     }
@@ -106,6 +112,7 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
       this.statusList.push({key: "DELIVERYING", value: "Entregando"});
     }
     this.statusList.push({key: "FINISHED", value: "Finalizado"});
+    this.statusList.push({key: "CANCELLED", value: "Cancelado"});
   }
 
   private onError() {

@@ -115,7 +115,7 @@ describe('PurchaseDetailComponent', () => {
 
       it('then set status list', () => {
         expect(component.statusList.map(s => s.key)).toEqual([
-          "CREATED", "VERIFYING_PAYMENT", "PAID", "SORTING_OUT", "READY", "FINISHED"
+          "CREATED", "VERIFYING_PAYMENT", "PAID", "SORTING_OUT", "READY", "FINISHED", "CANCELLED"
         ]);
       })
 
@@ -131,7 +131,7 @@ describe('PurchaseDetailComponent', () => {
 
       it('then set status list', () => {
         expect(component.statusList.map(s => s.key)).toEqual([
-          "CREATED", "SORTING_OUT", "READY", "FINISHED"
+          "CREATED", "SORTING_OUT", "READY", "FINISHED", "CANCELLED"
         ]);
       })
 

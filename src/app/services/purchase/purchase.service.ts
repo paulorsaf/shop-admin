@@ -24,9 +24,9 @@ export class PurchaseService {
     return this.apiService.get<Purchase>(url);
   }
 
-  updateStatus(id: string, status: string): Observable<Purchase> {
+  updateStatus(id: string, status: string, reason: string): Observable<Purchase> {
     const url = `${environment.apiUrl}/purchases/${id}/status`;
-    return this.apiService.patch<Purchase>(url, {status});
+    return this.apiService.patch<Purchase>(url, {status, reason});
   }
 
 }

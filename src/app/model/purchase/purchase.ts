@@ -7,6 +7,7 @@ export type Purchase = {
         receiptUrl: string;
         type: string;
     };
+    price: Price;
     products: PurchaseProduct[];
     status: string;
     totalAmount: number;
@@ -15,6 +16,14 @@ export type Purchase = {
         email: string;
         id: string;
     }
+}
+
+type Price = {
+    products: number;
+    delivery: number;
+    paymentFee: number;
+    total: number;
+    totalWithPaymentFee: number;
 }
 
 export type PurchaseProduct = {

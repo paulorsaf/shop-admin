@@ -44,6 +44,10 @@ describe('Status name pipe', () => {
     expect(pipe.transform("READY")).toEqual("Pronto");
   })
 
+  it('given status is CANCELLED, then return Cancelado', () => {
+    expect(pipe.transform("CANCELLED")).toEqual("Cancelado");
+  })
+
   it('given status is an unknown status, then return the unknown status', () => {
     expect(pipe.transform("UNKNOWN")).toEqual("UNKNOWN");
   })

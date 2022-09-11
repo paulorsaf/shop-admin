@@ -1,6 +1,10 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
 <div mat-dialog-content>
   <p>{{data.description}}</p>
+  <div *ngIf="data.input">
+    <label>{{data.input.label}}</label><br/>
+    <input [(ngModel)]="input" />
+  </div>
 </div>
 <div mat-dialog-actions align="right">
   <button mat-button (click)="no()">Não</button>
