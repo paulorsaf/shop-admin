@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { CompanyDetailEffects } from './company-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 import { CompanyServiceMock } from "src/mock/company-service.mock";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AddressServiceMock } from "src/mock/address-service.mock";
@@ -230,6 +230,33 @@ describe('CompanyDetailEffects', () => {
     
             effects.saveCompanyDetailAboutUsEffect$.subscribe(response => {
                 expect(response).toEqual(saveCompanyDetailAboutUsFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given save company detail payment", () => {
+
+        beforeEach(() => {
+            const payment = {id: "anyPayment"} as any;
+            actions$ = of(saveCompanyDetailPayment({payment}));
+        })
+
+        it('when success, then return save company detail payment success', (done) => {
+            companyService._response = of({});
+    
+            effects.saveCompanyDetailPaymentEffect$.subscribe(response => {
+                expect(response).toEqual(saveCompanyDetailPaymentSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save company detail payment fail', (done) => {
+            companyService._response = throwError(error);
+    
+            effects.saveCompanyDetailPaymentEffect$.subscribe(response => {
+                expect(response).toEqual(saveCompanyDetailPaymentFail({error}));
                 done();
             })
         })

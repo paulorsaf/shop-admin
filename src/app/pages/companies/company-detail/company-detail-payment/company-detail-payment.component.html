@@ -1,0 +1,74 @@
+<mat-card>
+    <mat-card-title>Meios de pagamento</mat-card-title>
+    <mat-card-content>
+        <form [formGroup]="paymentForm">
+            <div>
+                <mat-checkbox color="primary" formControlName="money">Dinheiro</mat-checkbox>
+            </div>
+            <div>
+                <mat-checkbox color="primary" formControlName="hasPix" test-id="pix">
+                    PIX
+                </mat-checkbox>
+                <div class="margin" *ngIf="paymentForm.value.hasPix">
+                    <mat-form-field class="width-2" test-id="pix-key">
+                        <mat-label>Chave PIX</mat-label>
+                        <input matInput formControlName="pixKey" placeholder="Chave PIX*">
+                    </mat-form-field>
+                    <mat-error *ngIf="paymentForm.get('pixKey')?.hasError('email')">
+                        Chave PIX é obrigatória
+                    </mat-error>
+                </div>
+            </div>
+            <div>
+                <mat-checkbox color="primary" formControlName="hasCreditCard"
+                    test-id="has-credit-card">
+                    Cartão de crédito
+                </mat-checkbox>
+                <div class="margin" *ngIf="paymentForm.value.hasCreditCard"
+                    formGroupName="creditCard">
+                    <div formGroupName="fee">
+                        <div>
+                            <mat-label>
+                                Valores que serão adicionados ao total da compra:
+                            </mat-label>
+                        </div>
+                        <mat-form-field test-id="credit-card-percentage">
+                            <mat-label>Percentual</mat-label>
+                            <input matInput formControlName="percentage" type="number"
+                                placeholder="Percentual">
+                        </mat-form-field>
+                        <mat-error *ngIf="paymentForm.get('creditCard')?.get('fee')?.get('percentage')?.hasError('email')">
+                            Percentual é obrigatório
+                        </mat-error>
+                        <mat-form-field test-id="credit-card-fee">
+                            <mat-label>Valor por pagamento (R$)</mat-label>
+                            <input matInput formControlName="value" type="number"
+                                placeholder="Valor por pagamento (R$)">
+                        </mat-form-field>
+                        <mat-error *ngIf="paymentForm.get('creditCard')?.get('fee')?.get('value')?.hasError('email')">
+                            Valor é obrigatório
+                        </mat-error>
+                    </div>
+                    <mat-label>Bandeiras</mat-label>
+                    <div class="margin" formGroupName="flags">
+                        <div *ngFor="let creditCard of creditCards; let i = index" [formGroupName]="i">
+                            <mat-checkbox color="primary" formControlName="selected">
+                                {{creditCard}}
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <mat-error *ngIf="paymentForm.hasError('required')">
+                        Informar pelo menos uma bandeira é obrigatório
+                    </mat-error>
+                </div>
+            </div>
+            <button type="button" mat-raised-button (click)="savePayment()" color="primary"
+                *ngIf="!(isSaving$ | async)" test-id="save-payment-button">
+                Salvar pagamento
+            </button>
+            <mat-spinner color="primary" diameter="20" *ngIf="isSaving$ | async"
+                test-id="payment-loader">
+            </mat-spinner>
+        </form>
+    </mat-card-content>
+</mat-card>

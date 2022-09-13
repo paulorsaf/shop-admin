@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { Address } from "src/app/model/address/address";
-import { Company } from "src/app/model/company/company";
+import { Company, Payment } from "src/app/model/company/company";
 
 export const loadCompanyDetail = createAction('[Company detail] load', props<{id: string}>());
 export const loadCompanyDetailSuccess = createAction('[Company detail] load success', props<{company: Company}>());
@@ -26,3 +26,7 @@ export const saveCompanyDetailLogoFail = createAction('[Company detail] upload l
 export const saveCompanyDetailAboutUs = createAction('[Company detail] save about us', props<{html: string}>());
 export const saveCompanyDetailAboutUsSuccess = createAction('[Company detail] save about us success');
 export const saveCompanyDetailAboutUsFail = createAction('[Company detail] save about us fail', props<{error: any}>());
+
+export const saveCompanyDetailPayment = createAction('[Company detail] save payment', props<{payment: Payment}>());
+export const saveCompanyDetailPaymentSuccess = createAction('[Company detail] save payment success');
+export const saveCompanyDetailPaymentFail = createAction('[Company detail] save payment fail', props<{error: any}>());

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
-import { Company } from 'src/app/model/company/company';
+import { Company, Payment } from 'src/app/model/company/company';
 import { Address } from 'src/app/model/address/address';
 
 @Injectable({
@@ -50,6 +50,11 @@ export class CompanyService {
         observer.complete();
       })
     })
+  }
+
+  updatePayment(id: string, payment: Payment): Observable<void> {
+    const url = `${environment.apiUrl}/companies/${id}/payment`;
+    return this.apiService.patch<void>(url, {payment});
   }
 
   private toBase64(image: File) {

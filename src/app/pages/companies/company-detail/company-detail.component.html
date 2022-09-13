@@ -1,14 +1,14 @@
 <div class="page">
-    <section *ngIf="isLoading$ | async" test-id="company-loader">
+    <span *ngIf="isLoading$ | async" test-id="company-loader">
         <ngx-skeleton-loader appearance="line"
             [theme]="{height: '232px', width: '100%', 'margin-bottom': '10px'}">
         </ngx-skeleton-loader>
         <ngx-skeleton-loader appearance="line"
             [theme]="{height: '288px', width: '100%', 'margin-bottom': '10px'}">
         </ngx-skeleton-loader>
-    </section>
+    </span>
 
-    <section *ngIf="!(isLoading$ | async)" test-id="company">
+    <span *ngIf="!(isLoading$ | async)" test-id="company">
         <div class="company-details-wrapper">
             <mat-card class="logo-wrapper" [ngStyle]="logoStyle$ | async">
                 <mat-card-subtitle>Logo</mat-card-subtitle>
@@ -120,6 +120,10 @@
             </mat-card-content>
         </mat-card>
         
+        <section>
+            <app-company-detail-payment></app-company-detail-payment>
+        </section>
+        
         <mat-card>
             <mat-card-title>Sobre nós</mat-card-title>
             <mat-card-content>
@@ -136,5 +140,5 @@
                 </form>
             </mat-card-content>
         </mat-card>
-    </section>
+    </span>
 </div>

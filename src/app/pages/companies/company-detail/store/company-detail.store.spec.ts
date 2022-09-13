@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
 import { companyDetailReducer } from "./company-detail.reducers";
 import { CompanyDetailState } from "./company-detail.state";
 
@@ -342,6 +342,42 @@ describe('Company detail store', () => {
             error,
             isSavedAboutUs: false,
             isSavingAboutUs: false
+        });
+    });
+    
+    it('saveCompanyDetailPayment', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            error: {},
+            isSavedPayment: true,
+            isSavingPayment: false
+        };
+
+        const payment = {id: "anyPayment"} as any;
+        const state = companyDetailReducer(initialState, saveCompanyDetailPayment({payment}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error: undefined,
+            isSavedPayment: false,
+            isSavingPayment: true
+        });
+    });
+    
+    it('saveCompanyDetailPaymentFail', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isSavingPayment: true
+        };
+
+        const error = {error: "error"};
+        const state = companyDetailReducer(initialState, saveCompanyDetailPaymentFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error,
+            isSavedPayment: false,
+            isSavingPayment: false
         });
     });
   

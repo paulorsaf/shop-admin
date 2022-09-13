@@ -19,5 +19,8 @@ export class CompanyServiceMock {
     updateLogo() {
         return this._response || of({});
     }
+    updatePayment() {
+        return this._response || of({});
+    }
     
 }

@@ -14,6 +14,8 @@ export type CompanyDetailState = {
     isSavingAddress: boolean;
     isSavedCompany: boolean;
     isSavingCompany: boolean;
+    isSavedPayment: boolean;
+    isSavingPayment: boolean;
     isUploadedLogo: boolean;
     isUploadingLogo: boolean;
     company?: Company;

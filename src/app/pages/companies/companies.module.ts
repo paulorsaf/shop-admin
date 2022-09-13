@@ -10,6 +10,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { CompanyDetailComponent } from './company-detail/company-detail.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CompanyDetailPaymentComponent } from './company-detail/company-detail-payment/company-detail-payment.component';
 
 const routes: Routes = [{
   path: '',
@@ -18,7 +20,8 @@ const routes: Routes = [{
 
 @NgModule({
   declarations: [
-    CompanyDetailComponent
+    CompanyDetailComponent,
+    CompanyDetailPaymentComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +33,7 @@ const routes: Routes = [{
 
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,

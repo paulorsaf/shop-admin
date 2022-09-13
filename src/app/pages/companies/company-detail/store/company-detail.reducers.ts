@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
 import { CompanyDetailState } from './company-detail.state';
 
 const initialState: CompanyDetailState = AppInitialState.companyDetail;
@@ -159,6 +159,29 @@ const _companyDetailReducer = createReducer(initialState,
             error: action.error,
             isSavedAboutUs: false,
             isSavingAboutUs: false
+        };
+    }),
+    on(saveCompanyDetailPayment, (state) => {
+        return {
+            ...state,
+            error: undefined,
+            isSavedPayment: false,
+            isSavingPayment: true
+        };
+    }),
+    on(saveCompanyDetailPaymentSuccess, (state) => {
+        return {
+            ...state,
+            isSavedPayment: true,
+            isSavingPayment: false
+        };
+    }),
+    on(saveCompanyDetailPaymentFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isSavedPayment: false,
+            isSavingPayment: false
         };
     })
 );

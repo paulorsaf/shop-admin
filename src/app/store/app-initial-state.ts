@@ -47,6 +47,8 @@ export const AppInitialState: AppState = {
         isSavingAddress: false,
         isSavedCompany: false,
         isSavingCompany: false,
+        isSavedPayment: false,
+        isSavingPayment: false,
         isUploadedLogo: false,
         isUploadingLogo: false
     },
