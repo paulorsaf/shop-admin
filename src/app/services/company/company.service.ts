@@ -53,8 +53,8 @@ export class CompanyService {
   }
 
   updatePayment(id: string, payment: Payment): Observable<void> {
-    const url = `${environment.apiUrl}/companies/${id}/payment`;
-    return this.apiService.patch<void>(url, {payment});
+    const url = `${environment.apiUrl}/companies/${id}/payments`;
+    return this.apiService.patch<void>(url, payment);
   }
 
   private toBase64(image: File) {

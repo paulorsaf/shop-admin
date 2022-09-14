@@ -42,14 +42,13 @@ export class CompanyDetailPaymentComponent implements OnInit {
     if (this.paymentForm.valid) {
       const payment = {
         ...this.paymentForm.value,
-        creditCard: {
+        creditCard: this.paymentForm.value.hasCreditCard ? {
           ...this.paymentForm.value.creditCard,
           flags: this.paymentForm.value.creditCard.flags
             .filter((f: FlagForm) => f.selected)
             .map((f: FlagForm) => f.description)
-        }
+        } : null
       };
-      console.log(payment);
       this.store.dispatch(saveCompanyDetailPayment({payment}));
     }
   }
