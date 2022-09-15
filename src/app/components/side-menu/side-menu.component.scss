@@ -4,3 +4,9 @@ mat-list {
         cursor: pointer;
     }
 }
+
+@media only screen and (max-width: 1130px) {
+    mat-list {
+        width: 100%;
+    }
+}
