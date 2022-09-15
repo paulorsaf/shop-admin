@@ -18,10 +18,12 @@ import { AddTokenHeaderHttpRequestInterceptor } from './interceptors/add-token-h
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SideMenuComponent
   ],
   imports: [
     BrowserModule,
