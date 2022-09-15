@@ -18,7 +18,7 @@ export class PurchasesComponent implements OnInit {
   purchases$!: Observable<PurchaseSummary[]>;
 
   dataSource!: MatTableDataSource<PurchaseSummary[]>;
-  displayedColumns = ['user', 'totalAmount', 'totalPrice', 'status', 'payment', 'date'];
+  displayedColumns = ['user', 'totalAmount', 'totalPrice', 'delivery', 'status', 'payment', 'date'];
 
   purchasesSubscription!: Subscription;
 

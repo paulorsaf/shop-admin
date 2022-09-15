@@ -34,6 +34,16 @@
                     </select>
                 </div>
             </div>
+            <div class="label" *ngIf="purchase.address">
+                <label>Endereço:</label>
+                <div>Rua: {{purchase.address.street}}</div>
+                <div>Número: {{purchase.address.number}}</div>
+                <div>Complemento: {{purchase.address.complement}}</div>
+                <div>Bairro: {{purchase.address.neighborhood}}</div>
+                <div>CEP: {{purchase.address.zipCode}}</div>
+                <div>Cidade: {{purchase.address.city}}</div>
+                <div>Estado: {{purchase.address.state}}</div>
+            </div>
         </mat-drawer>
         <mat-drawer-content>
             <section class="page" test-id="purchase-detail">

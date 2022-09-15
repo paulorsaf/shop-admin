@@ -37,6 +37,14 @@
                 </ngx-skeleton-loader>
             </div>
         </div>
+        <div class="label">
+            <label>Endereço:</label>
+            <div *ngFor="let i of [1,2,3,4,5,6,7]">
+                <ngx-skeleton-loader appearance="line"
+                    [theme]="{height: '15px', width: '150px', 'margin-bottom': 0}">
+                </ngx-skeleton-loader>
+            </div>
+        </div>
     </mat-drawer>
     <mat-drawer-content>
         <section class="page-loading">
