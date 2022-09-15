@@ -1,4 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app-state';
+import { logout } from 'src/app/store/user/user.actions';
 
 @Component({
   selector: 'app-side-menu',
@@ -7,20 +11,24 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class SideMenuComponent implements OnInit {
 
-  @Output() clickMenu = new EventEmitter<string>();
-  @Output() clickLogout = new EventEmitter<string>();
+  @Output() itemSelected = new EventEmitter<string>();
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit(): void {
   }
 
   goToPage(page: string) {
-    this.clickMenu.emit(page);
+    this.router.navigate([page]);
+    this.itemSelected.emit(page);
   }
 
   logout() {
-    this.clickLogout.emit();
+    this.store.dispatch(logout());
+    this.itemSelected.emit();
   }
 
 }

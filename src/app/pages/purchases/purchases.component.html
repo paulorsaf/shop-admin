@@ -4,7 +4,7 @@
 
 <section *ngIf="(isLoading$ | async) === false" class="page" test-id="purchases">
     <h1>Compras</h1>
-    <table *ngIf="(purchases$ | async)?.length" mat-table [dataSource]="dataSource">
+    <table *ngIf="(purchases$ | async)?.length" mat-table [dataSource]="dataSource" class="hide-on-mobile">
         <ng-container matColumnDef="user">
             <th mat-header-cell *matHeaderCellDef>Email do usuário</th>
             <td mat-cell *matCellDef="let element">
@@ -61,6 +61,28 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToPurchaseDetail(row)"></tr>
     </table>
+    <mat-card *ngFor="let element of (purchases$ | async)" (click)="goToPurchaseDetail(element)">
+        <mat-card-title>{{element.createdAt | date: "dd/MM/yyyy HH:mm:ss"}}</mat-card-title>
+        <mat-card-subtitle>{{element.status | statusName}}</mat-card-subtitle>
+        <mat-card-content>
+            <div>Usuário: {{element.user?.email}}</div>
+            <div>Qtd itens: {{element.totalAmount | number}}</div>
+            <div>Entrega: {{element.address ? "Domicílio" : "Busca na loja"}}</div>
+            <div>Preço total: {{element.totalWithPaymentFee | currency: "R$ "}}</div>
+            <br/>
+            <div *ngIf="element.payment">
+                Pagamento: {{element.payment.type | paymentTypeName}}
+                <div class="link" (click)="openReceipt(element.payment.receiptUrl, $event)"
+                    *ngIf="element.payment?.type === 'PIX' && element.payment?.receiptUrl"
+                    test-id="pix-receipt">
+                    Ver recibo
+                </div>
+            </div>
+            <div *ngIf="element.payment?.error" test-id="payment-error">
+                <mat-error>Erro: {{element.payment.error}}</mat-error>
+            </div>
+        </mat-card-content>
+    </mat-card>
     <div *ngIf="(purchases$ | async)?.length === 0" align="middle" test-id="no-results-found">
         Nenhum resultado encontrado
     </div>

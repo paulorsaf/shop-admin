@@ -4,7 +4,7 @@
 
 <mat-drawer-container *ngIf="!(isVerifyingUserLogged$ | async)">
     <mat-drawer mode="side" opened *ngIf="user$ | async">
-        <app-side-menu (clickMenu)="goToPage($event)" (clickLogout)="logout()"></app-side-menu>
+        <app-side-menu (itemSelected)="hideMenu()"></app-side-menu>
     </mat-drawer>
     <mat-drawer-content>
         <div class="show-on-mobile">
@@ -20,7 +20,7 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </mat-card-title>
-                    <app-side-menu (clickMenu)="goToPage($event)" (clickLogout)="logout()"></app-side-menu>
+                    <app-side-menu (itemSelected)="hideMenu()"></app-side-menu>
                 </mat-card>
                 <div class="sidemenu-overlay" (click)="showMenu = !showMenu"></div>
             </div>

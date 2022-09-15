@@ -1,4 +1,7 @@
+import { Address } from "../address/address";
+
 export type PurchaseSummary = {
+    address: Address;
     createdAt: string;
     id: string;
     payment: {

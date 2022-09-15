@@ -38,7 +38,9 @@ export class PurchasesComponent implements OnInit {
     this.store.dispatch(loadPurchases());
   }
 
-  openReceipt(receiptUrl: string) {
+  openReceipt(receiptUrl: string, event$?: any) {
+    event$?.stopPropagation();
+
     window.open(receiptUrl, '_blank')
   }
 

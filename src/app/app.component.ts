@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
 import { User } from './model/user/user';
 import { AppState } from './store/app-state';
-import { logout, verfiyUserIsLogged } from './store/user/user.actions';
+import { verfiyUserIsLogged } from './store/user/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -31,14 +31,8 @@ export class AppComponent implements OnInit {
     this.onVerifiedUserLogged();
   }
 
-  logout() {
+  hideMenu() {
     this.showMenu = false;
-    this.store.dispatch(logout());
-  }
-
-  goToPage(page: string) {
-    this.showMenu = false;
-    this.router.navigate([page]);
   }
 
   private onVerifiedUserLogged() {
