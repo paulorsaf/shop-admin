@@ -3,96 +3,18 @@
 </section>
 
 <div *ngIf="(purchase$ | async); let purchase">
-    <mat-drawer-container *ngIf="(isLoading$ | async) === false">
+    <mat-drawer-container *ngIf="(isLoading$ | async) === false" class="hide-on-mobile"
+        test-id="purchase-detail">
         <mat-drawer mode="side" opened position="start" class="hide-on-mobile">
-            <div class="label">
-                <label>Usuário:</label>
-                <div>{{purchase?.user?.email}}</div>
-            </div>
-            <div class="label">
-                <label>Criado em:</label>
-                <div>{{purchase?.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
-            </div>
-            <div class="label">
-                <label>Pagamento:</label>
-                <div>{{purchase?.payment?.type || "" | paymentTypeName}}</div>
-                <div *ngIf="purchase?.payment?.type === 'PIX' && purchase?.payment?.receiptUrl"
-                    class="link" (click)="showReceipt()" test-id="receipt">
-                    Ver recibo
-                </div>
-                <mat-error *ngIf="purchase?.payment?.error" test-id="payment-error">
-                    {{purchase.payment.error}}
-                </mat-error>
-            </div>
-            <div class="label">
-                <label>Estado:</label>
-                <div>
-                    <select [(ngModel)]="status" (change)="changeStatus()" test-id="status-select">
-                        <option *ngFor="let status of statusList" [value]="status.key">
-                            {{status.value}}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="label" *ngIf="purchase.address">
-                <label>Endereço:</label>
-                <div>Rua: {{purchase.address.street}}</div>
-                <div>Número: {{purchase.address.number}}</div>
-                <div>Complemento: {{purchase.address.complement}}</div>
-                <div>Bairro: {{purchase.address.neighborhood}}</div>
-                <div>CEP: {{purchase.address.zipCode}}</div>
-                <div>Cidade: {{purchase.address.city}}</div>
-                <div>Estado: {{purchase.address.state}}</div>
-            </div>
+            <app-purchase-detail-data></app-purchase-detail-data>
         </mat-drawer>
         <mat-drawer-content>
-            <section class="page" test-id="purchase-detail">
-                <mat-list role="list">
-                    <mat-list-item role="listitem" *ngFor="let product of purchase.products">
-                        <span class="total-product-price">
-                            {{product.amount * (product.priceWithDiscount || product.price) | currency: "R$ "}}
-                        </span>
-                        <div mat-line>{{product.amount}}x {{product.name}}</div>
-                        <div mat-line>
-                            <span class="price"
-                                [ngClass]="product.priceWithDiscount ? 'line-through' : ''">
-                                {{product.price | currency: "R$ "}}
-                            </span>
-                            <span *ngIf="product.priceWithDiscount">
-                                {{product.priceWithDiscount | currency: "R$ "}}
-                            </span>
-                        </div>
-                    </mat-list-item>
-                    <mat-list-item role="listitem" *ngIf="purchase.price?.delivery">
-                        <span class="total-product-price">
-                            {{purchase.price?.delivery | currency: "R$ "}}
-                        </span>
-                        <div mat-line>Taxa de entrega</div>
-                    </mat-list-item>
-                    <mat-list-item role="listitem" *ngIf="purchase.price?.paymentFee">
-                        <span class="total-product-price">
-                            {{purchase.price?.paymentFee | currency: "R$ "}}
-                        </span>
-                        <div mat-line>Taxa do cartão de crédito</div>
-                    </mat-list-item>
-                </mat-list>
-                <mat-list role="list">
-                    <mat-list-item role="listitem">
-                        <span class="total-product-price">
-                            <b>{{purchase.price?.totalWithPaymentFee | currency: "R$ "}}</b>
-                        </span>
-                        <div mat-line>
-                            <b>
-                                Total:
-                                <div>
-                                    {{purchase.totalAmount | number}}
-                                    {{purchase.totalAmount === 1 ? 'produto' : 'produtos'}}
-                                </div>
-                            </b>
-                        </div>
-                    </mat-list-item>
-                </mat-list>
-            </section>
+            <app-purchase-detail-products></app-purchase-detail-products>
         </mat-drawer-content>
     </mat-drawer-container>
+
+    <div class="show-on-mobile">
+        <app-purchase-detail-data></app-purchase-detail-data>
+        <app-purchase-detail-products></app-purchase-detail-products>
+    </div>
 </div>

@@ -9,7 +9,7 @@ mat-drawer-container {
     }
 
     mat-drawer {
-        padding: 1rem;
+        padding: 0.5rem;
         max-width: 15rem;
     }
 
@@ -32,4 +32,8 @@ mat-drawer-container {
     .mat-form-field-wrapper {
         margin-bottom: 0;
     }
+}
+
+.mobile {
+    padding: 1rem;
 }

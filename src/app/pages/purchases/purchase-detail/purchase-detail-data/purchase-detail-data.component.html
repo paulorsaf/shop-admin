@@ -1,0 +1,44 @@
+<section *ngIf="purchase$ | async; let purchase" class="page">
+    <div class="label">
+        <label>Usuário:</label>
+        <div>{{purchase?.user?.email}}</div>
+    </div>
+    <div class="label">
+        <label>Criado em:</label>
+        <div>{{purchase?.createdAt | date: 'dd/MM/yyyy HH:mm:ss'}}</div>
+    </div>
+    <div class="label">
+        <label>Pagamento:</label>
+        <div>{{purchase?.payment?.type || "" | paymentTypeName}}</div>
+        <div *ngIf="purchase?.payment?.type === 'PIX' && purchase?.payment?.receiptUrl"
+            class="link" (click)="showReceipt()" test-id="receipt">
+            Ver recibo
+        </div>
+        <mat-error *ngIf="purchase?.payment?.error" test-id="payment-error">
+            {{purchase.payment.error}}
+        </mat-error>
+    </div>
+    <div class="label">
+        <label>Estado:</label>
+        <div>
+            <select [(ngModel)]="status" (change)="changeStatus()" test-id="status-select">
+                <option *ngFor="let status of statusList" [value]="status.key">
+                    {{status.value}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="label">
+        <label>Endereço:</label>
+        <div *ngIf="purchase.address">
+            <div>Rua: {{purchase.address.street}}</div>
+            <div>Número: {{purchase.address.number}}</div>
+            <div>Complemento: {{purchase.address.complement}}</div>
+            <div>Bairro: {{purchase.address.neighborhood}}</div>
+            <div>CEP: {{purchase.address.zipCode}}</div>
+            <div>Cidade: {{purchase.address.city}}</div>
+            <div>Estado: {{purchase.address.state}}</div>
+        </div>
+        <div *ngIf="!purchase.address">Busca na loja</div>
+    </div>
+</section>

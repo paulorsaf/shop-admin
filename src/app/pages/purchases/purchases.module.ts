@@ -20,6 +20,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PurchaseDetailLoaderComponent } from './purchase-detail/purchase-detail-loader/purchase-detail-loader.component';
+import { PurchaseDetailDataComponent } from './purchase-detail/purchase-detail-data/purchase-detail-data.component';
+import { PurchaseDetailProductsComponent } from './purchase-detail/purchase-detail-products/purchase-detail-products.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,7 +35,9 @@ const routes: Routes = [{
   declarations: [
     PurchasesComponent,
     PurchaseDetailComponent,
-    PurchaseDetailLoaderComponent
+    PurchaseDetailLoaderComponent,
+    PurchaseDetailDataComponent,
+    PurchaseDetailProductsComponent
   ],
   imports: [
     CommonModule,

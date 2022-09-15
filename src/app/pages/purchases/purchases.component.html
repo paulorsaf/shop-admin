@@ -61,28 +61,30 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToPurchaseDetail(row)"></tr>
     </table>
-    <mat-card *ngFor="let element of (purchases$ | async)" (click)="goToPurchaseDetail(element)">
-        <mat-card-title>{{element.createdAt | date: "dd/MM/yyyy HH:mm:ss"}}</mat-card-title>
-        <mat-card-subtitle>{{element.status | statusName}}</mat-card-subtitle>
-        <mat-card-content>
-            <div>Usuário: {{element.user?.email}}</div>
-            <div>Qtd itens: {{element.totalAmount | number}}</div>
-            <div>Entrega: {{element.address ? "Domicílio" : "Busca na loja"}}</div>
-            <div>Preço total: {{element.totalWithPaymentFee | currency: "R$ "}}</div>
-            <br/>
-            <div *ngIf="element.payment">
-                Pagamento: {{element.payment.type | paymentTypeName}}
-                <div class="link" (click)="openReceipt(element.payment.receiptUrl, $event)"
-                    *ngIf="element.payment?.type === 'PIX' && element.payment?.receiptUrl"
-                    test-id="pix-receipt">
-                    Ver recibo
+    <span class="show-on-mobile">
+        <mat-card *ngFor="let element of (purchases$ | async)" (click)="goToPurchaseDetail(element)">
+            <mat-card-title>{{element.createdAt | date: "dd/MM/yyyy HH:mm:ss"}}</mat-card-title>
+            <mat-card-subtitle>{{element.status | statusName}}</mat-card-subtitle>
+            <mat-card-content>
+                <div>Usuário: {{element.user?.email}}</div>
+                <div>Qtd itens: {{element.totalAmount | number}}</div>
+                <div>Entrega: {{element.address ? "Domicílio" : "Busca na loja"}}</div>
+                <div>Preço total: {{element.totalWithPaymentFee | currency: "R$ "}}</div>
+                <br/>
+                <div *ngIf="element.payment">
+                    Pagamento: {{element.payment.type | paymentTypeName}}
+                    <div class="link" (click)="openReceipt(element.payment.receiptUrl, $event)"
+                        *ngIf="element.payment?.type === 'PIX' && element.payment?.receiptUrl"
+                        test-id="pix-receipt">
+                        Ver recibo
+                    </div>
                 </div>
-            </div>
-            <div *ngIf="element.payment?.error" test-id="payment-error">
-                <mat-error>Erro: {{element.payment.error}}</mat-error>
-            </div>
-        </mat-card-content>
-    </mat-card>
+                <div *ngIf="element.payment?.error" test-id="payment-error">
+                    <mat-error>Erro: {{element.payment.error}}</mat-error>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </span>
     <div *ngIf="(purchases$ | async)?.length === 0" align="middle" test-id="no-results-found">
         Nenhum resultado encontrado
     </div>
