@@ -17,3 +17,10 @@ mat-spinner {
 .margin {
     margin: 10px 20px;
 }
+
+@media only screen and (max-width: 1130px) {
+    mat-form-field,
+    .width-2 {
+        width: -webkit-fill-available !important;
+    }
+}
