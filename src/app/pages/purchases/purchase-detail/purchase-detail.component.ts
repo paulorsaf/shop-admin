@@ -17,9 +17,6 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
   isLoading$!: Observable<boolean>;
   purchase$!: Observable<Purchase | undefined>;
 
-  status = "";
-  statusList: {key: string, value: string}[] = [];
-
   errorSubscription!: Subscription;
   updateSubscription!: Subscription;
 
