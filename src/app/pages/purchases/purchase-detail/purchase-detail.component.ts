@@ -32,10 +32,10 @@ export class PurchaseDetailComponent implements OnInit, OnDestroy {
     );
     this.purchase$ = this.store.select(state => state.purchaseDetail.purchase);
 
+    this.store.dispatch(loadPurchaseDetail({id: this.getId()}));
+
     this.onError();
     this.onUpdated();
-
-    this.store.dispatch(loadPurchaseDetail({id: this.getId()}));
   }
 
   ngOnDestroy(): void {

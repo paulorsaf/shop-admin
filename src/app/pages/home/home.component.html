@@ -1,11 +1,88 @@
-<section>
-    <mat-card (click)="goToPage('/categories')">
-        Adicionar categorias
-    </mat-card>
-    <mat-card (click)="goToPage('/products')">
-        Adicionar produtos
-    </mat-card>
-    <mat-card (click)="goToPage('/banners')">
-        Adicionar banners
-    </mat-card>
+<section *ngIf="isLoading$ | async" class="page" test-id="summaries-loader">
+    <app-page-list-loader></app-page-list-loader>
+</section>
+<section *ngIf="!(isLoading$ | async)" class="page" test-id="summaries">
+    <h1>Compras entre ontem e hoje</h1>
+    <div>
+        <table *ngIf="(purchases$ | async)?.length" mat-table [dataSource]="dataSource"
+            class="hide-on-mobile">
+            <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef>Criado em</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.createdAt | date: "dd/MM/yyyy HH:mm"}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef>Usuário</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.user?.email}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Valor</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.price | currency: "R$ "}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="paymentType">
+                <th mat-header-cell *matHeaderCellDef>Pagamento</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.payment?.type | paymentTypeName}}
+                    <span *ngIf="element.payment?.receiptUrl">
+                        <br/>
+                        <a [href]="element.payment.receiptUrl" target="_blank"
+                            (click)="stopPropagation($event)">
+                            Ver recibo
+                        </a>
+                    </span>
+                    <span *ngIf="element.payment?.error">
+                        <br/>{{element.payment.error}}
+                    </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Estado</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.status | statusName}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delivery">
+                <th mat-header-cell *matHeaderCellDef>Entrega</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.address ? 'Domicílio' : 'Busca na loja'}}
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                (click)="goToPurchase(row)" test-id="purchase"></tr>
+        </table>
+        <span class="show-on-mobile">
+            <mat-card *ngFor="let element of (purchases$ | async)" (click)="goToPurchase(element)">
+                <mat-card-title>{{element.createdAt | date: "dd/MM/yyyy HH:mm:ss"}}</mat-card-title>
+                <mat-card-subtitle>{{element.status | statusName}}</mat-card-subtitle>
+                <mat-card-content>
+                    <div>Usuário: {{element.user?.email}}</div>
+                    <div *ngIf="element.payment">
+                        <div>Preço: {{element.price | currency: "R$ "}}</div>
+                        <div>Entrega: {{element.address ? 'Domicílio' : 'Busca na loja'}}</div>
+                        <div>
+                            Pagamento:
+                            <span>
+                                {{element.payment.type | paymentTypeName}}
+                                <span *ngIf="element.payment.receiptUrl">
+                                    <a [href]="element.payment.receiptUrl" target="_blank"
+                                        (click)="stopPropagation($event)">
+                                        (Ver recibo)
+                                    </a>
+                                </span>
+                            </span>
+                            <div *ngIf="element.payment?.error" test-id="payment-error">
+                                <mat-error>Erro: {{element.payment.error}}</mat-error>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </span>
+    </div>
 </section>

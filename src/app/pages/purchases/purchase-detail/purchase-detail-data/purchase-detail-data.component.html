@@ -10,8 +10,8 @@
     <div class="label">
         <label>Pagamento:</label>
         <div>{{purchase?.payment?.type || "" | paymentTypeName}}</div>
-        <div *ngIf="purchase?.payment?.type === 'PIX' && purchase?.payment?.receiptUrl"
-            class="link" (click)="showReceipt()" test-id="receipt">
+        <div *ngIf="purchase?.payment?.receiptUrl" class="link" (click)="showReceipt()"
+            test-id="receipt">
             Ver recibo
         </div>
         <mat-error *ngIf="purchase?.payment?.error" test-id="payment-error">

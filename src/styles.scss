@@ -59,6 +59,11 @@ tr {
 .show-on-mobile {
     display: none;
 }
+
+[mat-table] {
+    display: table;
+}
+
 @media only screen and (max-width: 1130px) {
     .hide-on-mobile {
         display: none !important;

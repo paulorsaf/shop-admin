@@ -23,6 +23,9 @@ export class StatusNamePipe implements PipeTransform {
     if (value === "READY") {
       return "Pronto";
     }
+    if (value === "DELIVERYING") {
+      return "Entregando";
+    }
     if (value === "CANCELLED") {
       return "Cancelado";
     }

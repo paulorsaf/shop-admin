@@ -48,6 +48,10 @@ describe('Status name pipe', () => {
     expect(pipe.transform("CANCELLED")).toEqual("Cancelado");
   })
 
+  it('given status is DELIVERYING, then return Entregando', () => {
+    expect(pipe.transform("DELIVERYING")).toEqual("Entregando");
+  })
+
   it('given status is an unknown status, then return the unknown status', () => {
     expect(pipe.transform("UNKNOWN")).toEqual("UNKNOWN");
   })

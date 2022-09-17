@@ -52,6 +52,12 @@ export const AppInitialState: AppState = {
         isUploadedLogo: false,
         isUploadingLogo: false
     },
+    dailyPurchaseSummaries: {
+        dailyPurchaseSummaries: [],
+        error: null,
+        isLoaded: false,
+        isLoading: false
+    },
     login: {
         error: null,
         isLoggedIn: false,

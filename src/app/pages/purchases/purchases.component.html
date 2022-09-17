@@ -74,8 +74,7 @@
                 <div *ngIf="element.payment">
                     Pagamento: {{element.payment.type | paymentTypeName}}
                     <div class="link" (click)="openReceipt(element.payment.receiptUrl, $event)"
-                        *ngIf="element.payment?.type === 'PIX' && element.payment?.receiptUrl"
-                        test-id="pix-receipt">
+                        *ngIf="element.payment?.receiptUrl" test-id="pix-receipt">
                         Ver recibo
                     </div>
                 </div>

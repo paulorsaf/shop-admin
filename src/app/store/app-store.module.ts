@@ -12,6 +12,8 @@ import { CategoriesEffects } from '../pages/categories/store/categories.effects'
 import { categoriesReducer } from '../pages/categories/store/categories.reducers';
 import { CompanyDetailEffects } from '../pages/companies/company-detail/store/company-detail.effects';
 import { companyDetailReducer } from '../pages/companies/company-detail/store/company-detail.reducers';
+import { DailyPurchaseSummariesEffects } from '../pages/home/store/daily-purchase-summaries.effects';
+import { dailyPurchaseSummariesReducer } from '../pages/home/store/daily-purchase-summaries.reducers';
 import { LoginEffects } from '../pages/login/store/login.effects';
 import { loginReducer } from '../pages/login/store/login.reducers';
 import { ProductDetailEffects } from '../pages/products/product-detail/store/products/product-detail.effects';
@@ -33,6 +35,7 @@ import { userReducer } from './user/user.reducers';
     StoreModule.forFeature('categories', categoriesReducer),
     StoreModule.forFeature('categoryDetail', categoryDetailReducer),
     StoreModule.forFeature('companyDetail', companyDetailReducer),
+    StoreModule.forFeature('dailyPurchaseSummaries', dailyPurchaseSummariesReducer),
     StoreModule.forFeature('login', loginReducer),
     StoreModule.forFeature('productDetail', productDetailReducer),
     StoreModule.forFeature('products', productsReducer),
@@ -47,6 +50,7 @@ import { userReducer } from './user/user.reducers';
       CategoriesEffects,
       CategoryDetailEffects,
       CompanyDetailEffects,
+      DailyPurchaseSummariesEffects,
       LoginEffects,
       ProductDetailEffects,
       ProductsEffects,

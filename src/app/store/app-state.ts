@@ -3,6 +3,7 @@ import { BannersState } from "../pages/banners/store/banners.state";
 import { CategoryDetailState } from "../pages/categories/category-detail/store/category-detail.state";
 import { CategoriesState } from "../pages/categories/store/categories.state";
 import { CompanyDetailState } from "../pages/companies/company-detail/store/company-detail.state";
+import { DailyPurchaseSummariesState } from "../pages/home/store/daily-purchase-summaries.state";
 import { LoginState } from "../pages/login/store/login.state";
 import { ProductDetailState } from "../pages/products/product-detail/store/products/product-detail.state";
 import { ProductsState } from "../pages/products/store/products/products.state";
@@ -16,6 +17,7 @@ export type AppState = {
     categories: CategoriesState;
     categoryDetail: CategoryDetailState;
     companyDetail: CompanyDetailState;
+    dailyPurchaseSummaries: DailyPurchaseSummariesState;
     login: LoginState;
     productDetail: ProductDetailState;
     products: ProductsState;
