@@ -22,6 +22,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { PurchaseDetailLoaderComponent } from './purchase-detail/purchase-detail-loader/purchase-detail-loader.component';
 import { PurchaseDetailDataComponent } from './purchase-detail/purchase-detail-data/purchase-detail-data.component';
 import { PurchaseDetailProductsComponent } from './purchase-detail/purchase-detail-products/purchase-detail-products.component';
+import { PurchaseDetailProductNotesComponent } from './purchase-detail/purchase-detail-product-notes/purchase-detail-product-notes.component';
+import { ProductNameByIdPipeModule } from 'src/app/pipes/product-name-by-id/product-name-by-id.pipe.module';
 
 const routes: Routes = [{
   path: '',
@@ -37,7 +39,8 @@ const routes: Routes = [{
     PurchaseDetailComponent,
     PurchaseDetailLoaderComponent,
     PurchaseDetailDataComponent,
-    PurchaseDetailProductsComponent
+    PurchaseDetailProductsComponent,
+    PurchaseDetailProductNotesComponent
   ],
   imports: [
     CommonModule,
@@ -48,8 +51,9 @@ const routes: Routes = [{
     PageListLoaderModule,
     NgxSkeletonLoaderModule,
 
-    StatusNamePipeModule,
     PaymentTypeNamePipeModule,
+    ProductNameByIdPipeModule,
+    StatusNamePipeModule,
 
     MatButtonModule,
     MatCardModule,

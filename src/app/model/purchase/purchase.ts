@@ -8,6 +8,7 @@ export type Purchase = {
         type: string;
     };
     price: Price;
+    productNotes: ProductNotes[];
     products: PurchaseProduct[];
     status: string;
     totalAmount: number;
@@ -27,8 +28,14 @@ type Price = {
 }
 
 export type PurchaseProduct = {
+    id: string;
     amount: number;
     name: string;
     price: number;
     priceWithDiscount: number;
+}
+
+type ProductNotes = {
+    notes: string;
+    productId: string;
 }

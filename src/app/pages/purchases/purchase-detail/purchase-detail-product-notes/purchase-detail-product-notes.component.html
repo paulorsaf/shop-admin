@@ -1,0 +1,16 @@
+<section class="page" *ngIf="purchase$ | async; let purchase">
+    <mat-list role="list">
+        <div mat-subheader>Observações dos produtos</div>
+        <span *ngIf="purchase.productNotes?.length" test-id="product-notes">
+            <mat-list-item role="listitem" *ngFor="let notes of purchase.productNotes">
+                <div mat-line>{{notes.productId | productNameById: purchase.products}}</div>
+                <div mat-line>{{notes.notes}}</div>
+            </mat-list-item>
+        </span>
+        <span *ngIf="!purchase.productNotes?.length" test-id="empty-results">
+            <mat-list-item role="listitem">
+                <div mat-line>Nenhuma observação</div>
+            </mat-list-item>
+        </span>
+    </mat-list>
+</section>
