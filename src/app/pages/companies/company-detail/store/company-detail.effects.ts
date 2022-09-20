@@ -3,7 +3,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from "@ngrx/store";
 import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { Address } from "src/app/model/address/address";
 import { AddressService } from "src/app/services/address/address.service";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AppState } from "src/app/store/app-state";
@@ -55,7 +54,7 @@ export class CompanyDetailEffects {
             switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
                 this.companyService.update(
                     storeState.companyDetail.company?.id || "",
-                    action.name
+                    action.details
                 ).pipe(
                     map(() => saveCompanyDetailSuccess()),
                     catchError(error => of(saveCompanyDetailFail({error})))

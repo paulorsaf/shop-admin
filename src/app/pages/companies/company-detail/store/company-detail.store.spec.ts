@@ -127,7 +127,8 @@ describe('Company detail store', () => {
             isSavingCompany: false
         };
 
-        const state = companyDetailReducer(initialState, saveCompanyDetail({name: "anyName"}));
+        const details = {id: "anyDetails"} as any;
+        const state = companyDetailReducer(initialState, saveCompanyDetail({details}));
 
         expect(state).toEqual({
             ...AppInitialState.companyDetail,

@@ -33,6 +33,24 @@
                                 </mat-error>
                             </mat-form-field>
                         </div>
+                        <div>
+                            <mat-form-field>
+                                <mat-label>Whatsapp</mat-label>
+                                <input matInput placeholder="Whatsapp" formControlName="whatsapp">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>Facebook (URL)</mat-label>
+                                <input matInput placeholder="Facebook (URL)" formControlName="facebook">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>Instagram (URL)</mat-label>
+                                <input matInput placeholder="Instagram (URL)" formControlName="instagram">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-label>Website (URL)</mat-label>
+                                <input matInput placeholder="Website (URL)" formControlName="website">
+                            </mat-form-field>
+                        </div>
                         <button mat-raised-button color="primary" [disabled]="!companyForm.valid"
                             (click)="saveCompany()"  *ngIf="!(isSaving$ | async)"
                             test-id="save-company-button">

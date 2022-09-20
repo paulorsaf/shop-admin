@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
-import { Company, Payment } from 'src/app/model/company/company';
+import { Company, CompanyDetails, Payment } from 'src/app/model/company/company';
 import { Address } from 'src/app/model/address/address';
 
 @Injectable({
@@ -19,9 +19,9 @@ export class CompanyService {
     return this.apiService.get<Company>(url);
   }
 
-  update(id: string, name: string): Observable<void> {
+  update(id: string, details: CompanyDetails): Observable<void> {
     const url = `${environment.apiUrl}/companies/${id}`;
-    return this.apiService.patch<void>(url, {name});
+    return this.apiService.patch<void>(url, details);
   }
 
   updateAboutUs(id: string, html: string): Observable<void> {

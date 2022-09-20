@@ -215,7 +215,11 @@ describe('CompanyDetailComponent', () => {
         id: "anyCompany",
         name: "anyCompanyName",
         address,
-        aboutUs: "anyHtml"
+        aboutUs: "anyHtml",
+        facebook: "anyFacebook",
+        instagram: "anyInstagram",
+        website: "anyWebsite",
+        whatsapp: "anyWhatsapp"
       } as any;
       store.dispatch(loadCompanyDetailSuccess({company}));
       fixture.detectChanges();
@@ -235,7 +239,11 @@ describe('CompanyDetailComponent', () => {
 
     it('then populate company form', () => {
       expect(component.companyForm.value).toEqual({
-        name: "anyCompanyName"
+        name: "anyCompanyName",
+        facebook: "anyFacebook",
+        instagram: "anyInstagram",
+        website: "anyWebsite",
+        whatsapp: "anyWhatsapp"
       });
     })
 

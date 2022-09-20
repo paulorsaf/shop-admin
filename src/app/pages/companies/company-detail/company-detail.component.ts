@@ -108,7 +108,9 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   }
 
   saveCompany() {
-    this.store.dispatch(saveCompanyDetail({name: this.companyForm.value.name}));
+    this.store.dispatch(saveCompanyDetail({
+      details: this.companyForm.value
+    }));
   }
 
   uploadLogo($event: any) {
@@ -151,7 +153,11 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     });
 
     this.companyForm = this.formBuilder.group({
-      name: ['', [Validators.required]]
+      name: ['', [Validators.required]],
+      facebook: [''],
+      instagram: [''],
+      website: [''],
+      whatsapp: ['']
     });
   }
 
@@ -176,6 +182,10 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
       .subscribe(company => {
         this.aboutUsForm.get('html')?.setValue(company?.aboutUs);
         this.companyForm.get('name')?.setValue(company?.name);
+        this.companyForm.get('facebook')?.setValue(company?.facebook || "");
+        this.companyForm.get('instagram')?.setValue(company?.instagram || "");
+        this.companyForm.get('website')?.setValue(company?.website || "");
+        this.companyForm.get('whatsapp')?.setValue(company?.whatsapp || "");
         if (company?.address) {
           this.fillAddressForm(company.address);
         }

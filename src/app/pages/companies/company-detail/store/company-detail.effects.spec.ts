@@ -77,7 +77,8 @@ describe('CompanyDetailEffects', () => {
     describe("Given update company detail", () => {
 
         beforeEach(() => {
-            actions$ = of(saveCompanyDetail({name: "anyName"}));
+            const details = {id: "anyDetails"} as any;
+            actions$ = of(saveCompanyDetail({details}));
         })
 
         it('when success, then return save company detail success', (done) => {
