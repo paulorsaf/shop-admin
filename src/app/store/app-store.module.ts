@@ -24,8 +24,10 @@ import { PurchaseDetailEffects } from '../pages/purchases/purchase-detail/store/
 import { purchaseDetailReducer } from '../pages/purchases/purchase-detail/store/purchase-detail.reducers';
 import { PurchasesEffects } from '../pages/purchases/store/purchases.effects';
 import { purchasesReducer } from '../pages/purchases/store/purchases.reducers';
+import { clientsReducer } from '../pages/clients/store/clients.reducers';
 import { UserEffects } from './user/user.effects';
 import { userReducer } from './user/user.reducers';
+import { ClientEffects } from '../pages/clients/store/clients.effects';
 
 @NgModule({
   imports: [
@@ -34,6 +36,7 @@ import { userReducer } from './user/user.reducers';
     StoreModule.forFeature('banners', bannersReducer),
     StoreModule.forFeature('categories', categoriesReducer),
     StoreModule.forFeature('categoryDetail', categoryDetailReducer),
+    StoreModule.forFeature('clients', clientsReducer),
     StoreModule.forFeature('companyDetail', companyDetailReducer),
     StoreModule.forFeature('dailyPurchaseSummaries', dailyPurchaseSummariesReducer),
     StoreModule.forFeature('login', loginReducer),
@@ -49,6 +52,7 @@ import { userReducer } from './user/user.reducers';
       BannersEffects,
       CategoriesEffects,
       CategoryDetailEffects,
+      ClientEffects,
       CompanyDetailEffects,
       DailyPurchaseSummariesEffects,
       LoginEffects,

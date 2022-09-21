@@ -30,7 +30,8 @@ describe('SideMenuComponent', () => {
           { path: "banners", component: BlankComponent },
           { path: "trending", component: BlankComponent },
           { path: "purchases", component: BlankComponent },
-          { path: "companies", component: BlankComponent }
+          { path: "companies", component: BlankComponent },
+          { path: "users", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('user', userReducer)
@@ -49,7 +50,7 @@ describe('SideMenuComponent', () => {
   });
 
 
-  describe('given user is verified and clicks on a menu item', () => {
+  describe('given user is verified', () => {
 
     beforeEach(() => {
       store.dispatch(verfiyUserIsLoggedSuccess({user}));
@@ -112,6 +113,16 @@ describe('SideMenuComponent', () => {
   
       setTimeout(() => {
         expect(location.path()).toEqual('/companies');
+        done();
+      }, 100);
+    })
+  
+    it('when user clicks on users button, then go to users page', done => {
+      page.querySelector('[test-id="users-button"]').click();
+      fixture.detectChanges();
+  
+      setTimeout(() => {
+        expect(location.path()).toEqual('/users');
         done();
       }, 100);
     })

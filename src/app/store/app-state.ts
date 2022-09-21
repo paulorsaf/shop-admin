@@ -9,6 +9,7 @@ import { ProductDetailState } from "../pages/products/product-detail/store/produ
 import { ProductsState } from "../pages/products/store/products/products.state";
 import { PurchaseDetailState } from "../pages/purchases/purchase-detail/store/purchase-detail.state";
 import { PurchasesState } from "../pages/purchases/store/purchases.state";
+import { ClientsState } from "../pages/clients/store/clients.state";
 import { UserState } from "./user/user.state";
 
 export type AppState = {
@@ -16,6 +17,7 @@ export type AppState = {
     banners: BannersState;
     categories: CategoriesState;
     categoryDetail: CategoryDetailState;
+    clients: ClientsState;
     companyDetail: CompanyDetailState;
     dailyPurchaseSummaries: DailyPurchaseSummariesState;
     login: LoginState;
