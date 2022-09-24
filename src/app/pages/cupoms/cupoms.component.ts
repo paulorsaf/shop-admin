@@ -20,7 +20,7 @@ export class CupomsComponent implements OnInit, OnDestroy {
   isLoading$!: Observable<boolean>;
 
   dataSource!: MatTableDataSource<Cupom[]>;
-  displayedColumns = ['cupom', 'amount', 'expireDate'];
+  displayedColumns = ['cupom', 'discount', 'amount', 'expireDate'];
 
   cupomsSubscription!: Subscription;
 

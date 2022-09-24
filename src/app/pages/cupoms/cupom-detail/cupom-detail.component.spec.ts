@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Store, StoreModule } from '@ngrx/store';
+import { Cupom } from 'src/app/model/cupom/cupom';
 import { AppState } from 'src/app/store/app-state';
 import { MatDialogRefMock } from 'src/mock/mat-dialog.mock';
 import { PageMock } from 'src/mock/page.mock';
@@ -17,9 +18,10 @@ describe('CupomDetailComponent', () => {
   let dialogRef: MatDialogRefMock;
   let store: Store<AppState>;
 
-  const cupom = {
+  const cupom: Cupom = {
     amountLeft: 10,
     cupom: "anyCupom",
+    discount: 10,
     expireDate: "2030-12-31",
     id: "anyCupomId"
   }
@@ -62,6 +64,7 @@ describe('CupomDetailComponent', () => {
         id: '',
         amountLeft: '',
         cupom: '',
+        discount: '',
         expireDate: ''
       })
     })
@@ -74,6 +77,7 @@ describe('CupomDetailComponent', () => {
         id: "anyCupomId",
         amountLeft: 10,
         cupom: "anyCupom",
+        discount: 10,
         expireDate: "2030-12-31"
       })
     })
@@ -100,6 +104,20 @@ describe('CupomDetailComponent', () => {
       expect(component.form.get('cupom')!.valid).toBeTruthy()
     })
 
+    it('when discount is empty, then discount should be invalid', () => {
+      component.form.get('discount')?.setValue('');
+      fixture.detectChanges();
+
+      expect(component.form.get('discount')!.valid).toBeFalsy()
+    })
+
+    it('when discount is filled, then discount should be valid', () => {
+      component.form.get('discount')?.setValue('anyDiscount');
+      fixture.detectChanges();
+
+      expect(component.form.get('discount')!.valid).toBeTruthy()
+    })
+
     it('when form is invalid, then disable save button', () => {
       component.form.get('cupom')?.setValue('');
       fixture.detectChanges();
@@ -109,6 +127,7 @@ describe('CupomDetailComponent', () => {
 
     it('when form is valid, then enable save button', () => {
       component.form.get('cupom')?.setValue('anyCupom');
+      component.form.get('discount')?.setValue('anyDiscount');
       fixture.detectChanges();
 
       expect(page.querySelector('[test-id="save-button"]').disabled).toBeFalsy();

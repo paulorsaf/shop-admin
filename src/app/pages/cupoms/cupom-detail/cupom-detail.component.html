@@ -12,6 +12,15 @@
         </div>
         <div>
             <mat-form-field>
+                <mat-label>Desconto (%)</mat-label>
+                <input matInput formControlName="discount">
+                <mat-error *ngIf="form.get('discount')?.hasError('required')">
+                    Desconto é obrigatório
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
                 <mat-label>Quantidade máxima de usos</mat-label>
                 <input matInput type="number" formControlName="amountLeft">
                 <mat-hint align="start">* Deixar vazio para não limitar o uso do cupom</mat-hint>

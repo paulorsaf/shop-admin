@@ -40,14 +40,18 @@ export class CupomDetailComponent implements OnInit {
   }
 
   save() {
-    this.store.dispatch(saveCupom({cupom: this.form.value}));
+    this.store.dispatch(saveCupom({cupom: {
+      ...this.form.value,
+      discount: parseFloat(this.form.value.discount)
+    }}));
   }
 
   private createForm() {
     this.form = this.formBuilder.group({
+      cupom: [this.data?.cupom?.cupom || '', [Validators.required]],
+      discount: [this.data?.cupom?.discount || '', [Validators.required]],
       id: [this.data?.cupom?.id || ''],
       amountLeft: [this.data?.cupom?.amountLeft || ''],
-      cupom: [this.data?.cupom?.cupom || '', [Validators.required]],
       expireDate: [this.data?.cupom?.expireDate || '']
     });
   }
