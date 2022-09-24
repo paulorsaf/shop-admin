@@ -31,7 +31,8 @@ describe('SideMenuComponent', () => {
           { path: "trending", component: BlankComponent },
           { path: "purchases", component: BlankComponent },
           { path: "companies", component: BlankComponent },
-          { path: "users", component: BlankComponent }
+          { path: "users", component: BlankComponent },
+          { path: "cupoms", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
         StoreModule.forFeature('user', userReducer)
@@ -123,6 +124,16 @@ describe('SideMenuComponent', () => {
   
       setTimeout(() => {
         expect(location.path()).toEqual('/users');
+        done();
+      }, 100);
+    })
+  
+    it('when user clicks on cupoms button, then go to cupoms page', done => {
+      page.querySelector('[test-id="cupoms-button"]').click();
+      fixture.detectChanges();
+  
+      setTimeout(() => {
+        expect(location.path()).toEqual('/cupoms');
         done();
       }, 100);
     })

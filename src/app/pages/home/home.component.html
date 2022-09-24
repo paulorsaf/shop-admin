@@ -84,5 +84,8 @@
                 </mat-card-content>
             </mat-card>
         </span>
+        <div *ngIf="!(purchases$ | async)?.length" test-id="empty-results">
+            Nenhuma compra encontrada
+        </div>
     </div>
 </section>

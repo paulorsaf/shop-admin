@@ -81,6 +81,14 @@ describe('HomeComponent', () => {
       expect(page.querySelector('[test-id="summaries"]')).not.toBeNull();
     })
 
+    it('when empty summaries, then show empty results message', () => {
+      const summaries = [] as any;
+      store.dispatch(loadDailyPurchaseSummariesSuccess({summaries}))
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="empty-results"]')).not.toBeNull();
+    })
+
     it('when user clicks on purchase, then go to purchase page', done => {
       page.querySelector('[test-id="purchase"]').click();
       fixture.detectChanges();

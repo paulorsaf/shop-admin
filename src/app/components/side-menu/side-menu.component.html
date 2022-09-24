@@ -34,6 +34,11 @@
         <div mat-line>Clientes</div>
     </mat-list-item>
     <mat-divider></mat-divider>
+    <mat-list-item (click)="goToPage('/cupoms')" test-id="cupoms-button">
+        <mat-icon mat-list-icon>verified</mat-icon>
+        <div mat-line>Cupons</div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
     <mat-list-item (click)="logout()" test-id="logout-button">
         <mat-icon mat-list-icon>logout</mat-icon>
         <div mat-line>Sair</div>

@@ -1,0 +1,40 @@
+<section *ngIf="isLoading$ | async" class="page-loading" test-id="cupoms-loader">
+    <app-page-list-loader></app-page-list-loader>
+</section>
+
+<section *ngIf="(isLoading$ | async) === false" class="page" test-id="cupoms">
+    <h1>Cupoms</h1>
+    <div align="right">
+        <button type="button" mat-button color="primary" (click)="showAddCupom()"
+            test-id="add-cupom-button">
+            Adicionar cupom
+        </button>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="hide-on-mobile">
+        <ng-container matColumnDef="cupom">
+            <th mat-header-cell *matHeaderCellDef>Cupom</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.cupom}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Quantidade sobrando</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.amountLeft}}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="expireDate">
+            <th mat-header-cell *matHeaderCellDef>Data de expiração</th>
+            <td mat-cell *matCellDef="let element">
+                {{element.expireDate | date: 'dd/MM/yyyy'}}
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            test-id="cupom"></tr>
+    </table>
+    
+    <div *ngIf="(cupoms$ | async)?.length === 0" align="middle" test-id="empty-results">
+        Nenhum resultado encontrado
+    </div>
+</section>

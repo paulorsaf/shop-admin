@@ -26,6 +26,9 @@ const routes: Routes = [
   }, {
     path: "users",
     loadChildren: () => import('./pages/clients/clients.module').then((m) => m.UsersModule),
+  }, {
+    path: "cupoms",
+    loadChildren: () => import('./pages/cupoms/cupoms.module').then((m) => m.CupomsModule),
   }
 ];
 

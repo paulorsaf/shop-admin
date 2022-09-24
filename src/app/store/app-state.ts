@@ -11,6 +11,7 @@ import { PurchaseDetailState } from "../pages/purchases/purchase-detail/store/pu
 import { PurchasesState } from "../pages/purchases/store/purchases.state";
 import { ClientsState } from "../pages/clients/store/clients.state";
 import { UserState } from "./user/user.state";
+import { CupomsState } from "../pages/cupoms/store/cupoms.state";
 
 export type AppState = {
     bannerDetail: BannerDetailState;
@@ -19,6 +20,7 @@ export type AppState = {
     categoryDetail: CategoryDetailState;
     clients: ClientsState;
     companyDetail: CompanyDetailState;
+    cupoms: CupomsState;
     dailyPurchaseSummaries: DailyPurchaseSummariesState;
     login: LoginState;
     productDetail: ProductDetailState;
