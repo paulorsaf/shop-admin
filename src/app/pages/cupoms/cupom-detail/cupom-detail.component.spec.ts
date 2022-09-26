@@ -118,6 +118,20 @@ describe('CupomDetailComponent', () => {
       expect(component.form.get('discount')!.valid).toBeTruthy()
     })
 
+    it('when amount left is empty, then amount left should be invalid', () => {
+      component.form.get('amountLeft')?.setValue('');
+      fixture.detectChanges();
+
+      expect(component.form.get('amountLeft')!.valid).toBeFalsy()
+    })
+
+    it('when amount left is filled, then amount left should be valid', () => {
+      component.form.get('amountLeft')?.setValue('10');
+      fixture.detectChanges();
+
+      expect(component.form.get('amountLeft')!.valid).toBeTruthy()
+    })
+
     it('when form is invalid, then disable save button', () => {
       component.form.get('cupom')?.setValue('');
       fixture.detectChanges();
@@ -128,6 +142,7 @@ describe('CupomDetailComponent', () => {
     it('when form is valid, then enable save button', () => {
       component.form.get('cupom')?.setValue('anyCupom');
       component.form.get('discount')?.setValue('anyDiscount');
+      component.form.get('amountLeft')?.setValue('20');
       fixture.detectChanges();
 
       expect(page.querySelector('[test-id="save-button"]').disabled).toBeFalsy();

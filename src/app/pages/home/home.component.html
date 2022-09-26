@@ -21,7 +21,12 @@
             <ng-container matColumnDef="price">
                 <th mat-header-cell *matHeaderCellDef>Valor</th>
                 <td mat-cell *matCellDef="let element">
-                    {{element.price | currency: "R$ "}}
+                    <div align="right">
+                        <span *ngIf="element.payment?.cupom">
+                            ({{element.payment.cupom}})
+                        </span>
+                        {{element.price | currency: "R$ "}}
+                    </div>
                 </td>
             </ng-container>
             <ng-container matColumnDef="paymentType">

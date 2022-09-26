@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { Cupom } from 'src/app/model/cupom/cupom';
+import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { CupomDetailComponent } from './cupom-detail/cupom-detail.component';
 import { loadCupoms } from './store/cupoms.actions';
@@ -23,9 +24,11 @@ export class CupomsComponent implements OnInit, OnDestroy {
   displayedColumns = ['cupom', 'discount', 'amount', 'expireDate'];
 
   cupomsSubscription!: Subscription;
+  errorSubscription!: Subscription;
 
   constructor(
     private dialog: MatDialog,
+    private messageService: MessageService,
     private store: Store<AppState>
   ) { }
 
@@ -36,12 +39,14 @@ export class CupomsComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select(state => state.cupoms.isLoading);
 
     this.onCupomsChange();
+    this.onError();
 
     this.store.dispatch(loadCupoms());
   }
 
   ngOnDestroy(): void {
     this.cupomsSubscription.unsubscribe();
+    this.errorSubscription.unsubscribe();
   }
 
   showAddCupom(cupom?: Cupom) {
@@ -56,6 +61,15 @@ export class CupomsComponent implements OnInit, OnDestroy {
         .select(state => state.cupoms.cupoms)
         .subscribe(cupoms => {
           this.dataSource = new MatTableDataSource<any>(cupoms);
+        });
+  }
+
+  private onError() {
+    this.errorSubscription =
+      this.store
+        .select(state => state.cupoms.error)
+        .subscribe(error => {
+          this.messageService.showError(error?.error);
         });
   }
 

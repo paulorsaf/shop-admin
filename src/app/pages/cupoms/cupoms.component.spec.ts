@@ -1,12 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { Store, StoreModule } from '@ngrx/store';
+import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { MatDialogMock } from 'src/mock/mat-dialog.mock';
+import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { CupomsComponent } from './cupoms.component';
 import { CupomsModule } from './cupoms.module';
-import { loadCupomsSuccess } from './store/cupoms.actions';
+import { loadCupomsFail, loadCupomsSuccess } from './store/cupoms.actions';
 import { cupomsReducer } from './store/cupoms.reducers';
 
 describe('CupomsComponent', () => {
@@ -15,9 +17,11 @@ describe('CupomsComponent', () => {
   let store: Store<AppState>;
   let page: PageMock;
   let dialog: MatDialogMock;
+  let messageService: MessageServiceMock;
 
   beforeEach(async () => {
     dialog = new MatDialogMock();
+    messageService = new MessageServiceMock();
     
     await TestBed.configureTestingModule({
       imports: [
@@ -27,6 +31,7 @@ describe('CupomsComponent', () => {
       ]
     })
     .overrideProvider(MatDialog, {useValue: dialog})
+    .overrideProvider(MessageService, {useValue: messageService})
     .compileComponents();
 
     fixture = TestBed.createComponent(CupomsComponent);
@@ -102,6 +107,14 @@ describe('CupomsComponent', () => {
       expect(dialog.hasOpened).toBeTruthy();
     })
 
+  })
+
+  it('given error on create cupom, then show error', () => {
+    const error = {error: "error"};
+    store.dispatch(loadCupomsFail({error}))
+    fixture.detectChanges();
+
+    expect(messageService._hasShownError).toBeTruthy();
   })
 
   xdescribe('given user clicks on cupom', () => {

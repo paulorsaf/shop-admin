@@ -51,7 +51,7 @@ export class CupomDetailComponent implements OnInit {
       cupom: [this.data?.cupom?.cupom || '', [Validators.required]],
       discount: [this.data?.cupom?.discount || '', [Validators.required]],
       id: [this.data?.cupom?.id || ''],
-      amountLeft: [this.data?.cupom?.amountLeft || ''],
+      amountLeft: [this.data?.cupom?.amountLeft || '', [Validators.required]],
       expireDate: [this.data?.cupom?.expireDate || '']
     });
   }

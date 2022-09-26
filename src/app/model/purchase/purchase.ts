@@ -22,6 +22,7 @@ export type Purchase = {
 type Price = {
     products: number;
     delivery: number;
+    discount: number;
     paymentFee: number;
     total: number;
     totalWithPaymentFee: number;
