@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -44,30 +44,8 @@ export class ProductService {
   }
 
   uploadImage(productId: string, image: File): Observable<void> {
-    return new Observable<void>(observer => {
-      this.toBase64(image).then(result => {
-        const url = `${environment.apiUrl}/products/${productId}/images`;
-        this.apiService.post<void>(url, {file: result, name: image.name}).subscribe(() => {
-          observer.next();
-          observer.complete();
-        }, error => {
-          observer.error(error);
-          observer.complete();
-        });
-      }).catch(error => {
-        observer.error(error);
-        observer.complete();
-      })
-    })
-  }
-
-  private toBase64(image: File) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    })
+    const url = `${environment.apiUrl}/products/${productId}/images`;
+    return this.apiService.postMultipart<void>(url, image);
   }
 
 }
