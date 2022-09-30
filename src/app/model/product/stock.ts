@@ -6,9 +6,9 @@ export type Stock = {
 }
 
 export type AddStock = {
-    color: string;
+    color?: string;
     quantity: number;
-    size: string;
+    size?: string;
 }
 
 export type UpdateStockOption = {

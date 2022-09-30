@@ -27,6 +27,10 @@
           <th mat-header-cell *matHeaderCellDef>Preço com desconto</th>
           <td mat-cell *matCellDef="let element">{{element.priceWithDiscount | currency: "R$ "}}</td>
         </ng-container>
+        <ng-container matColumnDef="totalStock">
+          <th mat-header-cell *matHeaderCellDef>Estoque</th>
+          <td mat-cell *matCellDef="let element">{{element.totalStock}}</td>
+        </ng-container>
         <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">
@@ -39,6 +43,19 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToProductDetail(row)"></tr>
     </table>
+    <div *ngIf="hasMoreProductsToLoad$ | async" class="pagination-button">
+        <div *ngIf="!(isLoadingMoreProducts$ | async)" align="middle">
+            <button type="button" mat-button color="primary" (click)="loadMore()"
+                test-id="pagination-button">
+                Carregar mais
+            </button>
+        </div>
+        <div *ngIf="isLoadingMoreProducts$ | async" test-id="pagination-loader" align="middle">
+            <ngx-skeleton-loader appearance="line"
+                [theme]="{height: '32px', width: '123px'}">
+            </ngx-skeleton-loader>
+        </div>
+    </div>
     <div *ngIf="!(hasProducts$ | async)" align="middle" test-id="no-results-found">
         Nenhum resultado encontrado
     </div>

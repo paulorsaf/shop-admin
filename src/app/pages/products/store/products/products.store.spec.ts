@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
+import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
 import { productsReducer } from "./products.reducers";
 import { ProductsState } from "./products.state";
 
@@ -9,8 +9,11 @@ describe('Products store', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             error: {},
+            hasMoreToLoad: true,
             isLoaded: true,
             isLoading: false,
+            isLoadingMoreProducts: true,
+            page: 1,
             products: [{}] as any
         };
 
@@ -19,35 +22,110 @@ describe('Products store', () => {
         expect(state).toEqual({
             ...AppInitialState.products,
             error: null,
+            hasMoreToLoad: false,
             isLoaded: false,
             isLoading: true,
+            isLoadingMoreProducts: false,
+            page: 0,
             products: []
         });
     });
     
-    it('loadSuccess', () => {
+    it('loadMoreProducts', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
-            isLoaded: false,
-            isLoading: true
+            isLoadingMoreProducts: false,
+            page: 0
         };
 
-        const products = [{}, {}] as any;
-        const state = productsReducer(initialState, loadSuccess({products}));
+        const state = productsReducer(initialState, loadMoreProducts());
 
         expect(state).toEqual({
             ...AppInitialState.products,
-            isLoaded: true,
-            isLoading: false,
-            products
+            isLoadingMoreProducts: true,
+            page: 1
         });
     });
+
+    describe('given loadSuccess', () => {
+
+        let initialState: ProductsState;
+        const products = [{id: 2}, {id: 3}] as any;
+
+        beforeEach(() => {
+            initialState = {
+                ...AppInitialState.products,
+                isLoaded: false,
+                isLoading: true,
+                isLoadingMoreProducts: true,
+                products: [{id: 1}] as any
+            };
+        })
+    
+        it('when page is equal to 0, then replace existing products', () => {
+            const state = productsReducer(initialState, loadSuccess({products}));
+    
+            expect(state).toEqual({
+                ...AppInitialState.products,
+                hasMoreToLoad: true,
+                isLoaded: true,
+                isLoading: false,
+                isLoadingMoreProducts: false,
+                products
+            });
+        });
+    
+        it('when page is different than 0, then add to existing products', () => {
+            initialState.page = 1;
+
+            const state = productsReducer(initialState, loadSuccess({products}));
+    
+            expect(state).toEqual({
+                ...AppInitialState.products,
+                hasMoreToLoad: true,
+                isLoaded: true,
+                isLoading: false,
+                isLoadingMoreProducts: false,
+                page: 1,
+                products: [{id: 1}, {id: 2}, {id: 3}] as any
+            });
+        });
+    
+        it('when there are products loaded, then allow to load more products', () => {
+            const state = productsReducer(initialState, loadSuccess({products}));
+    
+            expect(state).toEqual({
+                ...AppInitialState.products,
+                hasMoreToLoad: true,
+                isLoaded: true,
+                isLoading: false,
+                isLoadingMoreProducts: false,
+                products
+            });
+        });
+    
+        it('when products loaded are empty, then do not allow to load more products', () => {
+            const products: any[] = [];
+            const state = productsReducer(initialState, loadSuccess({products}));
+    
+            expect(state).toEqual({
+                ...AppInitialState.products,
+                hasMoreToLoad: false,
+                isLoaded: true,
+                isLoading: false,
+                isLoadingMoreProducts: false,
+                products
+            });
+        });
+
+    })
     
     it('loadFail', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             isLoaded: false,
-            isLoading: true
+            isLoading: true,
+            isLoadingMoreProducts: true,
         };
 
         const error = {error: "error"};
@@ -57,7 +135,8 @@ describe('Products store', () => {
             ...AppInitialState.products,
             error,
             isLoaded: false,
-            isLoading: false
+            isLoading: false,
+            isLoadingMoreProducts: false
         });
     });
     

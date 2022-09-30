@@ -77,6 +77,10 @@ describe('ProductsComponent', () => {
       expect(page.querySelector('[test-id="products"]')).toBeNull();
     });
 
+    it('then hide pagination button', () => {
+      expect(page.querySelector('[test-id="pagination-button"]')).toBeNull();
+    });
+
   })
 
   describe('given products loaded', () => {
@@ -93,6 +97,10 @@ describe('ProductsComponent', () => {
 
     it('then show products', () => {
       expect(page.querySelector('[test-id="products"]')).not.toBeNull();
+    });
+
+    it('then show pagination button', () => {
+      expect(page.querySelector('[test-id="pagination-button"]')).not.toBeNull();
     });
 
     it('when products found, then hide no results message', () => {
@@ -200,6 +208,38 @@ describe('ProductsComponent', () => {
         expect(state.isRemoving).toBeFalsy();
         done();
       })
+    })
+
+  })
+
+  describe('given user clicks on pagination button', () => {
+
+    beforeEach(() => {
+      const products = [{id: 1}, {id: 2}] as any;
+      store.dispatch(loadSuccess({products}));
+      fixture.detectChanges();
+
+      page.querySelector('[test-id="pagination-button"]').click();
+      fixture.detectChanges();
+    })
+
+    it('then load more products', done => {
+      store.select('products').subscribe(state => {
+        expect(state.page).toEqual(1);
+        done();
+      })
+    })
+
+    describe('when loading more products', () => {
+
+      it('then hide pagination button', () => {
+        expect(page.querySelector('[test-id="pagination-button"]')).toBeNull();
+      })
+
+      it('then show pagination loader', () => {
+        expect(page.querySelector('[test-id="pagination-loader"]')).not.toBeNull();
+      })
+
     })
 
   })

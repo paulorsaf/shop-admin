@@ -104,10 +104,13 @@ export const AppInitialState: AppState = {
     },
     products: {
         error: null,
+        hasMoreToLoad: false,
         isLoaded: false,
         isLoading: false,
+        isLoadingMoreProducts: false,
         isRemoved: false,
         isRemoving: false,
+        page: 0,
         products: []
     },
     purchaseDetail: {

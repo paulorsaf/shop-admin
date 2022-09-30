@@ -6,7 +6,7 @@ import { ProductsEffects } from './products.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
+import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
 import { ProductService } from "src/app/services/product/product.service";
 
 describe('ProductsEffects', () => {
@@ -28,7 +28,7 @@ describe('ProductsEffects', () => {
             ],
             providers: [
                 ProductsEffects,
-                provideMockStore({}),
+                provideMockStore({initialState: {products: {page: 0}}}),
                 provideMockActions(() => actions$)
             ],
         })
@@ -41,6 +41,32 @@ describe('ProductsEffects', () => {
 
         beforeEach(() => {
             actions$ = of(load());
+        })
+
+        it('when success, then return load success', (done) => {
+            productService._response = of(products);
+    
+            effects.loadEffect$.subscribe(response => {
+                expect(response).toEqual(loadSuccess({products}));
+                done();
+            })
+        })
+    
+        it('when fail, then return load fail', (done) => {
+            productService._response = throwError(error);
+    
+            effects.loadEffect$.subscribe(response => {
+                expect(response).toEqual(loadFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given load more products", () => {
+
+        beforeEach(() => {
+            actions$ = of(loadMoreProducts());
         })
 
         it('when success, then return load success', (done) => {

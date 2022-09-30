@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from './products.actions';
+import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from './products.actions';
 import { ProductsState } from './products.state';
 
 const initialState: ProductsState = AppInitialState.products;
@@ -10,17 +10,29 @@ const _productsReducer = createReducer(initialState,
         return {
             ...state,
             error: null,
+            hasMoreToLoad: false,
             isLoaded: false,
             isLoading: true,
+            isLoadingMoreProducts: false,
+            page: 0,
             products: []
+        };
+    }),
+    on(loadMoreProducts, (state) => {
+        return {
+            ...state,
+            isLoadingMoreProducts: true,
+            page: state.page + 1
         };
     }),
     on(loadSuccess, (state, action) => {
         return {
             ...state,
+            hasMoreToLoad: action.products?.length ? true : false,
             isLoaded: true,
             isLoading: false,
-            products: action.products
+            isLoadingMoreProducts: false,
+            products: state.page === 0 ? action.products : state.products.concat(action.products)
         };
     }),
     on(loadFail, (state, action) => {
@@ -28,7 +40,8 @@ const _productsReducer = createReducer(initialState,
             ...state,
             error: action.error,
             isLoaded: false,
-            isLoading: false
+            isLoading: false,
+            isLoadingMoreProducts: false
         };
     }),
     on(remove, (state) => {

@@ -13,9 +13,9 @@ export class ProductService {
     private apiService: ApiService
   ) { }
 
-  find(): Observable<Product[]> {
+  find(params: Find): Observable<Product[]> {
     const url = `${environment.apiUrl}/products`;
-    return this.apiService.get<Product[]>(url);
+    return this.apiService.get<Product[]>(url, params);
   }
 
   findById(id: string): Observable<Product> {
@@ -48,4 +48,8 @@ export class ProductService {
     return this.apiService.postMultipart<void>(url, image);
   }
 
+}
+
+type Find = {
+  page?: number;
 }

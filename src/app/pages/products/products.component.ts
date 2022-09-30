@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { AppState } from 'src/app/store/app-state';
-import { load, remove } from './store/products/products.actions';
+import { load, loadMoreProducts, remove } from './store/products/products.actions';
 import { load as loadCategories } from 'src/app/pages/categories/store/categories.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
@@ -19,10 +19,12 @@ import { MessageService } from 'src/app/services/message/message.service';
 export class ProductsComponent implements OnInit, OnDestroy {
 
   dataSource!: MatTableDataSource<Product[]>;
-  displayedColumns = ['name', 'category', 'price', 'priceWithDiscount', 'delete'];
+  displayedColumns = ['name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'delete'];
 
   hasProducts$!: Observable<boolean>;
   isLoading$!: Observable<boolean>;
+  isLoadingMoreProducts$!: Observable<boolean>;
+  hasMoreProductsToLoad$!: Observable<boolean>;
 
   errorSubscription!: Subscription;
   subscription!: Subscription;
@@ -37,10 +39,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Product[]>([]);
 
+    this.hasMoreProductsToLoad$ = this.store.select(state => state.products.hasMoreToLoad);
     this.hasProducts$ = this.store.select(state => state.products.products.length > 0);
     this.isLoading$ = this.store.select(state =>
       state.products.isLoading || state.products.isRemoving
     );
+    this.isLoadingMoreProducts$ = this.store.select(state => state.products.isLoadingMoreProducts);
 
     this.onError();
     this.onProductsChange();
@@ -76,6 +80,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.remove(product);
       }
     });
+  }
+
+  loadMore() {
+    this.store.dispatch(loadMoreProducts());
   }
 
   private remove(product: Product) {
