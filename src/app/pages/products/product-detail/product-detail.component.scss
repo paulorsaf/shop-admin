@@ -2,14 +2,29 @@
     height: 100%;
 }
 
-mat-form-field,
-button {
-    margin-right: 10px;
+form {
+    max-width: 800px;
+}
+.form-wrapper {
+    display: flex;
+
+    .width-25 {
+        width: 25%;
+    }
+    .width-30 {
+        width: 30%;
+    }
+    .width-50 {
+        width: 50%;
+    }
+    .width-100 {
+        width: 100%;
+    }
 }
 
 mat-form-field,
-input {
-    min-width: 30%;
+button {
+    margin-right: 10px;
 }
 
 mat-form-field.description,

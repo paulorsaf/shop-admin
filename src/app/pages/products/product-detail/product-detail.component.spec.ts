@@ -17,7 +17,7 @@ import { ProductDetailComponent } from './product-detail.component';
 import { loadDetailSuccess, loadStockSuccess, saveDetailFail, saveDetailSuccess } from './store/products/product-detail.actions';
 import { productDetailReducer } from './store/products/product-detail.reducers';
 
-describe('ProductDetailComponent', () => {
+fdescribe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;
   let fixture: ComponentFixture<ProductDetailComponent>;
   let store: Store<AppState>;
@@ -89,6 +89,7 @@ describe('ProductDetailComponent', () => {
         categoryId: "",
         price: 0,
         priceWithDiscount: 0,
+        unit: '',
         weight: ''
       })
     })
@@ -106,8 +107,6 @@ describe('ProductDetailComponent', () => {
     })
   
     it('then load product by id', done => {
-      fixture.detectChanges();
-  
       store.select('productDetail').subscribe(state => {
         expect(state.isLoading).toBeTruthy();
         done();
@@ -140,6 +139,7 @@ describe('ProductDetailComponent', () => {
           categoryId: "1",
           price: 10,
           priceWithDiscount: 5,
+          unit: "KG",
           weight: 1
         })
       })
@@ -235,6 +235,7 @@ describe('ProductDetailComponent', () => {
       component.form.get('name')?.setValue('anyName');
       component.form.get('categoryId')?.setValue('anyCategory');
       component.form.get('price')?.setValue('anyPrice');
+      component.form.get('unit')?.setValue('anyUnit');
       component.form.get('weight')?.setValue('anyWeight');
       fixture.detectChanges();
 
@@ -364,15 +365,9 @@ describe('ProductDetailComponent', () => {
   function dispatchLoadDetailSuccess() {
     const product: Product = {
       description: 'anyDescription', id: 1, name: "name", categoryId: '1', price: 10,
-      priceWithDiscount: 5, weight: 1
+      priceWithDiscount: 5, unit: "KG", weight: 1
     } as any;
     store.dispatch(loadDetailSuccess({product}));
-    fixture.detectChanges();
-  }
-
-  function dispatchLoadStockSuccess() {
-    const stock: any = {id: 1, stockOptions: [{id: 1}]} as any;
-    store.dispatch(loadStockSuccess({stock}));
     fixture.detectChanges();
   }
 

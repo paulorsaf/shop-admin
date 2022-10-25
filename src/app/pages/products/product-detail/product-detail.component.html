@@ -11,15 +11,15 @@
         <section *ngIf="!(isLoading$ | async)" class="page" test-id="product">
             <h1>Detalhes do produto</h1>
             <form [formGroup]="form" *ngIf="form">
-                <div>
-                    <mat-form-field>
+                <div class="form-wrapper">
+                    <mat-form-field class="width-50">
                         <mat-label>Nome</mat-label>
                         <input matInput placeholder="Nome" formControlName="name">
                         <mat-error *ngIf="form.get('name')?.hasError('required')">
                             Nome é obrigatório
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="width-50">
                         <mat-label>Categoria</mat-label>
                         <mat-select formControlName="categoryId">
                             <mat-option *ngFor="let category of categories$ | async" [value]="category.id">
@@ -31,21 +31,21 @@
                         </mat-error>
                     </mat-form-field>
                 </div>
-                <div>
-                    <mat-form-field class="description">
+                <div class="form-wrapper">
+                    <mat-form-field class="description" class="width-100">
                         <mat-label>Descrição do produto</mat-label>
                         <textarea matInput formControlName="description"></textarea>
                     </mat-form-field>
                 </div>
-                <div>
-                    <mat-form-field>
+                <div class="form-wrapper">
+                    <mat-form-field class="width-25">
                         <mat-label>Preço</mat-label>
                         <input matInput type="number" placeholder="Preço" formControlName="price">
                         <mat-error *ngIf="form.get('name')?.hasError('required')">
                             Preço é obrigatório
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="width-25">
                         <mat-label>Preço com desconto</mat-label>
                         <input matInput type="number" placeholder="Preço com desconto"
                             formControlName="priceWithDiscount">
@@ -53,11 +53,19 @@
                             Preço com desconto é obrigatório
                         </mat-error>
                     </mat-form-field>
-                </div>
-                <div>
-                    <mat-form-field>
-                        <mat-label>Peso (kg)</mat-label>
-                        <input matInput type="number" placeholder="Peso (kg)" formControlName="weight">
+                    <mat-form-field class="width-25">
+                        <mat-label>Unidade de venda</mat-label>
+                        <mat-select formControlName="unit">
+                            <mat-option value="KG">Peso</mat-option>
+                            <mat-option value="UN">Unidade</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="form.get('unit')?.hasError('required')">
+                            Unidade de venda é obrigatório
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="width-25">
+                        <mat-label>Peso (em Kg)</mat-label>
+                        <input matInput type="number" placeholder="Peso (em Kg)" formControlName="weight">
                         <mat-error *ngIf="form.get('weight')?.hasError('required')">
                             Peso (kg) é obrigatório
                         </mat-error>
