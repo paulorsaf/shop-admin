@@ -3,14 +3,14 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from "src/app/services/auth/auth.service";
-import { logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from "./user.actions";
+import { loadUserCompany, loadUserCompanyFail, loadUserCompanySuccess, logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from "./user.actions";
 
 @Injectable()
 export class UserEffects {
 
     constructor(
-        private authService: AuthService,
-        private actions$: Actions
+        private actions$: Actions,
+        private authService: AuthService
     ){
     }
 
@@ -44,6 +44,18 @@ export class UserEffects {
         ), {
             dispatch: false
         }
+    )
+
+    loadUserCompanyEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(loadUserCompany),
+            switchMap(() =>
+                this.authService.findCompanyByUser().pipe(
+                    map(company => loadUserCompanySuccess({company})),
+                    catchError(error => of(loadUserCompanyFail({error})))
+                )
+            )
+        )
     )
 
     reloadApp() {

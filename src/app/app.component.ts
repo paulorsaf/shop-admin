@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { filter, Observable, take } from 'rxjs';
+import { Company } from './model/company/company';
 import { User } from './model/user/user';
 import { AppState } from './store/app-state';
-import { verfiyUserIsLogged } from './store/user/user.actions';
+import { loadUserCompany, logout, verfiyUserIsLogged } from './store/user/user.actions';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,9 @@ export class AppComponent implements OnInit {
 
   showMenu = false;
 
+  company$!: Observable<Company | undefined>;
   isVerifyingUserLogged$!: Observable<boolean>;
-  user$!: Observable<User>;
+  user$!: Observable<User | undefined>;
 
   constructor(
     private router: Router,
@@ -24,6 +26,7 @@ export class AppComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
+    this.company$ = this.store.select(state => state.user.company);
     this.isVerifyingUserLogged$ = this.store.select(state => state.user.isVerifyingUserLogged);
     this.user$ = this.store.select(state => state.user.user);
 
@@ -43,10 +46,17 @@ export class AppComponent implements OnInit {
       ).subscribe(state => {
         if (!state.user) {
           this.router.navigate(['login']);
-        } else if (this.isBasePath()) {
-          this.router.navigate(['home']);
+        } else {
+          this.store.dispatch(loadUserCompany());
+          if (this.isBasePath()) {
+            this.router.navigate(['home']);
+          }
         }
       })
+  }
+
+  logout() {
+    this.store.dispatch(logout());
   }
 
   isBasePath() {

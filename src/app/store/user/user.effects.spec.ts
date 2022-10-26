@@ -7,9 +7,9 @@ import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { AuthService } from "src/app/services/auth/auth.service";
 import { AuthServiceMock } from "src/mock/auth-service.mock";
-import { logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from "./user.actions";
+import { loadUserCompany, loadUserCompanyFail, loadUserCompanySuccess, logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from "./user.actions";
 
-describe('UserEffects', () => {
+fdescribe('UserEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: UserEffects;
@@ -75,6 +75,33 @@ describe('UserEffects', () => {
     
             effects.logoutEffect$.subscribe(response => {
                 expect(response).toEqual(logoutSuccess());
+                done();
+            })
+        })
+
+    })
+
+    describe("Given load user company", () => {
+
+        beforeEach(() => {
+            actions$ = of(loadUserCompany());
+        })
+
+        it('when success, then return load user company success', (done) => {
+            const company = {id: "anyCompanyId"} as any;
+            authService._response = of(company);
+    
+            effects.loadUserCompanyEffect$.subscribe(response => {
+                expect(response).toEqual(loadUserCompanySuccess({company}));
+                done();
+            })
+        })
+
+        it('when success, then return load user company success', (done) => {
+            authService._response = throwError(error);
+    
+            effects.loadUserCompanyEffect$.subscribe(response => {
+                expect(response).toEqual(loadUserCompanyFail({error}));
                 done();
             })
         })

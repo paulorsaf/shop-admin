@@ -2,6 +2,11 @@ section {
     min-height: 100vh;
 }
 
+.pull-right {
+    position: absolute;
+    right: 10px;
+}
+
 mat-drawer-container,
 mat-drawer-content {
     min-height: 100vh;
@@ -19,6 +24,7 @@ mat-card {
     height: 100vh;
     width: 300px;
     z-index: 999;
+    padding: 0;
 
     mat-list {
         width: -webkit-fill-available;

@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { from, Observable, of } from 'rxjs';
 import { User } from '../../model/user/user';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { environment } from 'src/environments/environment';
+import { ApiService } from '../api/api.service';
+import { Company } from 'src/app/model/company/company';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +12,14 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class AuthService {
 
   constructor(
-    private auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private apiService: ApiService
   ) { }
+
+  findCompanyByUser(): Observable<Company> {
+    const url = `${environment.apiUrl}/companies/users`;
+    return this.apiService.get<Company>(url);
+  }
 
   login(email: string, password: string): Observable<User> {
     return from(

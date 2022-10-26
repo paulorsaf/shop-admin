@@ -9,7 +9,7 @@ import { AppState } from './store/app-state';
 import { verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './store/user/user.actions';
 import { userReducer } from './store/user/user.reducers';
 
-describe('AppComponent', () => {
+fdescribe('AppComponent', () => {
 
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
@@ -68,7 +68,7 @@ describe('AppComponent', () => {
       expect(page.querySelector('[test-id="app-loader"]')).not.toBeNull();
     })
 
-    describe('when verification is finished with success and user is logged', () => {
+    describe('when user is logged', () => {
 
       beforeEach(() => {
         spyOn(component, 'isBasePath').and.returnValue(true);
@@ -87,6 +87,13 @@ describe('AppComponent', () => {
 
       it('then hide app loader', () => {
         expect(page.querySelector('[test-id="app-loader"]')).toBeNull();
+      })
+
+      it('then load logged company details', done => {
+        store.select('user').subscribe(state => {
+          expect(state.isLoadingLoggedCompany).toBeTruthy();
+          done();
+        })
       })
 
       it('and current path base path (/), then take user to home page', done => {
@@ -117,6 +124,13 @@ describe('AppComponent', () => {
         expect(page.querySelector('[test-id="app-loader"]')).toBeNull();
       })
 
+      it('then do not load logged company details', done => {
+        store.select('user').subscribe(state => {
+          expect(state.isLoadingLoggedCompany).toBeFalsy();
+          done();
+        })
+      })
+
       it('then take user to login page', done => {
         setTimeout(() => {
           expect(location.path()).toEqual('/login');
@@ -126,6 +140,19 @@ describe('AppComponent', () => {
 
     })
 
+  })
+
+  it('given user is logged, when user clicks on logout, then logout', done => {
+    store.dispatch(verfiyUserIsLoggedSuccess({user}));
+    fixture.detectChanges();
+
+    page.querySelector('[test-id="logout-button"]').click();
+    fixture.detectChanges();
+
+    store.select('user').subscribe(state => {
+      expect(state.isLoggingOut).toBeTruthy();
+      done();
+    })
   })
   
 });

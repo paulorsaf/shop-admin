@@ -128,10 +128,14 @@ export const AppInitialState: AppState = {
         purchases: []
     },
     user: {
+        company: undefined,
+        error: undefined,
+        isLoadedLoggedCompany: false,
+        isLoadingLoggedCompany: false,
         isLoggedOut: false,
         isLoggingOut: false,
         isVerifiedUserLogged: false,
         isVerifyingUserLogged: false,
-        user: null
+        user: undefined
     }
 }

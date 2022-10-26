@@ -17,7 +17,7 @@ import { ProductDetailComponent } from './product-detail.component';
 import { loadDetailSuccess, loadStockSuccess, saveDetailFail, saveDetailSuccess } from './store/products/product-detail.actions';
 import { productDetailReducer } from './store/products/product-detail.reducers';
 
-fdescribe('ProductDetailComponent', () => {
+describe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;
   let fixture: ComponentFixture<ProductDetailComponent>;
   let store: Store<AppState>;

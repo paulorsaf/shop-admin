@@ -4,6 +4,10 @@ export class AuthServiceMock {
     
     _response: any;
 
+    findCompanyByUser() {
+        return this._response || of({});
+    }
+
     login() {
         return this._response || of({});
     }

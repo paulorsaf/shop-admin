@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
+import { loadCompanyDetail, loadCompanyDetailSuccess } from 'src/app/pages/companies/company-detail/store/company-detail.actions';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './user.actions';
+import { loadUserCompany, loadUserCompanyFail, loadUserCompanySuccess, logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './user.actions';
 import { UserState } from './user.state';
 
 const initialState: UserState = AppInitialState.user;
@@ -11,7 +12,7 @@ const _userReducer = createReducer(initialState,
             ...state,
             isVerifiedUserLogged: false,
             isVerifyingUserLogged: true,
-            user: null
+            user: undefined
         };
     }),
     on(verfiyUserIsLoggedSuccess, (state, action) => {
@@ -41,6 +42,31 @@ const _userReducer = createReducer(initialState,
             ...state,
             isLoggedOut: true,
             isLoggingOut: false
+        };
+    }),
+    on(loadUserCompany, (state) => {
+        return {
+            ...state,
+            company: undefined,
+            error: undefined,
+            isLoadedLoggedCompany: false,
+            isLoadingLoggedCompany: true
+        };
+    }),
+    on(loadUserCompanySuccess, (state, action) => {
+        return {
+            ...state,
+            company: action.company,
+            isLoadedLoggedCompany: true,
+            isLoadingLoggedCompany: false
+        };
+    }),
+    on(loadUserCompanyFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isLoadedLoggedCompany: false,
+            isLoadingLoggedCompany: false
         };
     })
 );
