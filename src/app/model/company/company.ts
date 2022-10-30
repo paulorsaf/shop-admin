@@ -11,6 +11,7 @@ export type CompanyDetails = {
 export type Company = {
     aboutUs: string;
     address: Address;
+    canUpdateStock: boolean;
     id: string;
     logo: Image;
     payment: Payment;

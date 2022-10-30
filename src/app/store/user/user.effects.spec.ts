@@ -9,7 +9,7 @@ import { AuthService } from "src/app/services/auth/auth.service";
 import { AuthServiceMock } from "src/mock/auth-service.mock";
 import { loadUserCompany, loadUserCompanyFail, loadUserCompanySuccess, logout, logoutSuccess, verfiyUserIsLogged, verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from "./user.actions";
 
-fdescribe('UserEffects', () => {
+describe('UserEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: UserEffects;

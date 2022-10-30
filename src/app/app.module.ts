@@ -19,6 +19,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,8 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
     MatSidenavModule,
     MatSnackBarModule,
     MatToolbarModule,
+
+    NgxSkeletonLoaderModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule

@@ -3,23 +3,29 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
+import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { AppComponent } from './app.component';
+import { MessageService } from './services/message/message.service';
 import { AppState } from './store/app-state';
+import { updateStock, updateStockFail, updateStockSuccess } from './store/stock/update-stock.actions';
+import { updateStockReducer } from './store/stock/update-stock.reducers';
 import { verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './store/user/user.actions';
 import { userReducer } from './store/user/user.reducers';
 
-fdescribe('AppComponent', () => {
+describe('AppComponent', () => {
 
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   let page: PageMock;
   let store: Store<AppState>;
   let location: Location;
+  let messageService: MessageServiceMock;
 
   const user = {id: 1} as any;
 
   beforeEach(async () => {
+    messageService = new MessageServiceMock();
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent
@@ -36,9 +42,11 @@ fdescribe('AppComponent', () => {
           { path: "companies", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
+        StoreModule.forFeature('updateStock', updateStockReducer),
         StoreModule.forFeature('user', userReducer)
       ]
     })
+    .overrideProvider(MessageService, {useValue: messageService})
     .compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
@@ -153,6 +161,60 @@ fdescribe('AppComponent', () => {
       expect(state.isLoggingOut).toBeTruthy();
       done();
     })
+  })
+
+  describe('given updating stock', () => {
+
+    beforeEach(() => {
+      store.dispatch(updateStock());
+      fixture.detectChanges();
+    })
+
+    it('then show loading', () => {
+      expect(page.querySelector('[test-id="update-stock-loader"]')).not.toBeNull()
+    })
+
+    describe('when stock updated', () => {
+
+      beforeEach(() => {
+        store.dispatch(updateStockSuccess());
+        fixture.detectChanges();
+      })
+
+      it('then hide loading', () => {
+        expect(page.querySelector('[test-id="update-stock-loader"]')).toBeNull();
+      })
+
+      it('then show success message', done => {
+        setTimeout(() => {
+          expect(messageService._hasShownSuccess).toBeTruthy();
+          done();
+        }, 100);
+      })
+
+    })
+
+    describe('when stock update failed', () => {
+
+      beforeEach(() => {
+        const error = {error: "error"};
+        store.dispatch(updateStockFail({error}));
+        fixture.detectChanges();
+      })
+
+      it('then hide loading', () => {
+        expect(page.querySelector('[test-id="update-stock-loader"]')).toBeNull();
+      })
+
+      it('then show error message', done => {
+        setTimeout(() => {
+          expect(messageService._hasShownError).toBeTruthy();
+          done();
+        }, 100);
+      })
+
+    })
+
   })
   
 });

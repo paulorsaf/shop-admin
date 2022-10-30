@@ -30,6 +30,8 @@ import { userReducer } from './user/user.reducers';
 import { ClientEffects } from '../pages/clients/store/clients.effects';
 import { cupomsReducer } from '../pages/cupoms/store/cupoms.reducers';
 import { CupomsEffects } from '../pages/cupoms/store/cupoms.effects';
+import { updateStockReducer } from './stock/update-stock.reducers';
+import { UpdateStockEffects } from './stock/update-stock.effects';
 
 @NgModule({
   imports: [
@@ -47,6 +49,7 @@ import { CupomsEffects } from '../pages/cupoms/store/cupoms.effects';
     StoreModule.forFeature('products', productsReducer),
     StoreModule.forFeature('purchaseDetail', purchaseDetailReducer),
     StoreModule.forFeature('purchases', purchasesReducer),
+    StoreModule.forFeature('updateStock', updateStockReducer),
     StoreModule.forFeature('user', userReducer),
     StoreDevtoolsModule.instrument({maxAge: 25}),
 
@@ -64,6 +67,7 @@ import { CupomsEffects } from '../pages/cupoms/store/cupoms.effects';
       ProductsEffects,
       PurchaseDetailEffects,
       PurchasesEffects,
+      UpdateStockEffects,
       UserEffects
     ])
   ]

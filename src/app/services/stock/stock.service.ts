@@ -33,6 +33,11 @@ export class StockService {
     return this.apiService.delete<void>(url);
   }
 
+  updateStock(): Observable<void> {
+    const url = `${environment.apiUrl}/stocks`;
+    return this.apiService.patch<void>(url);
+  }
+
   updateStockOption(productId: string, stockOption: UpdateStockOption): Observable<void> {
     const url = `${environment.apiUrl}/products/${productId}/stocks/${stockOption.id}`;
     return this.apiService.patch<void>(url, stockOption);

@@ -4,7 +4,12 @@
 
 <span *ngIf="!(isVerifyingUserLogged$ | async)">
     <mat-toolbar color="primary" class="hide-on-mobile">
-        <span>{{(company$ | async)?.name}}</span>
+        <span *ngIf="!(company$ | async)">
+            <ngx-skeleton-loader appearance="line" 
+                [theme]="{height: '32px', width: '250px', 'margin-top': '15px'}">
+            </ngx-skeleton-loader>
+        </span>
+        <span *ngIf="company$ | async">{{(company$ | async)?.name}}</span>
         <div class="pull-right">
             <button mat-button (click)="logout()" test-id="logout-button">
                 <mat-icon mat-list-icon>logout</mat-icon> Sair
@@ -34,10 +39,14 @@
                         </mat-toolbar>
                         <app-side-menu (itemSelected)="hideMenu()"></app-side-menu>
                     </mat-card>
-                    <div class="sidemenu-overlay" (click)="showMenu = !showMenu"></div>
+                    <div class="overlay" (click)="showMenu = !showMenu"></div>
                 </div>
             </div>
             <router-outlet></router-outlet>
         </mat-drawer-content>
     </mat-drawer-container>
 </span>
+
+<div *ngIf="isUpdatingStock$ | async" class="overlay global-loader" test-id="update-stock-loader">
+    <mat-spinner diameter="40"></mat-spinner>
+</div>

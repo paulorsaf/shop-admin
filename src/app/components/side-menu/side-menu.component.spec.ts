@@ -3,7 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
 import { AppState } from 'src/app/store/app-state';
-import { verfiyUserIsLoggedSuccess } from 'src/app/store/user/user.actions';
+import { updateStockReducer } from 'src/app/store/stock/update-stock.reducers';
+import { loadUserCompanySuccess, verfiyUserIsLoggedSuccess } from 'src/app/store/user/user.actions';
 import { userReducer } from 'src/app/store/user/user.reducers';
 import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
 import { PageMock } from 'src/mock/page.mock';
@@ -35,7 +36,8 @@ describe('SideMenuComponent', () => {
           { path: "cupoms", component: BlankComponent }
         ]),
         StoreModule.forRoot([]),
-        StoreModule.forFeature('user', userReducer)
+        StoreModule.forFeature('user', userReducer),
+        StoreModule.forFeature('updateStock', updateStockReducer)
       ]
     })
     .compileComponents();
@@ -136,6 +138,36 @@ describe('SideMenuComponent', () => {
         expect(location.path()).toEqual('/cupoms');
         done();
       }, 100);
+    })
+
+    it('when company can update stock, then show update stock button', () => {
+      const company = {canUpdateStock: true} as any;
+      store.dispatch(loadUserCompanySuccess({company}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="update-stock-button"]')).toBeTruthy();
+    })
+
+    it('when company cannot update stock, then hide update stock button', () => {
+      const company = {canUpdateStock: false} as any;
+      store.dispatch(loadUserCompanySuccess({company}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="update-stock-button"]')).toBeFalsy();
+    })
+  
+    it('when user clicks on update stock button, then update stock', done => {
+      const company = {canUpdateStock: true} as any;
+      store.dispatch(loadUserCompanySuccess({company}));
+      fixture.detectChanges();
+
+      page.querySelector('[test-id="update-stock-button"]').click();
+      fixture.detectChanges();
+  
+      store.select('updateStock').subscribe(state => {
+        expect(state.isUpdating).toBeTruthy();
+        done();
+      })
     })
 
   })

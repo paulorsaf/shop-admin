@@ -1,4 +1,4 @@
-<mat-list>
+<mat-list *ngIf="user$ | async">
     <mat-list-item (click)="goToPage('/home')">
         <mat-icon mat-list-icon>home</mat-icon>
         <div mat-line>Home</div>
@@ -38,6 +38,13 @@
         <mat-icon mat-list-icon>verified</mat-icon>
         <div mat-line>Cupons</div>
     </mat-list-item>
+    <span *ngIf="(company$ | async)?.canUpdateStock">
+        <mat-divider></mat-divider>
+        <mat-list-item (click)="updateStock()" test-id="update-stock-button">
+            <mat-icon mat-list-icon>sync_alt</mat-icon>
+            <div mat-line>Atualizar estoque</div>
+        </mat-list-item>
+    </span>
     <span class="show-on-mobile">
         <mat-divider></mat-divider>
         <mat-list-item (click)="logout()" test-id="logout-button">

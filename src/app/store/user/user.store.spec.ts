@@ -4,7 +4,7 @@ import { loadUserCompany, loadUserCompanyFail, loadUserCompanySuccess, logout, l
 import { userReducer } from "./user.reducers";
 import { UserState } from "./user.state";
 
-fdescribe('User store', () => {
+describe('User store', () => {
     
     it('verfiyUserIsLogged', () => {
         const initialState: UserState = {

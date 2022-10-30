@@ -127,6 +127,11 @@ export const AppInitialState: AppState = {
         isLoading: false,
         purchases: []
     },
+    updateStock: {
+        error: undefined,
+        isUpdated: false,
+        isUpdating: false
+    },
     user: {
         company: undefined,
         error: undefined,

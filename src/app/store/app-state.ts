@@ -12,6 +12,7 @@ import { PurchasesState } from "../pages/purchases/store/purchases.state";
 import { ClientsState } from "../pages/clients/store/clients.state";
 import { UserState } from "./user/user.state";
 import { CupomsState } from "../pages/cupoms/store/cupoms.state";
+import { UpdateStockState } from "./stock/update-stock.state";
 
 export type AppState = {
     bannerDetail: BannerDetailState;
@@ -27,5 +28,6 @@ export type AppState = {
     products: ProductsState;
     purchaseDetail: PurchaseDetailState;
     purchases: PurchasesState;
+    updateStock: UpdateStockState;
     user: UserState;
 }
