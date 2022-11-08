@@ -3,7 +3,7 @@
 </section>
 
 <span *ngIf="!(isVerifyingUserLogged$ | async)">
-    <mat-toolbar color="primary" class="hide-on-mobile">
+    <mat-toolbar *ngIf="isLogged$ | async" color="primary" class="hide-on-mobile">
         <span *ngIf="!(company$ | async)">
             <ngx-skeleton-loader appearance="line" 
                 [theme]="{height: '32px', width: '250px', 'margin-top': '15px'}">

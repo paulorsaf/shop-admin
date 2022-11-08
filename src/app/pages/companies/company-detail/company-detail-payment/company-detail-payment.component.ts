@@ -77,7 +77,8 @@ export class CompanyDetailPaymentComponent implements OnInit {
             const hasFlag = payment?.creditCard?.flags?.some(f => f === c) || false;
             return this.formBuilder.group({selected: hasFlag, description: c})
           })
-        )
+        ),
+        isPaymentAfterPurchase: [!!payment?.creditCard?.isPaymentAfterPurchase]
       }),
       hasCreditCard: [payment?.creditCard ? true : false],
       hasPix: [payment?.pixKey ? true : false],

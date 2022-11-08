@@ -27,7 +27,8 @@ export type Payment = {
             percentage: number;
             value: number;
         },
-        flags: string[]
+        flags: string[],
+        isPaymentAfterPurchase: boolean
     },
     money: boolean;
     pixKey: string;

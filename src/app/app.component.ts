@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   showMenu = false;
 
   company$!: Observable<Company | undefined>;
+  isLogged$!: Observable<boolean>;
   isUpdatingStock$!: Observable<boolean>;
   isVerifyingUserLogged$!: Observable<boolean>;
   user$!: Observable<User | undefined>;
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.company$ = this.store.select(state => state.user.company);
+    this.isLogged$ = this.store.select(state => !!state.user.user);
     this.isUpdatingStock$ = this.store.select(state => state.updateStock.isUpdating);
     this.isVerifyingUserLogged$ = this.store.select(state => state.user.isVerifyingUserLogged);
     this.user$ = this.store.select(state => state.user.user);
@@ -56,8 +58,6 @@ export class AppComponent implements OnInit {
       .subscribe(state => {
         if (state.isUpdated) {
           this.messageService.showSuccess('Estoque atualizado com sucesso');
-        } else {
-
         }
         if (state.error) {
           this.messageService.showError(state.error);
@@ -74,12 +74,20 @@ export class AppComponent implements OnInit {
         if (!state.user) {
           this.router.navigate(['login']);
         } else {
-          this.store.dispatch(loadUserCompany());
           if (this.isBasePath()) {
             this.router.navigate(['home']);
           }
         }
       })
+
+    this.store.select(state => state.user)
+      .pipe(
+        filter(state => state.user && !state.company ? true : false),
+        take(1)
+      )
+      .subscribe(() => {
+        this.store.dispatch(loadUserCompany());
+      });
   }
 
 }
