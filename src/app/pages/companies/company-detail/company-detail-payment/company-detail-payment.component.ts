@@ -78,8 +78,8 @@ export class CompanyDetailPaymentComponent implements OnInit {
             return this.formBuilder.group({selected: hasFlag, description: c})
           })
         ),
-        isPaymentAfterPurchase: [!!payment?.creditCard?.isPaymentAfterPurchase]
       }),
+      isPaymentAfterPurchase: [!!payment?.isPaymentAfterPurchase],
       hasCreditCard: [payment?.creditCard ? true : false],
       hasPix: [payment?.pixKey ? true : false],
       money: [payment?.money || false],

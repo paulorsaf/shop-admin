@@ -3,6 +3,21 @@
     <mat-card-content>
         <form [formGroup]="paymentForm">
             <div>
+                <mat-checkbox color="primary" formControlName="isPaymentAfterPurchase">
+                    Cliente paga depois da compra aprovada
+                </mat-checkbox>
+                <div>
+                    <mat-hint>
+                        Cliente deve pagar antes ou depois da compra aprovada?
+                        <br/>ANTES: o valor final da compra não pode ser modificado pelo administrador.
+                        <br/>Ex.: A loja vende roupas e o cliente pediu uma calça. O administrador não precisa ajustar o preço.
+                        <br/>DEPOS: o administrador pode ajustar o valor final da compra.
+                        <br/>Ex.: A loja vende frutas e o cliente pediu 1kg de maçã, mas o peso final deu 1.2kg. Então o administrador pode ajustar o preço.
+                    </mat-hint>
+                </div>
+            </div>
+            <br/><br/>
+            <div>
                 <mat-checkbox color="primary" formControlName="money">Dinheiro</mat-checkbox>
             </div>
             <div>
@@ -48,20 +63,6 @@
                         <mat-error *ngIf="paymentForm.get('creditCard')?.get('fee')?.get('value')?.hasError('email')">
                             Valor é obrigatório
                         </mat-error>
-                    </div>
-                    <div>
-                        <mat-checkbox color="primary" formControlName="isPaymentAfterPurchase">
-                            Cliente paga depois da compra aprovada
-                        </mat-checkbox>
-                        <div>
-                            <mat-hint>
-                                Cliente deve pagar antes ou depois da compra aprovada?
-                                <br/>ANTES: o valor final da compra não pode ser modificado pelo administrador.
-                                <br/>Ex.: A loja vende roupas e o cliente pediu uma calça. O administrador não precisa ajustar o preço.
-                                <br/>DEPOS: o administrador pode ajustar o valor final da compra.
-                                <br/>Ex.: A loja vende frutas e o cliente pediu 1kg de maçã, mas o peso final deu 1.2kg. Então o administrador pode ajustar o preço.
-                            </mat-hint>
-                        </div>
                     </div>
                     <br/>
                     <mat-label>Bandeiras</mat-label>

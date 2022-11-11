@@ -28,8 +28,8 @@ export type Payment = {
             value: number;
         },
         flags: string[],
-        isPaymentAfterPurchase: boolean
     },
+    isPaymentAfterPurchase: boolean,
     money: boolean;
     pixKey: string;
 }
