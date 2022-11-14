@@ -4,6 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Store, StoreModule } from '@ngrx/store';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
+import { loadUserCompanySuccess } from 'src/app/store/user/user.actions';
+import { userReducer } from 'src/app/store/user/user.reducers';
 import { MatDialogMock } from 'src/mock/mat-dialog.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
@@ -30,7 +32,8 @@ describe('PurchaseDetailDataComponent', () => {
         BrowserAnimationsModule,
         PurchasesModule,
         StoreModule.forRoot([]),
-        StoreModule.forFeature('purchaseDetail', purchaseDetailReducer)
+        StoreModule.forFeature('purchaseDetail', purchaseDetailReducer),
+        StoreModule.forFeature('user', userReducer)
       ]
     })
     .overrideProvider(MatDialog, {useValue: dialog})
@@ -43,6 +46,9 @@ describe('PurchaseDetailDataComponent', () => {
     component = fixture.componentInstance;
     page = fixture.debugElement.nativeElement;
 
+
+    const company = {payment: {isPaymentAfterPurchase: false}} as any;
+    store.dispatch(loadUserCompanySuccess({company}));
     fixture.detectChanges();
   });
   
@@ -69,36 +75,6 @@ describe('PurchaseDetailDataComponent', () => {
         expect(window.open).toHaveBeenCalled();
       })
 
-      it('then set status list', () => {
-        expect(component.statusList.map(s => s.key)).toEqual([
-          "CREATED", "VERIFYING_PAYMENT", "PAID", "SORTING_OUT", "READY", "FINISHED", "CANCELLED"
-        ]);
-      })
-
-    })
-
-    describe('when purchase payment is by money', () => {
-
-      beforeEach(() => {
-        const purchase = {id: 1, payment: {type: "MONEY"}} as any;
-        store.dispatch(loadPurchaseDetailSuccess({purchase}));
-        fixture.detectChanges();
-      })
-
-      it('then set status list', () => {
-        expect(component.statusList.map(s => s.key)).toEqual([
-          "CREATED", "SORTING_OUT", "READY", "FINISHED", "CANCELLED"
-        ]);
-      })
-
-    })
-
-    it('when purchase has address, then add DELIVERYING to status list', () => {
-      const purchase = {id: 1, payment: {type: "MONEY"}, address: {}} as any;
-      store.dispatch(loadPurchaseDetailSuccess({purchase}));
-      fixture.detectChanges();
-
-      expect(component.statusList.some(s => s.key === "DELIVERYING")).toBeTruthy();
     })
 
     describe('when purchase detail payment is not pix', () => {
@@ -184,6 +160,61 @@ describe('PurchaseDetailDataComponent', () => {
         })
       })
 
+    })
+
+  })
+
+  describe('Status list', () => {
+
+    describe('given payment is before purchase', () => {
+  
+      it('when payment is by pix, then set status list', () => {
+        const purchase = {id: 1, payment: {type: "PIX"}} as any;
+        store.dispatch(loadPurchaseDetailSuccess({purchase}));
+        fixture.detectChanges();
+  
+        expect(component.statusList.map(s => s.key)).toEqual([
+          "CREATED", "VERIFYING_PAYMENT", "PAID", "SORTING_OUT", "READY", "FINISHED", "CANCELLED"
+        ]);
+      })
+  
+      it('when payment is by money, then set status list', () => {
+        const purchase = {id: 1, payment: {type: "MONEY"}} as any;
+        store.dispatch(loadPurchaseDetailSuccess({purchase}));
+        fixture.detectChanges();
+  
+        expect(component.statusList.map(s => s.key)).toEqual([
+          "CREATED", "SORTING_OUT", "READY", "FINISHED", "CANCELLED"
+        ]);
+      })
+  
+    })
+
+    describe('given payment is after purchase', () => {
+
+      beforeEach(() => {
+        const company = {payment: {isPaymentAfterPurchase: true}} as any;
+        store.dispatch(loadUserCompanySuccess({company}));
+      })
+  
+      it('when payment is by pix, then set status list', () => {
+        const purchase = {id: 1, payment: {type: "PIX"}} as any;
+        store.dispatch(loadPurchaseDetailSuccess({purchase}));
+        fixture.detectChanges();
+  
+        expect(component.statusList.map(s => s.key)).toEqual([
+          "CREATED", "SORTING_OUT", "WAITING_PAYMENT", "PAID", "READY", "FINISHED", "CANCELLED"
+        ]);
+      })
+  
+    })
+  
+    it('when purchase has address, then add DELIVERYING to status list', () => {
+      const purchase = {id: 1, address: {}} as any;
+      store.dispatch(loadPurchaseDetailSuccess({purchase}));
+      fixture.detectChanges();
+
+      expect(component.statusList.some(s => s.key === "DELIVERYING")).toBeTruthy();
     })
 
   })

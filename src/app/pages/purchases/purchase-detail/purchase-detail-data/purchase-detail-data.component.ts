@@ -81,11 +81,24 @@ export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
 
   private setStatusList(purchase: Purchase) {
     this.statusList.push({key: "CREATED", value: "Solicitado"});
-    if (purchase?.payment?.type !== "MONEY") {
-      this.statusList.push({key: "VERIFYING_PAYMENT", value: "Verificando pagamento"});
-      this.statusList.push({key: "PAID", value: "Pago"});
-    }
-    this.statusList.push({key: "SORTING_OUT", value: "Empacotando"});
+
+    this.store
+      .select(state => state.user.company?.payment.isPaymentAfterPurchase || false)
+      .pipe(take(1))
+      .subscribe(isPaymentAfterPurchase => {
+        if (isPaymentAfterPurchase) {
+          this.statusList.push({key: "SORTING_OUT", value: "Empacotando"});
+          this.statusList.push({key: "WAITING_PAYMENT", value: "Esperando pagamento"});
+          this.statusList.push({key: "PAID", value: "Pago"});
+        } else {
+          if (purchase?.payment?.type !== "MONEY") {
+            this.statusList.push({key: "VERIFYING_PAYMENT", value: "Verificando pagamento"});
+            this.statusList.push({key: "PAID", value: "Pago"});
+          }
+          this.statusList.push({key: "SORTING_OUT", value: "Empacotando"});
+        }
+      });
+
     this.statusList.push({key: "READY", value: "Pronto"});
     if (purchase?.address) {
       this.statusList.push({key: "DELIVERYING", value: "Entregando"});
