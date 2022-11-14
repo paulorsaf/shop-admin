@@ -25,9 +25,9 @@ describe('CompanyDetailPaymentComponent', () => {
           percentage: 2.9,
           value: 1.5
         },
-        flags: ['Mastercard', 'Visa'],
-        isPaymentAfterPurchase: true
+        flags: ['Mastercard', 'Visa']
       },
+      isPaymentAfterPurchase: true,
       money: true,
       pixKey: '123.456.789-10'
     }
@@ -82,11 +82,11 @@ describe('CompanyDetailPaymentComponent', () => {
             flags: [
               {selected: true, description: "Mastercard"},
               {selected: true, description: "Visa"}
-            ],
-            isPaymentAfterPurchase: true
+            ]
           },
           hasCreditCard: true,
           hasPix: true,
+          isPaymentAfterPurchase: true,
           money: true,
           pixKey: '123.456.789-10'
         })
@@ -140,11 +140,11 @@ describe('CompanyDetailPaymentComponent', () => {
             flags: [
               {selected: false, description: "Mastercard"},
               {selected: false, description: "Visa"}
-            ],
-            isPaymentAfterPurchase: false
+            ]
           },
           hasCreditCard: false,
           hasPix: false,
+          isPaymentAfterPurchase: false,
           money: false,
           pixKey: ""
         })
