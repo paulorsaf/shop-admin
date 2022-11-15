@@ -197,13 +197,13 @@ describe('PurchaseDetailDataComponent', () => {
         store.dispatch(loadUserCompanySuccess({company}));
       })
   
-      it('when payment is by pix, then set status list', () => {
+      it('then set status list', () => {
         const purchase = {id: 1, payment: {type: "PIX"}} as any;
         store.dispatch(loadPurchaseDetailSuccess({purchase}));
         fixture.detectChanges();
   
         expect(component.statusList.map(s => s.key)).toEqual([
-          "CREATED", "SORTING_OUT", "WAITING_PAYMENT", "PAID", "READY", "FINISHED", "CANCELLED"
+          "CREATED", "SORTING_OUT", "WAITING_PAYMENT", "VERIFYING_PAYMENT", "PAID", "READY", "FINISHED", "CANCELLED"
         ]);
       })
   

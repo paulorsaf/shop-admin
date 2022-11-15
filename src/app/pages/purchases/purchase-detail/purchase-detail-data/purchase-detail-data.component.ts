@@ -89,6 +89,7 @@ export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
         if (isPaymentAfterPurchase) {
           this.statusList.push({key: "SORTING_OUT", value: "Empacotando"});
           this.statusList.push({key: "WAITING_PAYMENT", value: "Esperando pagamento"});
+          this.statusList.push({key: "VERIFYING_PAYMENT", value: "Verificando pagamento"});
           this.statusList.push({key: "PAID", value: "Pago"});
         } else {
           if (purchase?.payment?.type !== "MONEY") {

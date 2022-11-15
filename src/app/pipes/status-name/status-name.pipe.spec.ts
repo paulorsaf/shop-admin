@@ -28,12 +28,12 @@ describe('Status name pipe', () => {
     expect(pipe.transform("VERIFYING_PAYMENT")).toEqual("Verificando pagamento");
   })
 
-  it('given status is FINISHED, then return Finalizado', () => {
-    expect(pipe.transform("FINISHED")).toEqual("Finalizado");
-  })
-
   it('given status is PAID, then return Pago', () => {
     expect(pipe.transform("PAID")).toEqual("Pago");
+  })
+
+  it('given status is WAITING_PAYMENT, then return Esperando pagamento', () => {
+    expect(pipe.transform("WAITING_PAYMENT")).toEqual("Esperando pagamento");
   })
 
   it('given status is SORTING_OUT, then return Empacotando', () => {
@@ -44,12 +44,16 @@ describe('Status name pipe', () => {
     expect(pipe.transform("READY")).toEqual("Pronto");
   })
 
-  it('given status is CANCELLED, then return Cancelado', () => {
-    expect(pipe.transform("CANCELLED")).toEqual("Cancelado");
-  })
-
   it('given status is DELIVERYING, then return Entregando', () => {
     expect(pipe.transform("DELIVERYING")).toEqual("Entregando");
+  })
+
+  it('given status is FINISHED, then return Finalizado', () => {
+    expect(pipe.transform("FINISHED")).toEqual("Finalizado");
+  })
+
+  it('given status is CANCELLED, then return Cancelado', () => {
+    expect(pipe.transform("CANCELLED")).toEqual("Cancelado");
   })
 
   it('given status is an unknown status, then return the unknown status', () => {
