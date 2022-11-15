@@ -58,6 +58,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     event$.stopPropagation();
   }
 
+  openReceipt(receiptUrl: string, event$?: any) {
+    event$?.stopPropagation();
+
+    window.open(receiptUrl, '_blank')
+  }
+
   private onError() {
     this.errorSubscription = this.store.select(state => state.dailyPurchaseSummaries.error)
       .pipe(filter(error => error))

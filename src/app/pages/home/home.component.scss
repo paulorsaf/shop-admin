@@ -9,3 +9,13 @@ table td,
 table th {
     text-align: center;
 }
+
+.payment-details {
+    display: flex;
+    justify-content: center;
+
+    mat-icon {
+        margin-left: 0.5rem;
+        color: blue;
+    }
+}
