@@ -100,9 +100,10 @@ export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.statusList.push({key: "READY", value: "Pronto"});
     if (purchase?.address) {
       this.statusList.push({key: "DELIVERYING", value: "Entregando"});
+    } else {
+      this.statusList.push({key: "READY", value: "Pronto"});
     }
     this.statusList.push({key: "FINISHED", value: "Finalizado"});
     this.statusList.push({key: "CANCELLED", value: "Cancelado"});
