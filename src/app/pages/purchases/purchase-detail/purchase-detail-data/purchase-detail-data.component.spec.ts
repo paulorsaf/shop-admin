@@ -10,7 +10,7 @@ import { MatDialogMock } from 'src/mock/mat-dialog.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { PurchasesModule } from '../../purchases.module';
-import { loadPurchaseDetailSuccess } from '../store/purchase-detail.actions';
+import { loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess } from '../store/purchase-detail.actions';
 import { purchaseDetailReducer } from '../store/purchase-detail.reducers';
 import { PurchaseDetailDataComponent } from './purchase-detail-data.component';
 
@@ -20,11 +20,9 @@ describe('PurchaseDetailDataComponent', () => {
   let dialog: MatDialogMock;
   let store: Store<AppState>;
   let page: PageMock;
-  let messageService: MessageServiceMock;
 
   beforeEach(async () => {
     dialog = new MatDialogMock();
-    messageService = new MessageServiceMock();
 
     await TestBed.configureTestingModule({
       declarations: [ PurchaseDetailDataComponent ],
@@ -37,7 +35,6 @@ describe('PurchaseDetailDataComponent', () => {
       ]
     })
     .overrideProvider(MatDialog, {useValue: dialog})
-    .overrideProvider(MessageService, {useValue: messageService})
     .compileComponents();
 
     fixture = TestBed.createComponent(PurchaseDetailDataComponent);
@@ -46,8 +43,10 @@ describe('PurchaseDetailDataComponent', () => {
     component = fixture.componentInstance;
     page = fixture.debugElement.nativeElement;
 
-
-    const company = {payment: {isPaymentAfterPurchase: false}} as any;
+    const company = {
+      payment: {isPaymentAfterPurchase: false},
+      hasToSendPurchaseToOwnSystem: false
+    } as any;
     store.dispatch(loadUserCompanySuccess({company}));
     fixture.detectChanges();
   });
@@ -217,6 +216,116 @@ describe('PurchaseDetailDataComponent', () => {
       expect(component.statusList.some(s => s.key === "DELIVERYING")).toBeTruthy();
     })
 
+  })
+
+  describe('given company has own company system', () => {
+
+    beforeEach(() => {
+      const company = {hasToSendPurchaseToOwnSystem: true, payment: {}} as any;
+      store.dispatch(loadUserCompanySuccess({company}));
+      fixture.detectChanges();
+
+      const purchase = {id: 1, address: {}} as any;
+      store.dispatch(loadPurchaseDetailSuccess({purchase}));
+      fixture.detectChanges();
+    })
+
+    it('then show button to send purchase to system', () => {
+      expect(page.querySelector('[test-id="send-to-company-system"]')).not.toBeNull();
+    })
+
+    it('when purchase has already been sent to system, then hide send purchase button', () => {
+      const purchase = {id: 1, address: {}, hasBeenSentToSystem: true} as any;
+      store.dispatch(loadPurchaseDetailSuccess({purchase}));
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="send-to-company-system"]')).toBeNull();
+    })
+
+    describe('when user clicks on button', () => {
+
+      it('then show confirm alert', () => {
+        page.querySelector('[test-id="send-to-company-system"]').click();
+        fixture.detectChanges();
+
+        expect(dialog.hasOpened).toBeTruthy();
+      })
+
+      it('and confirms, then send purchase to system', done => {
+        dialog.response = 'YES';
+        page.querySelector('[test-id="send-to-company-system"]').click();
+        fixture.detectChanges();
+
+        store.select('purchaseDetail').subscribe(state => {
+          expect(state.isSendingToSystem).toBeTruthy();
+          done();
+        })
+      })
+
+      it('and cancels, then do not send purchase to system', done => {
+        page.querySelector('[test-id="send-to-company-system"]').click();
+        fixture.detectChanges();
+
+        store.select('purchaseDetail').subscribe(state => {
+          expect(state.isSendingToSystem).toBeFalsy();
+          done();
+        })
+      })
+
+    })
+
+    describe('when sending purchase to system', () => {
+
+      beforeEach(() => {
+        store.dispatch(sendPurchaseToSystem());
+        fixture.detectChanges();
+      })
+
+      it('then hide send purchase button', () => {
+        expect(page.querySelector('[test-id="send-to-company-system"]')).toBeNull();
+      })
+
+      it('then show loading', () => {
+        expect(page.querySelector('[test-id="sending-to-company-system"]')).not.toBeNull();
+      })
+
+    })
+
+    describe('when purchase sent to system', () => {
+
+      beforeEach(() => {
+        store.dispatch(sendPurchaseToSystemSuccess());
+        fixture.detectChanges();
+      })
+
+      it('then hide loading', () => {
+        expect(page.querySelector('[test-id="sending-to-company-system"]')).toBeNull();
+      })
+
+    })
+
+    describe('when error on send purchase to system', () => {
+
+      beforeEach(() => {
+        const error = {error: "error"};
+        store.dispatch(sendPurchaseToSystemFail({error}));
+        fixture.detectChanges();
+      })
+
+      it('then hide loading', () => {
+        expect(page.querySelector('[test-id="sending-to-company-system"]')).toBeNull();
+      })
+
+    })
+
+  })
+
+  it('given company doesnt have own company system, then hide button to send purchase to system', () => {
+    const purchase = {id: 1, address: {}} as any;
+    store.dispatch(loadPurchaseDetailSuccess({purchase}));
+    fixture.detectChanges();
+
+    expect(page.querySelector('[test-id="send-to-company-system"]')).toBeNull();
   })
 
 });

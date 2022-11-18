@@ -6,5 +6,7 @@ export type PurchaseDetailState = {
     isLoading: boolean;
     isUpdated: boolean;
     isUpdating: boolean;
+    isSentToSystem: boolean;
+    isSendingToSystem: boolean;
     purchase?: Purchase;
 }

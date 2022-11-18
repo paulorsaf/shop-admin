@@ -1,6 +1,7 @@
 export type Purchase = {
     address: any;
     createdAt: string;
+    hasBeenSentToSystem: boolean;
     id: string;
     payment: {
         error: any;

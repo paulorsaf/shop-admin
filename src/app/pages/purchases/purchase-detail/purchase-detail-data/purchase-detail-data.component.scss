@@ -4,3 +4,15 @@
 label {
     font-weight: 500;
 }
+
+button {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.send-to-company-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}

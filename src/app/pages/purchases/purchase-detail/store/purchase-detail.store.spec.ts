@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { purchaseDetailReducer } from "./purchase-detail.reducers";
 import { PurchaseDetailState } from "./purchase-detail.state";
 
@@ -11,6 +11,8 @@ describe('Purchase detail store', () => {
             error: {},
             isLoaded: true,
             isLoading: false,
+            isSendingToSystem: true,
+            isSentToSystem: true,
             isUpdated: true,
             isUpdating: true,
             purchase: {} as any
@@ -23,6 +25,8 @@ describe('Purchase detail store', () => {
             error: null,
             isLoaded: false,
             isLoading: true,
+            isSendingToSystem: false,
+            isSentToSystem: false,
             isUpdated: false,
             isUpdating: false,
             purchase: undefined
@@ -111,6 +115,56 @@ describe('Purchase detail store', () => {
             error,
             isUpdated: false,
             isUpdating: false
+        });
+    });
+    
+    it('sendPurchaseToSystem', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            error: {},
+            isSentToSystem: true,
+            isSendingToSystem: false
+        };
+
+        const state = purchaseDetailReducer(initialState, sendPurchaseToSystem());
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error: null,
+            isSentToSystem: false,
+            isSendingToSystem: true
+        });
+    });
+    
+    it('sendPurchaseToSystemSuccess', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isSendingToSystem: true
+        };
+
+        const state = purchaseDetailReducer(initialState, sendPurchaseToSystemSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            isSentToSystem: true,
+            isSendingToSystem: false
+        });
+    });
+    
+    it('sendPurchaseToSystemFail', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isSendingToSystem: true
+        };
+
+        const error = {error: "error"};
+        const state = purchaseDetailReducer(initialState, sendPurchaseToSystemFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error,
+            isSentToSystem: false,
+            isSendingToSystem: false
         });
     });
   

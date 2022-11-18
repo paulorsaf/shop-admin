@@ -5,7 +5,7 @@ import { filter, Observable, Subscription, take } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { Purchase } from 'src/app/model/purchase/purchase';
 import { AppState } from 'src/app/store/app-state';
-import { updatePurchaseStatus } from '../store/purchase-detail.actions';
+import { sendPurchaseToSystem, updatePurchaseStatus } from '../store/purchase-detail.actions';
 
 @Component({
   selector: 'app-purchase-detail-data',
@@ -14,6 +14,8 @@ import { updatePurchaseStatus } from '../store/purchase-detail.actions';
 })
 export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
 
+  canSendPurchaseToOwnSystem$!: Observable<boolean>;
+  isSending$!: Observable<boolean>;
   purchase$!: Observable<Purchase | undefined>;
 
   status = "";
@@ -27,6 +29,11 @@ export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.canSendPurchaseToOwnSystem$ = this.store.select(state =>
+      !!state.user.company?.hasToSendPurchaseToOwnSystem &&
+      !state.purchaseDetail.purchase?.hasBeenSentToSystem
+    );
+    this.isSending$ = this.store.select(state => state.purchaseDetail.isSendingToSystem);
     this.purchase$ = this.store.select(state => state.purchaseDetail.purchase);
 
     this.onLoaded();
@@ -61,6 +68,19 @@ export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
         this.purchase$.pipe(take(1)).subscribe(purchase => {
           this.status = purchase?.status || "";
         });
+      }
+    });
+  }
+
+  sendToSystem() {
+    this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: "Deseja enviar a compra para o sistema?"
+      },
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.store.dispatch(sendPurchaseToSystem());
       }
     });
   }

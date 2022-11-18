@@ -4,10 +4,9 @@ import { Observable, of, throwError } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { PurchaseDetailEffects } from './purchase-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
-import { StockServiceMock } from "src/mock/stock-service.mock";
 import { PurchaseServiceMock } from "src/mock/purchase-service.mock";
 import { PurchaseService } from "src/app/services/purchase/purchase.service";
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { provideMockStore } from "@ngrx/store/testing";
 
 describe('PurchaseDetailEffects', () => {
@@ -105,6 +104,47 @@ describe('PurchaseDetailEffects', () => {
 
         it('then return load purchase detail', (done) => {
             effects.updatePurchaseStatusSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadPurchaseDetail({id: "anyPurchaseId"}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given send purchase to system", () => {
+
+        beforeEach(() => {
+            actions$ = of(sendPurchaseToSystem());
+        })
+
+        it('when success, then return send purchase to system success', (done) => {
+            purchaseService._response = of(purchase);
+    
+            effects.sendToSystemEffect$.subscribe(response => {
+                expect(response).toEqual(sendPurchaseToSystemSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return update purchase status fail', (done) => {
+            purchaseService._response = throwError(error);
+    
+            effects.sendToSystemEffect$.subscribe(response => {
+                expect(response).toEqual(sendPurchaseToSystemFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given send purchase to system success", () => {
+
+        beforeEach(() => {
+            actions$ = of(sendPurchaseToSystemSuccess());
+        })
+
+        it('then return load purchase detail', (done) => {
+            effects.sendToSystemSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadPurchaseDetail({id: "anyPurchaseId"}));
                 done();
             })

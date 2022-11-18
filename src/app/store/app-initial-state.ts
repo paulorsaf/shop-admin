@@ -117,6 +117,8 @@ export const AppInitialState: AppState = {
         error: null,
         isLoaded: false,
         isLoading: false,
+        isSendingToSystem: false,
+        isSentToSystem: false,
         isUpdated: false,
         isUpdating: false,
         purchase: undefined

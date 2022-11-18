@@ -24,6 +24,11 @@ export class PurchaseService {
     return this.apiService.get<Purchase>(url);
   }
 
+  sendToSystem(id: string): Observable<Purchase> {
+    const url = `${environment.apiUrl}/purchases/${id}/system`;
+    return this.apiService.post<Purchase>(url);
+  }
+
   updateStatus(id: string, status: string, reason: string): Observable<Purchase> {
     const url = `${environment.apiUrl}/purchases/${id}/status`;
     return this.apiService.patch<Purchase>(url, {status, reason});

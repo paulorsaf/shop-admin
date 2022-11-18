@@ -41,4 +41,15 @@
         </div>
         <div *ngIf="!purchase.address">Busca na loja</div>
     </div>
+    <div *ngIf="(canSendPurchaseToOwnSystem$ | async)">
+        <button mat-raised-button *ngIf="!(isSending$ | async)"
+            color="primary" (click)="sendToSystem()" test-id="send-to-company-system">
+            Enviar para o sistema
+        </button>
+        <div class="send-to-company-spinner">
+            <mat-spinner color="primary" diameter="20" *ngIf="isSending$ | async"
+                test-id="sending-to-company-system">
+            </mat-spinner>
+        </div>
+    </div>
 </section>

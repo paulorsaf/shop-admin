@@ -5,7 +5,7 @@ import { of, withLatestFrom } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PurchaseService } from "src/app/services/purchase/purchase.service";
 import { AppState } from "src/app/store/app-state";
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 
 @Injectable()
 export class PurchaseDetailEffects {
@@ -52,6 +52,31 @@ export class PurchaseDetailEffects {
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 of(loadPurchaseDetail({id: storeState.purchaseDetail.purchase?.id || ""}))
+            )
+        )
+    )
+
+    sendToSystemEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(sendPurchaseToSystem),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                this.purchaseService.sendToSystem(
+                    storeState.purchaseDetail.purchase!.id
+                ).pipe(
+                    map(() => sendPurchaseToSystemSuccess()),
+                    catchError(error => of(sendPurchaseToSystemFail({error})))
+                )
+            )
+        )
+    )
+
+    sendToSystemSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(sendPurchaseToSystemSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                of(loadPurchaseDetail({id: storeState.purchaseDetail.purchase!.id}))
             )
         )
     )

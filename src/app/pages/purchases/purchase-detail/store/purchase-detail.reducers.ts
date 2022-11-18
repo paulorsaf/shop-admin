@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './purchase-detail.actions';
+import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './purchase-detail.actions';
 import { PurchaseDetailState } from './purchase-detail.state';
 
 const initialState: PurchaseDetailState = AppInitialState.purchaseDetail;
@@ -12,6 +12,8 @@ const _purchaseDetailReducer = createReducer(initialState,
             error: null,
             isLoaded: false,
             isLoading: true,
+            isSendingToSystem: false,
+            isSentToSystem: false,
             isUpdated: false,
             isUpdating: false,
             purchase: undefined
@@ -54,6 +56,29 @@ const _purchaseDetailReducer = createReducer(initialState,
             error: action.error,
             isUpdated: false,
             isUpdating: false
+        };
+    }),
+    on(sendPurchaseToSystem, (state) => {
+        return {
+            ...state,
+            error: null,
+            isSendingToSystem: true,
+            isSentToSystem: false
+        };
+    }),
+    on(sendPurchaseToSystemSuccess, (state) => {
+        return {
+            ...state,
+            isSendingToSystem: false,
+            isSentToSystem: true
+        };
+    }),
+    on(sendPurchaseToSystemFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isSendingToSystem: false,
+            isSentToSystem: false
         };
     })
 );

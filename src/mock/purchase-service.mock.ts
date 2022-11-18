@@ -10,6 +10,9 @@ export class PurchaseServiceMock {
     findById() {
         return this._response || of({});
     }
+    sendToSystem() {
+        return this._response || of({});
+    }
     updateStatus() {
         return this._response || of({});
     }

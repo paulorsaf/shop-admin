@@ -12,6 +12,7 @@ export type Company = {
     aboutUs: string;
     address: Address;
     canUpdateStock: boolean;
+    hasToSendPurchaseToOwnSystem: boolean;
     id: string;
     logo: Image;
     payment: Payment;
