@@ -6,7 +6,7 @@ import { PurchaseDetailEffects } from './purchase-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { PurchaseServiceMock } from "src/mock/purchase-service.mock";
 import { PurchaseService } from "src/app/services/purchase/purchase.service";
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { provideMockStore } from "@ngrx/store/testing";
 
 describe('PurchaseDetailEffects', () => {
@@ -145,6 +145,51 @@ describe('PurchaseDetailEffects', () => {
 
         it('then return load purchase detail', (done) => {
             effects.sendToSystemSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadPurchaseDetail({id: "anyPurchaseId"}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given edit purchase product", () => {
+
+        beforeEach(() => {
+            actions$ = of(editPurchaseProduct({
+                productId: "anyProductId",
+                stockId: "anyStockId",
+                value: 10
+            }));
+        })
+
+        it('when success, then return edit purchase product success', (done) => {
+            purchaseService._response = of(purchase);
+    
+            effects.editPurchaseProductEffect$.subscribe(response => {
+                expect(response).toEqual(editPurchaseProductSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return edit purchase product fail', (done) => {
+            purchaseService._response = throwError(error);
+    
+            effects.editPurchaseProductEffect$.subscribe(response => {
+                expect(response).toEqual(editPurchaseProductFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given update purchase status success", () => {
+
+        beforeEach(() => {
+            actions$ = of(editPurchaseProductSuccess());
+        })
+
+        it('then return load purchase detail', (done) => {
+            effects.editPurchaseProductSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadPurchaseDetail({id: "anyPurchaseId"}));
                 done();
             })

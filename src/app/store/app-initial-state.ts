@@ -115,6 +115,8 @@ export const AppInitialState: AppState = {
     },
     purchaseDetail: {
         error: null,
+        isEditedProduct: false,
+        isEditingProduct: false,
         isLoaded: false,
         isLoading: false,
         isSendingToSystem: false,

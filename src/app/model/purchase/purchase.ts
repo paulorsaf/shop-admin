@@ -35,6 +35,11 @@ export type PurchaseProduct = {
     name: string;
     price: number;
     priceWithDiscount: number;
+    stock: {
+        id: string;
+    };
+    unit: string;
+    weight: number;
 }
 
 type ProductNotes = {

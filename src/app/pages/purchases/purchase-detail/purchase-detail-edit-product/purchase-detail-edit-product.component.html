@@ -1,0 +1,33 @@
+<h2>{{product.name}}</h2>
+
+<form [formGroup]="form">
+    <div *ngIf="product.unit !== 'KG'">
+        <mat-form-field>
+            <mat-label>Quantidade</mat-label>
+            <input matInput type="number" placeholder="Quantidade" formControlName="amount"
+                test-id="amount">
+        </mat-form-field>
+    </div>
+    <div *ngIf="product.unit !== 'UN'">
+        <mat-form-field>
+            <mat-label>Peso</mat-label>
+            <input matInput type="number" placeholder="Peso" formControlName="weight"
+                test-id="weight">
+        </mat-form-field>
+    </div>
+    <div>Preço final: {{form.value.price | currency: 'R$ '}}</div>
+    <br/>
+
+    <div align="right">
+        <button mat-button color="primary" (click)="close()" test-id="cancel-button">
+            Cancelar
+        </button>
+        <button mat-raised-button color="primary" [disabled]="!form.valid"
+            (click)="save()" *ngIf="!(isEditing$ | async)" test-id="save-button">
+            Salvar
+        </button>
+        <button mat-button *ngIf="isEditing$ | async" test-id="loading-button">
+            <mat-spinner color="primary" diameter="20"></mat-spinner>
+        </button>
+    </div>
+</form>

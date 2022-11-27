@@ -18,13 +18,12 @@ import { AddTokenHeaderHttpRequestInterceptor } from './interceptors/add-token-h
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SideMenuModule } from './components/side-menu/side-menu.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SideMenuComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +46,9 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     NgxSkeletonLoaderModule,
 
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+
+    SideMenuModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

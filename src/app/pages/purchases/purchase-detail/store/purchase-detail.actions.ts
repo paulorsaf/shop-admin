@@ -13,3 +13,7 @@ export const updatePurchaseStatusFail = createAction('[Purchase detail] update s
 export const sendPurchaseToSystem = createAction('[Purchase detail] send to system');
 export const sendPurchaseToSystemSuccess = createAction('[Purchase detail] send to system success');
 export const sendPurchaseToSystemFail = createAction('[Purchase detail] send to system fail', props<{error: any}>());
+
+export const editPurchaseProduct = createAction('[Purchase detail] edit product', props<{productId: string, stockId: string, value: number}>());
+export const editPurchaseProductSuccess = createAction('[Purchase detail] edit product success');
+export const editPurchaseProductFail = createAction('[Purchase detail] edit product fail', props<{error: any}>());

@@ -14,6 +14,11 @@ export class PurchaseService {
     private apiService: ApiService
   ) { }
 
+  editPurchaseProduct(params: EditPurchaseProduct): Observable<Purchase> {
+    const url = `${environment.apiUrl}/purchases/${params.purchaseId}/products/${params.productId}/stocks/${params.stockId}`;
+    return this.apiService.post<Purchase>(url, {value: params.value});
+  }
+
   find(): Observable<PurchaseSummary[]> {
     const url = `${environment.apiUrl}/purchases`;
     return this.apiService.get<PurchaseSummary[]>(url);
@@ -34,4 +39,11 @@ export class PurchaseService {
     return this.apiService.patch<Purchase>(url, {status, reason});
   }
 
+}
+
+type EditPurchaseProduct = {
+  purchaseId: string;
+  productId: string;
+  stockId: string;
+  value: number;
 }

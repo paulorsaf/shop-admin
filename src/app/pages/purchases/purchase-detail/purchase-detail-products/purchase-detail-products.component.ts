@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Purchase } from 'src/app/model/purchase/purchase';
+import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
+import { Purchase, PurchaseProduct } from 'src/app/model/purchase/purchase';
 import { AppState } from 'src/app/store/app-state';
+import { PurchaseDetailEditProductComponent } from '../purchase-detail-edit-product/purchase-detail-edit-product.component';
 
 @Component({
   selector: 'app-purchase-detail-products',
@@ -14,11 +17,18 @@ export class PurchaseDetailProductsComponent implements OnInit {
   purchase$!: Observable<Purchase | undefined>;
 
   constructor(
+    private matDialog: MatDialog,
     private store: Store<AppState>
   ) { }
 
   ngOnInit(): void {
     this.purchase$ = this.store.select(state => state.purchaseDetail.purchase);
+  }
+
+  showEditProduct(product: PurchaseProduct) {
+    this.matDialog.open(PurchaseDetailEditProductComponent, {
+      data: product
+    });
   }
 
 }

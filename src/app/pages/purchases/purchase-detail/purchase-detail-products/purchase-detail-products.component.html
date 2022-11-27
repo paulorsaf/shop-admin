@@ -1,9 +1,10 @@
 <section class="page" *ngIf="purchase$ | async; let purchase">
     <mat-list role="list">
         <mat-list-item role="listitem" *ngFor="let product of purchase.products">
-            <span class="total-product-price">
-                {{product.amount * (product.priceWithDiscount || product.price) | currency: "R$ "}}
-            </span>
+            <div class="total-product-price">
+                <div>{{product.amount * (product.priceWithDiscount || product.price) | currency: "R$ "}}</div>
+                <mat-icon (click)="showEditProduct(product)" test-id="edit-product">edit</mat-icon>
+            </div>
             <div mat-line>{{product.amount}}x {{product.name}}</div>
             <div mat-line>
                 <span class="price"

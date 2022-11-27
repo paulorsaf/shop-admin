@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { purchaseDetailReducer } from "./purchase-detail.reducers";
 import { PurchaseDetailState } from "./purchase-detail.state";
 
@@ -9,6 +9,8 @@ describe('Purchase detail store', () => {
         const initialState: PurchaseDetailState = {
             ...AppInitialState.purchaseDetail,
             error: {},
+            isEditedProduct: true,
+            isEditingProduct: true,
             isLoaded: true,
             isLoading: false,
             isSendingToSystem: true,
@@ -23,6 +25,8 @@ describe('Purchase detail store', () => {
         expect(state).toEqual({
             ...AppInitialState.purchaseDetail,
             error: null,
+            isEditedProduct: false,
+            isEditingProduct: false,
             isLoaded: false,
             isLoading: true,
             isSendingToSystem: false,
@@ -165,6 +169,59 @@ describe('Purchase detail store', () => {
             error,
             isSentToSystem: false,
             isSendingToSystem: false
+        });
+    });
+    
+    it('editPurchaseProduct', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            error: {},
+            isEditedProduct: true,
+            isEditingProduct: false
+        };
+
+        const state = purchaseDetailReducer(initialState, editPurchaseProduct({
+            productId: "anyProductId", stockId: "anyStockId", value: 1
+        }));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error: null,
+            isEditedProduct: false,
+            isEditingProduct: true
+        });
+    });
+    
+    it('editPurchaseProductSuccess', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isEditingProduct: true
+        };
+
+        const state = purchaseDetailReducer(initialState, editPurchaseProductSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            isEditedProduct: true,
+            isEditingProduct: false
+        });
+    });
+    
+    it('editPurchaseProductFail', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isEditedProduct: false,
+            isEditingProduct: true
+        };
+
+        const error = {error: "error"};
+        const state = purchaseDetailReducer(initialState, editPurchaseProductFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error,
+            isEditedProduct: false,
+            isEditingProduct: false
         });
     });
   

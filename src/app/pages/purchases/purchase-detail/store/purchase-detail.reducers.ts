@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './purchase-detail.actions';
+import { editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './purchase-detail.actions';
 import { PurchaseDetailState } from './purchase-detail.state';
 
 const initialState: PurchaseDetailState = AppInitialState.purchaseDetail;
@@ -10,6 +10,8 @@ const _purchaseDetailReducer = createReducer(initialState,
         return {
             ...state,
             error: null,
+            isEditedProduct: false,
+            isEditingProduct: false,
             isLoaded: false,
             isLoading: true,
             isSendingToSystem: false,
@@ -79,6 +81,29 @@ const _purchaseDetailReducer = createReducer(initialState,
             error: action.error,
             isSendingToSystem: false,
             isSentToSystem: false
+        };
+    }),
+    on(editPurchaseProduct, (state) => {
+        return {
+            ...state,
+            error: null,
+            isEditedProduct: false,
+            isEditingProduct: true
+        };
+    }),
+    on(editPurchaseProductSuccess, (state) => {
+        return {
+            ...state,
+            isEditedProduct: true,
+            isEditingProduct: false
+        };
+    }),
+    on(editPurchaseProductFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isEditedProduct: false,
+            isEditingProduct: false
         };
     })
 );

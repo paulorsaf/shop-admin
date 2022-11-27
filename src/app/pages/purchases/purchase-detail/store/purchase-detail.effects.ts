@@ -5,7 +5,7 @@ import { of, withLatestFrom } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PurchaseService } from "src/app/services/purchase/purchase.service";
 import { AppState } from "src/app/store/app-state";
-import { loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 
 @Injectable()
 export class PurchaseDetailEffects {
@@ -74,6 +74,34 @@ export class PurchaseDetailEffects {
     sendToSystemSuccessEffect$ = createEffect(() =>
         this.actions$.pipe(
             ofType(sendPurchaseToSystemSuccess),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                of(loadPurchaseDetail({id: storeState.purchaseDetail.purchase!.id}))
+            )
+        )
+    )
+
+    editPurchaseProductEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(editPurchaseProduct),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+                this.purchaseService.editPurchaseProduct({
+                    productId: action.productId,
+                    purchaseId: storeState.purchaseDetail.purchase!.id,
+                    stockId: action.stockId,
+                    value: action.value
+                }).pipe(
+                    map(() => editPurchaseProductSuccess()),
+                    catchError(error => of(editPurchaseProductFail({error})))
+                )
+            )
+        )
+    )
+
+    editPurchaseProductSuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(editPurchaseProductSuccess),
             this.getStore(),
             switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
                 of(loadPurchaseDetail({id: storeState.purchaseDetail.purchase!.id}))
