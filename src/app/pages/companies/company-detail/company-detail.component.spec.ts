@@ -74,6 +74,10 @@ describe('CompanyDetailComponent', () => {
       expect(component.companyForm).not.toBeUndefined();
     });
 
+    it('then create delivery form', () => {
+      expect(component.deliveryForm).not.toBeUndefined();
+    });
+
   })
 
   describe('given address form', () => {
@@ -196,6 +200,54 @@ describe('CompanyDetailComponent', () => {
 
   })
 
+  describe('given delivery form', () => {
+
+    beforeEach(() => {
+      const company = {
+        aboutUs: "anyHtml",
+        address,
+        cityDeliveryPrice: 10,
+        facebook: "anyFacebook",
+        id: "anyCompany",
+        instagram: "anyInstagram",
+        name: "anyCompanyName",
+        website: "anyWebsite",
+        whatsapp: "anyWhatsapp"
+      } as any;
+      store.dispatch(loadCompanyDetailSuccess({company}));
+      fixture.detectChanges();
+    })
+
+    it('when price is empty, then price should be invalid', () => {
+      component.deliveryForm.get('price')!.setValue('');
+      fixture.detectChanges();
+
+      expect(component.deliveryForm.get('price')!.valid).toBeFalsy();
+    })
+
+    it('when name is filled, then name should be valid', () => {
+      component.deliveryForm.get('price')!.setValue('anyName');
+      fixture.detectChanges();
+
+      expect(component.deliveryForm.get('price')!.valid).toBeTruthy();
+    })
+
+    it('when delivery form is invalid, then disable save delivery button', () => {
+      component.deliveryForm.get('price')?.setValue('');
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="save-delivery-button"]').disabled).toBeTruthy();
+    })
+
+    it('when delivery form is valid, then enable save delivery button', () => {
+      component.deliveryForm.get('price')?.setValue('10');
+      fixture.detectChanges();
+
+      expect(page.querySelector('[test-id="save-delivery-button"]').disabled).toBeFalsy();
+    })
+
+  })
+
   describe('given loading company', () => {
 
     it('then show company loader', () => {
@@ -212,12 +264,13 @@ describe('CompanyDetailComponent', () => {
 
     beforeEach(() => {
       const company = {
-        id: "anyCompany",
-        name: "anyCompanyName",
-        address,
         aboutUs: "anyHtml",
+        address,
+        cityDeliveryPrice: 10,
         facebook: "anyFacebook",
+        id: "anyCompany",
         instagram: "anyInstagram",
+        name: "anyCompanyName",
         website: "anyWebsite",
         whatsapp: "anyWhatsapp"
       } as any;
@@ -250,6 +303,12 @@ describe('CompanyDetailComponent', () => {
     it('then populate about us form', () => {
       expect(component.aboutUsForm.value).toEqual({
         html: "anyHtml"
+      });
+    })
+
+    it('then populate delivery form', () => {
+      expect(component.deliveryForm.value).toEqual({
+        price: 10
       });
     })
 
@@ -686,6 +745,41 @@ describe('CompanyDetailComponent', () => {
         }, 100)
       })
   
+    })
+
+  })
+
+  describe('given user clicks on save delivery price', () => {
+
+    beforeEach(() => {
+      const company = {id: "anyCompany"} as any;
+      store.dispatch(loadCompanyDetailSuccess({company}));
+      fixture.detectChanges();
+
+      component.deliveryForm.get('price')?.setValue("10");
+      fixture.detectChanges();
+
+      page.querySelector('[test-id="save-delivery-button"]').click();
+      fixture.detectChanges();
+    })
+
+    it('then save delivery price', done => {
+      store.select('companyDetail').subscribe(state => {
+        expect(state.isSavingDeliveryPrice).toBeTruthy();
+        done();
+      })
+    })
+
+    describe('when saving delivery price', () => {
+
+      it('then show save delivery price loader', () => {
+        expect(page.querySelector('[test-id="save-delivery-loader"]')).not.toBeNull();
+      })
+
+      it('then hide save delivery price button', () => {
+        expect(page.querySelector('[test-id="save-delivery-button"]')).toBeNull();
+      })
+
     })
 
   })

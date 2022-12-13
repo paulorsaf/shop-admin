@@ -1,9 +1,9 @@
 import { Address } from "../address/address";
 
 export type CompanyDetails = {
-    name: string;
     facebook: string;
     instagram: string;
+    name: string;
     website: string;
     whatsapp: string;
 }
@@ -12,6 +12,7 @@ export type Company = {
     aboutUs: string;
     address: Address;
     canUpdateStock: boolean;
+    cityDeliveryPrice: number;
     hasToSendPurchaseToOwnSystem: boolean;
     id: string;
     logo: Image;

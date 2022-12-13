@@ -16,10 +16,17 @@ mat-card {
     }
 }
 
+.padding-top {
+    padding-top: 20px;
+}
+
 mat-spinner {
     margin: 13px 50px;
     &.zip-code-loader {
         margin-bottom: 25px;
+    }
+    &.save-delivery-price {
+        margin-left: 75px;
     }
 }
 

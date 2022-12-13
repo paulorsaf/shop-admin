@@ -5,8 +5,7 @@ import { Action } from '@ngrx/store';
 import { CompanyDetailEffects } from './company-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
-import { CompanyServiceMock } from "src/mock/company-service.mock";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess } from "./company-detail.actions";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AddressServiceMock } from "src/mock/address-service.mock";
 import { AddressService } from "src/app/services/address/address.service";
@@ -264,4 +263,58 @@ describe('CompanyDetailEffects', () => {
 
     })
 
+    describe("Given save delivery price", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveDeliveryPrice({price: 10}));
+        })
+
+        it('when success, then return save deliveryPrice success', (done) => {
+            companyService._response = of({});
+    
+            effects.saveCompanyDetailDeliveryPriceEffect$.subscribe(response => {
+                expect(response).toEqual(saveDeliveryPriceSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save company detail about us fail', (done) => {
+            companyService._response = throwError(error);
+    
+            effects.saveCompanyDetailDeliveryPriceEffect$.subscribe(response => {
+                expect(response).toEqual(saveDeliveryPriceFail({error}));
+                done();
+            })
+        })
+
+    })
+
 });
+
+class CompanyServiceMock {
+
+    _response: any = of({});
+
+    findById() {
+        return this._response;
+    }
+    update() {
+        return this._response;
+    }
+    updateAboutUs() {
+        return this._response;
+    }
+    updateAddress() {
+        return this._response;
+    }
+    updateDeliveryPrice() {
+        return this._response;
+    }
+    updateLogo() {
+        return this._response;
+    }
+    updatePayment() {
+        return this._response;
+    }
+    
+}

@@ -136,6 +136,31 @@
                     </mat-spinner>
                 </form>
             </mat-card-content>
+            <mat-card-title class="padding-top">Valor da entrega</mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="deliveryForm">
+                    <mat-form-field>
+                        <mat-label>Valor da entrega</mat-label>
+                        <input matInput placeholder="Valor da entrega" type="number"
+                            formControlName="price">
+                    </mat-form-field>
+                    <div>
+                        <mat-hint>
+                            * Esse será o valor cobrado para entregas na mesma cidade da loja.<br/>
+                            Para entrega em cidades diferentes usaremos o valor cobrado pelo serviço dos correios.
+                        </mat-hint>
+                    </div>
+
+                    <button mat-raised-button color="primary" (click)="saveDeliveryPrice()"
+                        [disabled]="!deliveryForm.valid" *ngIf="!(isSavingDeliveryPrice$ | async)"
+                        test-id="save-delivery-button">
+                        Salvar valor da entrega
+                    </button>
+                    <mat-spinner color="primary" diameter="20" class="save-delivery-price"
+                        *ngIf="(isSavingDeliveryPrice$ | async)" test-id="save-delivery-loader">
+                    </mat-spinner>
+                </form>
+            </mat-card-content>
         </mat-card>
         
         <section>

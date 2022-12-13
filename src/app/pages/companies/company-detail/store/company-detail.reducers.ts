@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess } from './company-detail.actions';
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess } from './company-detail.actions';
 import { CompanyDetailState } from './company-detail.state';
 
 const initialState: CompanyDetailState = AppInitialState.companyDetail;
@@ -182,6 +182,29 @@ const _companyDetailReducer = createReducer(initialState,
             error: action.error,
             isSavedPayment: false,
             isSavingPayment: false
+        };
+    }),
+    on(saveDeliveryPrice, (state) => {
+        return {
+            ...state,
+            error: undefined,
+            isSavedDeliveryPrice: false,
+            isSavingDeliveryPrice: true
+        };
+    }),
+    on(saveDeliveryPriceSuccess, (state) => {
+        return {
+            ...state,
+            isSavedDeliveryPrice: true,
+            isSavingDeliveryPrice: false
+        };
+    }),
+    on(saveDeliveryPriceFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isSavedDeliveryPrice: false,
+            isSavingDeliveryPrice: false
         };
     })
 );

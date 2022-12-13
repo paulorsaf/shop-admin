@@ -34,6 +34,11 @@ export class CompanyService {
     return this.apiService.patch<void>(url, address);
   }
 
+  updateDeliveryPrice(id: string, price: number): Observable<void> {
+    const url = `${environment.apiUrl}/companies/${id}/deliveryprices`;
+    return this.apiService.patch<void>(url, {price});
+  }
+
   updateLogo(id: string, image: File): Observable<void> {
     const url = `${environment.apiUrl}/companies/${id}/logos`;
     return this.apiService.patchMultipart<void>(url, image);

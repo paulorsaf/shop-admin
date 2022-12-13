@@ -6,7 +6,7 @@ import { filter, Observable, Subscription, take } from 'rxjs';
 import { Address } from 'src/app/model/address/address';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { loadAddressByZipCode, loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAddress, saveCompanyDetailLogo } from './store/company-detail.actions';
+import { loadAddressByZipCode, loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAddress, saveCompanyDetailLogo, saveDeliveryPrice } from './store/company-detail.actions';
 
 @Component({
   selector: 'app-company-detail',
@@ -21,11 +21,13 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   isSaving$!: Observable<boolean>;
   isSavingAboutUs$!: Observable<boolean>;
   isSavingAddress$!: Observable<boolean>;
+  isSavingDeliveryPrice$!: Observable<boolean>;
   isUploadingLogo$!: Observable<boolean>;
 
   aboutUsForm!: FormGroup;
   addressForm!: FormGroup;
   companyForm!: FormGroup;
+  deliveryForm!: FormGroup;
 
   companySubscription!: Subscription;
   errorSubscription!: Subscription;
@@ -47,31 +49,20 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     defaultFontName: '',
     defaultFontSize: '',
     fonts: [
-      {class: 'arial', name: 'Arial'},
-      {class: 'times-new-roman', name: 'Times New Roman'},
-      {class: 'calibri', name: 'Calibri'},
-      {class: 'comic-sans-ms', name: 'Comic Sans MS'}
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
     ],
     customClasses: [
-    {
-      name: 'quote',
-      class: 'quote',
-    },
-    {
-      name: 'redText',
-      class: 'redText'
-    },
-    {
-      name: 'titleText',
-      class: 'titleText',
-      tag: 'h1',
-    },
-  ],
-  sanitize: true,
-  toolbarPosition: 'top',
-  toolbarHiddenButtons: [
-    [''], ['insertImage', 'insertVideo']
-  ]};
+      { name: 'quote', class: 'quote' },
+      { name: 'redText', class: 'redText' },
+      { name: 'titleText', class: 'titleText', tag: 'h1' }
+    ],
+    sanitize: true,
+    toolbarPosition: 'top',
+    toolbarHiddenButtons: [[''], ['insertImage', 'insertVideo']]
+  };
 
   constructor(
     private formBuilder: FormBuilder,
@@ -86,6 +77,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     this.isSaving$ = this.store.select(state => state.companyDetail.isSavingCompany);
     this.isSavingAboutUs$ = this.store.select(state => state.companyDetail.isSavingAboutUs);
     this.isSavingAddress$ = this.store.select(state => state.companyDetail.isSavingAddress);
+    this.isSavingDeliveryPrice$ = this.store.select(state => state.companyDetail.isSavingDeliveryPrice);
     this.isUploadingLogo$ = this.store.select(state => state.companyDetail.isUploadingLogo);
 
     this.createForm();
@@ -127,6 +119,10 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     this.store.dispatch(loadAddressByZipCode({zipCode: this.addressForm.value.zipCode}));
   }
 
+  saveDeliveryPrice() {
+    this.store.dispatch(saveDeliveryPrice({price: this.deliveryForm.value.price}));
+  }
+
   private getLogoStyle() {
     return this.store.select(state => {
       const logo = state.companyDetail.company?.logo?.imageUrl;
@@ -159,6 +155,10 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
       website: [''],
       whatsapp: ['']
     });
+
+    this.deliveryForm = this.formBuilder.group({
+      price: ['', [Validators.required]]
+    });
   }
 
   saveAboutUs() {
@@ -174,7 +174,8 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   }
 
   private watchCompanyLoaded() {
-    this.companySubscription = this.store.select(state => state.companyDetail.company)
+    this.companySubscription = this.store
+      .select(state => state.companyDetail.company)
       .pipe(
         filter(company => !!company),
         take(1)
@@ -189,6 +190,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
         if (company?.address) {
           this.fillAddressForm(company.address);
         }
+        this.deliveryForm.get('price')!.setValue(company?.cityDeliveryPrice || 0);
       })
   }
 

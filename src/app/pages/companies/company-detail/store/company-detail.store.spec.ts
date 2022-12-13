@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess } from "./company-detail.actions";
 import { companyDetailReducer } from "./company-detail.reducers";
 import { CompanyDetailState } from "./company-detail.state";
 
@@ -379,6 +379,57 @@ describe('Company detail store', () => {
             error,
             isSavedPayment: false,
             isSavingPayment: false
+        });
+    });
+    
+    it('saveDeliveryPrice', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            error: {},
+            isSavedDeliveryPrice: true,
+            isSavingDeliveryPrice: false
+        };
+
+        const state = companyDetailReducer(initialState, saveDeliveryPrice({price: 10}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error: undefined,
+            isSavedDeliveryPrice: false,
+            isSavingDeliveryPrice: true
+        });
+    });
+    
+    it('saveDeliveryPriceSuccess', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isSavingDeliveryPrice: true
+        };
+
+        const state = companyDetailReducer(initialState, saveDeliveryPriceSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error: undefined,
+            isSavedDeliveryPrice: true,
+            isSavingDeliveryPrice: false
+        });
+    });
+    
+    it('saveDeliveryPriceFail', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isSavingDeliveryPrice: true
+        };
+
+        const error = {error: "error"};
+        const state = companyDetailReducer(initialState, saveDeliveryPriceFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error,
+            isSavedDeliveryPrice: false,
+            isSavingDeliveryPrice: false
         });
     });
   

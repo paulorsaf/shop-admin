@@ -6,7 +6,7 @@ import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AddressService } from "src/app/services/address/address.service";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AppState } from "src/app/store/app-state";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess } from "./company-detail.actions";
 
 @Injectable()
 export class CompanyDetailEffects {
@@ -135,6 +135,22 @@ export class CompanyDetailEffects {
                 ).pipe(
                     map(() => saveCompanyDetailPaymentSuccess()),
                     catchError(error => of(saveCompanyDetailPaymentFail({error})))
+                )
+            )
+        )
+    )
+
+    saveCompanyDetailDeliveryPriceEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(saveDeliveryPrice),
+            this.getStore(),
+            switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
+                this.companyService.updateDeliveryPrice(
+                    storeState.companyDetail.company?.id || "",
+                    action.price
+                ).pipe(
+                    map(() => saveDeliveryPriceSuccess()),
+                    catchError(error => of(saveDeliveryPriceFail({error})))
                 )
             )
         )
