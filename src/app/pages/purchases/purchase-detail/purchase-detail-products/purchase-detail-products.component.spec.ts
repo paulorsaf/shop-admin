@@ -8,7 +8,7 @@ import { loadPurchaseDetailSuccess } from '../store/purchase-detail.actions';
 import { purchaseDetailReducer } from '../store/purchase-detail.reducers';
 import { PurchaseDetailProductsComponent } from './purchase-detail-products.component';
 
-fdescribe('PurchaseDetailProductsComponent', () => {
+describe('PurchaseDetailProductsComponent', () => {
   let component: PurchaseDetailProductsComponent;
   let fixture: ComponentFixture<PurchaseDetailProductsComponent>;
   let page: PageMock;

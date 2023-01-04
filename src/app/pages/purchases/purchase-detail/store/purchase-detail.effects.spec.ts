@@ -9,7 +9,7 @@ import { PurchaseService } from "src/app/services/purchase/purchase.service";
 import { cancelPurchaseProduct, cancelPurchaseProductFail, cancelPurchaseProductSuccess, editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { provideMockStore } from "@ngrx/store/testing";
 
-fdescribe('PurchaseDetailEffects', () => {
+describe('PurchaseDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: PurchaseDetailEffects;

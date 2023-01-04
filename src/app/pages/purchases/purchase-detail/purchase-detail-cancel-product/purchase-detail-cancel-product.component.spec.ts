@@ -10,7 +10,7 @@ import { cancelPurchaseProductSuccess } from '../store/purchase-detail.actions';
 import { purchaseDetailReducer } from '../store/purchase-detail.reducers';
 import { PurchaseDetailCancelProductComponent } from './purchase-detail-cancel-product.component';
 
-fdescribe('PurchaseDetailCancelProductComponent', () => {
+describe('PurchaseDetailCancelProductComponent', () => {
   let component: PurchaseDetailCancelProductComponent;
   let fixture: ComponentFixture<PurchaseDetailCancelProductComponent>;
   let page: PageMock;
