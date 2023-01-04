@@ -8,7 +8,7 @@ import { loadPurchaseDetailSuccess } from '../store/purchase-detail.actions';
 import { purchaseDetailReducer } from '../store/purchase-detail.reducers';
 import { PurchaseDetailProductsComponent } from './purchase-detail-products.component';
 
-describe('PurchaseDetailProductsComponent', () => {
+fdescribe('PurchaseDetailProductsComponent', () => {
   let component: PurchaseDetailProductsComponent;
   let fixture: ComponentFixture<PurchaseDetailProductsComponent>;
   let page: PageMock;
@@ -48,6 +48,17 @@ describe('PurchaseDetailProductsComponent', () => {
 
     it('when user clicks on edit purchase product, then show purchase product details', () => {
       page.querySelector('[test-id="edit-product"]').click();
+      fixture.detectChanges();
+
+      expect(dialog.hasOpened).toBeTruthy();
+    });
+
+    it('then show cancel button', () => {
+      expect(page.querySelector('[test-id="cancel-product"]')).not.toBeNull();
+    });
+
+    it('when user clicks on cancel purchase product, then show cancel dialog', () => {
+      page.querySelector('[test-id="cancel-product"]').click();
       fixture.detectChanges();
 
       expect(dialog.hasOpened).toBeTruthy();

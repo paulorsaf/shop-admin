@@ -117,6 +117,8 @@ export const AppInitialState: AppState = {
     },
     purchaseDetail: {
         error: null,
+        isCanceledProduct: false,
+        isCancelingProduct: false,
         isEditedProduct: false,
         isEditingProduct: false,
         isLoaded: false,

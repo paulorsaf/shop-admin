@@ -25,6 +25,7 @@ import { PurchaseDetailProductsComponent } from './purchase-detail/purchase-deta
 import { PurchaseDetailProductNotesComponent } from './purchase-detail/purchase-detail-product-notes/purchase-detail-product-notes.component';
 import { ProductNameByIdPipeModule } from 'src/app/pipes/product-name-by-id/product-name-by-id.pipe.module';
 import { PurchaseDetailEditProductComponent } from './purchase-detail/purchase-detail-edit-product/purchase-detail-edit-product.component';
+import { PurchaseDetailCancelProductComponent } from './purchase-detail/purchase-detail-cancel-product/purchase-detail-cancel-product.component';
 
 const routes: Routes = [{
   path: '',
@@ -42,7 +43,8 @@ const routes: Routes = [{
     PurchaseDetailDataComponent,
     PurchaseDetailProductsComponent,
     PurchaseDetailProductNotesComponent,
-    PurchaseDetailEditProductComponent
+    PurchaseDetailEditProductComponent,
+    PurchaseDetailCancelProductComponent
   ],
   imports: [
     CommonModule,

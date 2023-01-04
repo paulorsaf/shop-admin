@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './purchase-detail.actions';
+import { cancelPurchaseProduct, cancelPurchaseProductFail, cancelPurchaseProductSuccess, editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from './purchase-detail.actions';
 import { PurchaseDetailState } from './purchase-detail.state';
 
 const initialState: PurchaseDetailState = AppInitialState.purchaseDetail;
@@ -10,6 +10,8 @@ const _purchaseDetailReducer = createReducer(initialState,
         return {
             ...state,
             error: null,
+            isCanceledProduct: false,
+            isCancelingProduct: false,
             isEditedProduct: false,
             isEditingProduct: false,
             isLoaded: false,
@@ -104,6 +106,29 @@ const _purchaseDetailReducer = createReducer(initialState,
             error: action.error,
             isEditedProduct: false,
             isEditingProduct: false
+        };
+    }),
+    on(cancelPurchaseProduct, (state) => {
+        return {
+            ...state,
+            error: null,
+            isCanceledProduct: false,
+            isCancelingProduct: true
+        };
+    }),
+    on(cancelPurchaseProductSuccess, (state) => {
+        return {
+            ...state,
+            isCanceledProduct: true,
+            isCancelingProduct: false
+        };
+    }),
+    on(cancelPurchaseProductFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isCanceledProduct: false,
+            isCancelingProduct: false
         };
     })
 );

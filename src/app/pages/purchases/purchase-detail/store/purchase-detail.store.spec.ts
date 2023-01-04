@@ -1,14 +1,16 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { cancelPurchaseProduct, cancelPurchaseProductFail, cancelPurchaseProductSuccess, editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { purchaseDetailReducer } from "./purchase-detail.reducers";
 import { PurchaseDetailState } from "./purchase-detail.state";
 
-describe('Purchase detail store', () => {
+fdescribe('Purchase detail store', () => {
     
     it('loadPurchaseDetail', () => {
         const initialState: PurchaseDetailState = {
             ...AppInitialState.purchaseDetail,
             error: {},
+            isCanceledProduct: true,
+            isCancelingProduct: true,
             isEditedProduct: true,
             isEditingProduct: true,
             isLoaded: true,
@@ -25,6 +27,8 @@ describe('Purchase detail store', () => {
         expect(state).toEqual({
             ...AppInitialState.purchaseDetail,
             error: null,
+            isCanceledProduct: false,
+            isCancelingProduct: false,
             isEditedProduct: false,
             isEditingProduct: false,
             isLoaded: false,
@@ -222,6 +226,56 @@ describe('Purchase detail store', () => {
             error,
             isEditedProduct: false,
             isEditingProduct: false
+        });
+    });
+    
+    it('cancelPurchaseProduct', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            error: {},
+            isCanceledProduct: true,
+            isCancelingProduct: false
+        };
+
+        const state = purchaseDetailReducer(initialState, cancelPurchaseProduct({id: "anyId", stockId: "anyStockId"}));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error: null,
+            isCanceledProduct: false,
+            isCancelingProduct: true
+        });
+    });
+    
+    it('cancelPurchaseProductSuccess', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isCancelingProduct: true
+        };
+
+        const state = purchaseDetailReducer(initialState, cancelPurchaseProductSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            isCanceledProduct: true,
+            isCancelingProduct: false
+        });
+    });
+    
+    it('cancelPurchaseProductFail', () => {
+        const initialState: PurchaseDetailState = {
+            ...AppInitialState.purchaseDetail,
+            isCancelingProduct: true
+        };
+
+        const error = {error: "error"};
+        const state = purchaseDetailReducer(initialState, cancelPurchaseProductFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchaseDetail,
+            error,
+            isCanceledProduct: false,
+            isCancelingProduct: false
         });
     });
   

@@ -17,3 +17,7 @@ export const sendPurchaseToSystemFail = createAction('[Purchase detail] send to 
 export const editPurchaseProduct = createAction('[Purchase detail] edit product', props<{productId: string, stockId: string, value: number}>());
 export const editPurchaseProductSuccess = createAction('[Purchase detail] edit product success');
 export const editPurchaseProductFail = createAction('[Purchase detail] edit product fail', props<{error: any}>());
+
+export const cancelPurchaseProduct = createAction('[Purchase detail] cancel product', props<{id: string, stockId: string}>());
+export const cancelPurchaseProductSuccess = createAction('[Purchase detail] cancel product success');
+export const cancelPurchaseProductFail = createAction('[Purchase detail] cancel product fail', props<{error: any}>());

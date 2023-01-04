@@ -1,0 +1,18 @@
+<h2>{{product.name}}</h2>
+
+<p>
+    Tem certeza que deseja cancelar esse produto?<br/>Ele será marcado como removido da compra.
+</p>
+
+<div align="right">
+    <button mat-button color="primary" (click)="close()" test-id="close-button">
+        Fechar
+    </button>
+    <button mat-raised-button color="primary" (click)="cancel()"
+        *ngIf="!(isCanceling$ | async)" test-id="cancel-button">
+        Cancelar produto
+    </button>
+    <button mat-button *ngIf="isCanceling$ | async" test-id="loading-button">
+        <mat-spinner color="primary" diameter="20"></mat-spinner>
+    </button>
+</div>

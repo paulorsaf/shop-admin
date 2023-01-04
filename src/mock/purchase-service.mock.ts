@@ -4,6 +4,9 @@ export class PurchaseServiceMock {
 
     _response: any;
 
+    cancelPurchaseProduct() {
+        return this._response || of({});
+    }
     editPurchaseProduct() {
         return this._response || of({});
     }

@@ -14,6 +14,11 @@ export class PurchaseService {
     private apiService: ApiService
   ) { }
 
+  cancelPurchaseProduct(params: CancelPurchaseProduct): Observable<Purchase> {
+    const url = `${environment.apiUrl}/purchases/${params.purchaseId}/products/${params.productId}/stocks/${params.stockId}`;
+    return this.apiService.delete<Purchase>(url);
+  }
+
   editPurchaseProduct(params: EditPurchaseProduct): Observable<Purchase> {
     const url = `${environment.apiUrl}/purchases/${params.purchaseId}/products/${params.productId}/stocks/${params.stockId}`;
     return this.apiService.post<Purchase>(url, {value: params.value});
@@ -39,6 +44,12 @@ export class PurchaseService {
     return this.apiService.patch<Purchase>(url, {status, reason});
   }
 
+}
+
+type CancelPurchaseProduct = {
+  purchaseId: string;
+  productId: string;
+  stockId: string;
 }
 
 type EditPurchaseProduct = {

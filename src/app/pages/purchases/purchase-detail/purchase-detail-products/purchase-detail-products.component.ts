@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { Purchase, PurchaseProduct } from 'src/app/model/purchase/purchase';
 import { AppState } from 'src/app/store/app-state';
+import { PurchaseDetailCancelProductComponent } from '../purchase-detail-cancel-product/purchase-detail-cancel-product.component';
 import { PurchaseDetailEditProductComponent } from '../purchase-detail-edit-product/purchase-detail-edit-product.component';
 
 @Component({
@@ -27,6 +28,12 @@ export class PurchaseDetailProductsComponent implements OnInit {
 
   showEditProduct(product: PurchaseProduct) {
     this.matDialog.open(PurchaseDetailEditProductComponent, {
+      data: product
+    });
+  }
+
+  showCancelProduct(product: PurchaseProduct) {
+    this.matDialog.open(PurchaseDetailCancelProductComponent, {
       data: product
     });
   }

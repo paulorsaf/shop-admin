@@ -6,10 +6,10 @@ import { PurchaseDetailEffects } from './purchase-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { PurchaseServiceMock } from "src/mock/purchase-service.mock";
 import { PurchaseService } from "src/app/services/purchase/purchase.service";
-import { editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
+import { cancelPurchaseProduct, cancelPurchaseProductFail, cancelPurchaseProductSuccess, editPurchaseProduct, editPurchaseProductFail, editPurchaseProductSuccess, loadPurchaseDetail, loadPurchaseDetailFail, loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess, updatePurchaseStatus, updatePurchaseStatusFail, updatePurchaseStatusSuccess } from "./purchase-detail.actions";
 import { provideMockStore } from "@ngrx/store/testing";
 
-describe('PurchaseDetailEffects', () => {
+fdescribe('PurchaseDetailEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: PurchaseDetailEffects;
@@ -190,6 +190,47 @@ describe('PurchaseDetailEffects', () => {
 
         it('then return load purchase detail', (done) => {
             effects.editPurchaseProductSuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadPurchaseDetail({id: "anyPurchaseId"}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given cancel purchase product", () => {
+
+        beforeEach(() => {
+            actions$ = of(cancelPurchaseProduct({id: "anyProductId", stockId: "anyStockId"}));
+        })
+
+        it('when success, then return cancel purchase product success', (done) => {
+            purchaseService._response = of(purchase);
+    
+            effects.cancelPurchaseProductEffect$.subscribe(response => {
+                expect(response).toEqual(cancelPurchaseProductSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return edit purchase product fail', (done) => {
+            purchaseService._response = throwError(error);
+    
+            effects.cancelPurchaseProductEffect$.subscribe(response => {
+                expect(response).toEqual(cancelPurchaseProductFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("given cancel purchase status success", () => {
+
+        beforeEach(() => {
+            actions$ = of(cancelPurchaseProductSuccess());
+        })
+
+        it('then return load purchase detail', (done) => {
+            effects.cancelPurchaseProductSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadPurchaseDetail({id: "anyPurchaseId"}));
                 done();
             })

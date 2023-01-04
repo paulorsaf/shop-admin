@@ -3,7 +3,14 @@
         <mat-list-item role="listitem" *ngFor="let product of purchase.products">
             <div class="total-product-price">
                 <div>{{product.amount * (product.priceWithDiscount || product.price) | currency: "R$ "}}</div>
-                <mat-icon (click)="showEditProduct(product)" test-id="edit-product">edit</mat-icon>
+                <mat-icon (click)="showEditProduct(product)" title="Editar produto" color="primary"
+                    test-id="edit-product">
+                    edit
+                </mat-icon>
+                <mat-icon (click)="showCancelProduct(product)" color="warn" title="Cancelar produto"
+                    test-id="cancel-product">
+                    block
+                </mat-icon>
             </div>
             <div mat-line>{{product.amount}}x {{product.name}}</div>
             <div mat-line>
