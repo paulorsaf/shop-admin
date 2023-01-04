@@ -23,6 +23,22 @@
                 </span>
             </div>
         </mat-list-item>
+        <mat-list-item class="cancelled" role="listitem"
+            *ngFor="let product of purchase.productsCancelled">
+            <div class="total-product-price">
+                <div>{{product.amount * (product.priceWithDiscount || product.price) | currency: "R$ "}}</div>
+            </div>
+            <div mat-line>{{product.amount}}x {{product.name}}</div>
+            <div mat-line>
+                <span class="price"
+                    [ngClass]="product.priceWithDiscount ? 'line-through' : ''">
+                    {{product.price | currency: "R$ "}}
+                </span>
+                <span *ngIf="product.priceWithDiscount">
+                    {{product.priceWithDiscount | currency: "R$ "}}
+                </span>
+            </div>
+        </mat-list-item>
         <mat-list-item role="listitem" *ngIf="purchase.price?.delivery">
             <span class="total-product-price">
                 {{purchase.price?.delivery | currency: "R$ "}}

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { Purchase, PurchaseProduct } from 'src/app/model/purchase/purchase';
 import { AppState } from 'src/app/store/app-state';
 import { PurchaseDetailCancelProductComponent } from '../purchase-detail-cancel-product/purchase-detail-cancel-product.component';

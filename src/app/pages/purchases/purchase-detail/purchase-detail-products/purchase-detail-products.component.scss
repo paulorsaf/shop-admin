@@ -8,3 +8,8 @@
         }
     }
 }
+
+mat-list-item.cancelled {
+    text-decoration: line-through;
+    color: red;
+}

@@ -11,6 +11,7 @@ export type Purchase = {
     price: Price;
     productNotes: ProductNotes[];
     products: PurchaseProduct[];
+    productsCancelled: PurchaseProduct[];
     status: string;
     totalAmount: number;
     totalPrice: number;
