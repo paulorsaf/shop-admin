@@ -36,6 +36,7 @@ export type PurchaseProduct = {
     name: string;
     price: number;
     priceWithDiscount: number;
+    productInternalId: string;
     stock: {
         id: string;
     };

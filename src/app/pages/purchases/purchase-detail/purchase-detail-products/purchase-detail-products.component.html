@@ -12,7 +12,10 @@
                     block
                 </mat-icon>
             </div>
-            <div mat-line>{{product.amount}}x {{product.name}}</div>
+            <div mat-line>
+                <span *ngIf="product.productInternalId">{{product.productInternalId}} - </span>
+                {{product.amount}}x {{product.name}}
+            </div>
             <div mat-line *ngIf="product.unit === 'KG'">
                 Peso final: {{product.amount * product.weight}} KG
             </div>
@@ -32,7 +35,10 @@
             <div class="total-product-price">
                 <div>{{product.amount * (product.priceWithDiscount || product.price) | currency: "R$ "}}</div>
             </div>
-            <div mat-line>{{product.amount}}x {{product.name}}</div>
+            <div mat-line>
+                <span *ngIf="product.productInternalId">{{product.productInternalId}} - </span>
+                {{product.amount}}x {{product.name}}
+            </div>
             <div mat-line *ngIf="product.unit === 'KG'">Peso final: {{product.amount * product.weight}} KG</div>
             <div mat-line>
                 Valor individual:
