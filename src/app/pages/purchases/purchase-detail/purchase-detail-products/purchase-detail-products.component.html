@@ -13,7 +13,11 @@
                 </mat-icon>
             </div>
             <div mat-line>{{product.amount}}x {{product.name}}</div>
+            <div mat-line *ngIf="product.unit === 'KG'">
+                Peso final: {{product.amount * product.weight}} KG
+            </div>
             <div mat-line>
+                Valor individual:
                 <span class="price"
                     [ngClass]="product.priceWithDiscount ? 'line-through' : ''">
                     {{product.price | currency: "R$ "}}
@@ -29,7 +33,9 @@
                 <div>{{product.amount * (product.priceWithDiscount || product.price) | currency: "R$ "}}</div>
             </div>
             <div mat-line>{{product.amount}}x {{product.name}}</div>
+            <div mat-line *ngIf="product.unit === 'KG'">Peso final: {{product.amount * product.weight}} KG</div>
             <div mat-line>
+                Valor individual:
                 <span class="price"
                     [ngClass]="product.priceWithDiscount ? 'line-through' : ''">
                     {{product.price | currency: "R$ "}}
