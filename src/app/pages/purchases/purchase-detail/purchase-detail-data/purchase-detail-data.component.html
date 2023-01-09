@@ -1,6 +1,7 @@
 <section *ngIf="purchase$ | async; let purchase" class="page">
     <div class="label">
         <label>Usuário:</label>
+        <div *ngIf="purchase?.user?.name">{{purchase?.user?.name}}</div>
         <div>{{purchase?.user?.email}}</div>
     </div>
     <div class="label">
