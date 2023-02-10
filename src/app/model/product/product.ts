@@ -6,6 +6,7 @@ export type Product = {
     name: string;
     price: number;
     priceWithDiscount: number;
+    productInternalId?: string;
     unit: string;
     weight: number;
 }

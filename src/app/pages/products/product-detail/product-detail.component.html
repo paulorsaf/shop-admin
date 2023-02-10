@@ -12,6 +12,10 @@
             <h1>Detalhes do produto</h1>
             <form [formGroup]="form" *ngIf="form">
                 <div class="form-wrapper">
+                    <mat-form-field class="width-25" *ngIf="(product$ | async)?.productInternalId">
+                        <mat-label>ID interno</mat-label>
+                        <input matInput [value]="(product$ | async)?.productInternalId" disabled>
+                    </mat-form-field>
                     <mat-form-field class="width-50">
                         <mat-label>Nome</mat-label>
                         <input matInput placeholder="Nome" formControlName="name">

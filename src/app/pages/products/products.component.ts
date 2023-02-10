@@ -19,8 +19,8 @@ import { MessageService } from 'src/app/services/message/message.service';
 export class ProductsComponent implements OnInit, OnDestroy {
 
   dataSource!: MatTableDataSource<Product[]>;
-  displayedColumns = ['name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'delete'];
-
+  
+  displayedColumns$!: Observable<string[]>;
   hasProducts$!: Observable<boolean>;
   isLoading$!: Observable<boolean>;
   isLoadingMoreProducts$!: Observable<boolean>;
@@ -39,6 +39,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Product[]>([]);
 
+    this.displayedColumns$ = this.store.select(
+      state => state.products?.products?.some(p => p.productInternalId) ?
+        ['id', 'name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'delete'] :
+        ['name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'delete']
+    );
     this.hasMoreProductsToLoad$ = this.store.select(state => state.products.hasMoreToLoad);
     this.hasProducts$ = this.store.select(state => state.products.products.length > 0);
     this.isLoading$ = this.store.select(state =>
