@@ -2,14 +2,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Store, StoreModule } from '@ngrx/store';
-import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { loadUserCompanySuccess } from 'src/app/store/user/user.actions';
 import { userReducer } from 'src/app/store/user/user.reducers';
 import { MatDialogMock } from 'src/mock/mat-dialog.mock';
-import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { PurchasesModule } from '../../purchases.module';
+import { purchasesReducer } from '../../store/purchases.reducers';
 import { loadPurchaseDetailSuccess, sendPurchaseToSystem, sendPurchaseToSystemFail, sendPurchaseToSystemSuccess } from '../store/purchase-detail.actions';
 import { purchaseDetailReducer } from '../store/purchase-detail.reducers';
 import { PurchaseDetailDataComponent } from './purchase-detail-data.component';
@@ -31,6 +30,7 @@ describe('PurchaseDetailDataComponent', () => {
         PurchasesModule,
         StoreModule.forRoot([]),
         StoreModule.forFeature('purchaseDetail', purchaseDetailReducer),
+        StoreModule.forFeature('purchases', purchasesReducer),
         StoreModule.forFeature('user', userReducer)
       ]
     })
@@ -52,6 +52,21 @@ describe('PurchaseDetailDataComponent', () => {
   });
   
   describe('given purchase detail loaded', () => {
+
+    beforeEach(() => {
+      const purchase = {id: 1} as any;
+      store.dispatch(loadPurchaseDetailSuccess({purchase}));
+      fixture.detectChanges();
+    })
+
+    it('when user clicks on print button, then print purchase', done => {
+      page.querySelector('[test-id="print-purchase"]').click();
+
+      store.select('purchases').subscribe(state => {
+        expect(state.isPrinting).toBeTruthy();
+        done();
+      })
+    })
 
     describe('when purchase detail payment is pix', () => {
 

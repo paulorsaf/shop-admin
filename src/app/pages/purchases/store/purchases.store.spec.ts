@@ -1,6 +1,6 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
 import { purchasesReducer } from "./purchases.reducers";
-import { loadPurchases, loadPurchasesFail, loadPurchasesSuccess } from "./purchases.actions";
+import { loadPurchases, loadPurchasesFail, loadPurchasesSuccess, printPurchase, printPurchaseSuccess } from "./purchases.actions";
 import { PurchasesState } from "./purchases.state";
 
 describe('Purchases store', () => {
@@ -58,6 +58,34 @@ describe('Purchases store', () => {
             error,
             isLoaded: false,
             isLoading: false
+        });
+    });
+    
+    it('printPurchase', () => {
+        const initialState: PurchasesState = {
+            ...AppInitialState.purchases,
+            isPrinting: false
+        };
+
+        const state = purchasesReducer(initialState, printPurchase({id: "1"}));
+
+        expect(state).toEqual({
+            ...AppInitialState.purchases,
+            isPrinting: true
+        });
+    });
+    
+    it('printPurchaseSuccess', () => {
+        const initialState: PurchasesState = {
+            ...AppInitialState.purchases,
+            isPrinting: true
+        };
+
+        const state = purchasesReducer(initialState, printPurchaseSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.purchases,
+            isPrinting: false
         });
     });
   

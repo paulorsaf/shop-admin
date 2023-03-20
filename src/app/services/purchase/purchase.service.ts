@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
 import { PurchaseSummary } from 'src/app/model/purchase/purchase-summary';
@@ -32,6 +32,12 @@ export class PurchaseService {
   findById(id: string): Observable<Purchase> {
     const url = `${environment.apiUrl}/purchases/${id}`;
     return this.apiService.get<Purchase>(url);
+  }
+
+  print(id: string): Observable<void> {
+    const url = `${environment.apiUrl}/purchases/${id}/print`;
+    window.open(url, 'blank');
+    return of();
   }
 
   sendToSystem(id: string): Observable<Purchase> {

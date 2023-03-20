@@ -133,6 +133,7 @@ export const AppInitialState: AppState = {
         error: null,
         isLoaded: false,
         isLoading: false,
+        isPrinting: false,
         purchases: []
     },
     updateStock: {

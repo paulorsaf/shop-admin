@@ -42,6 +42,10 @@
         </div>
         <div *ngIf="!purchase.address">Busca na loja</div>
     </div>
+    <button mat-button color="primary" (click)="print()"
+        *ngIf="showPrintPurchase" test-id="print-purchase">
+        Imprimir
+    </button>
     <div *ngIf="(canSendPurchaseToOwnSystem$ | async)">
         <button mat-raised-button *ngIf="!(isSending$ | async)"
             color="primary" (click)="sendToSystem()" test-id="send-to-company-system">

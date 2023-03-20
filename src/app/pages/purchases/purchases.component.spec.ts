@@ -120,7 +120,7 @@ describe('PurchasesComponent', () => {
       expect(page.querySelector('[test-id="pix-receipt"]')).toBeNull();
     });
 
-    it('given user clicks on purchase, then go to purchase details page', done => {
+    it('when user clicks on purchase, then go to purchase details page', done => {
       page.querySelectorAll('table tbody tr')[0].click();
       fixture.detectChanges();
   
@@ -128,6 +128,16 @@ describe('PurchasesComponent', () => {
         expect(location.path()).toEqual('/purchases/1');
         done();
       }, 100)
+    })
+
+    it('when user clicks on print purchase, then print purchase', done => {
+      page.querySelector('[test-id="print-purchase"]').click();
+      fixture.detectChanges();
+  
+      store.select('purchases').subscribe(state => {
+        expect(state.isPrinting).toBeTruthy();
+        done();
+      })
     })
     
   });

@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { loadPurchases, loadPurchasesFail, loadPurchasesSuccess } from './purchases.actions';
+import { loadPurchases, loadPurchasesFail, loadPurchasesSuccess, printPurchase, printPurchaseSuccess } from './purchases.actions';
 import { PurchasesState } from './purchases.state';
 
 const initialState: PurchasesState = AppInitialState.purchases;
@@ -29,6 +29,18 @@ const _purchasesReducer = createReducer(initialState,
             error: action.error,
             isLoaded: false,
             isLoading: false
+        };
+    }),
+    on(printPurchase, (state) => {
+        return {
+            ...state,
+            isPrinting: true
+        };
+    }),
+    on(printPurchaseSuccess, (state) => {
+        return {
+            ...state,
+            isPrinting: false
         };
     })
 );

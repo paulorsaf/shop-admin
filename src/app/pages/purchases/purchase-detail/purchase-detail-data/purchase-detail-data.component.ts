@@ -5,6 +5,8 @@ import { filter, Observable, Subscription, take } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { Purchase } from 'src/app/model/purchase/purchase';
 import { AppState } from 'src/app/store/app-state';
+import { environment } from 'src/environments/environment';
+import { printPurchase } from '../../store/purchases.actions';
 import { sendPurchaseToSystem, updatePurchaseStatus } from '../store/purchase-detail.actions';
 
 @Component({
@@ -13,6 +15,8 @@ import { sendPurchaseToSystem, updatePurchaseStatus } from '../store/purchase-de
   styleUrls: ['./purchase-detail-data.component.scss']
 })
 export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
+
+  showPrintPurchase = environment.showPrintPurchase;
 
   canSendPurchaseToOwnSystem$!: Observable<boolean>;
   isSending$!: Observable<boolean>;
@@ -97,6 +101,12 @@ export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
 
         this.setStatusList(purchase!);
       });
+  }
+
+  print() {
+    this.purchase$.pipe(take(1)).subscribe(purchase => {
+      this.store.dispatch(printPurchase({id: purchase!.id}))
+    });
   }
 
   private setStatusList(purchase: Purchase) {
