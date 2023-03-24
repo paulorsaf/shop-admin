@@ -203,19 +203,7 @@ describe('CompanyDetailComponent', () => {
   describe('given delivery form', () => {
 
     beforeEach(() => {
-      const company = {
-        aboutUs: "anyHtml",
-        address,
-        cityDeliveryPrice: 10,
-        facebook: "anyFacebook",
-        id: "anyCompany",
-        instagram: "anyInstagram",
-        name: "anyCompanyName",
-        website: "anyWebsite",
-        whatsapp: "anyWhatsapp"
-      } as any;
-      store.dispatch(loadCompanyDetailSuccess({company}));
-      fixture.detectChanges();
+      dispatchLoadCompanyDetailSuccess();
     })
 
     it('when price is empty, then price should be invalid', () => {
@@ -263,19 +251,7 @@ describe('CompanyDetailComponent', () => {
   describe('given company loaded', () => {
 
     beforeEach(() => {
-      const company = {
-        aboutUs: "anyHtml",
-        address,
-        cityDeliveryPrice: 10,
-        facebook: "anyFacebook",
-        id: "anyCompany",
-        instagram: "anyInstagram",
-        name: "anyCompanyName",
-        website: "anyWebsite",
-        whatsapp: "anyWhatsapp"
-      } as any;
-      store.dispatch(loadCompanyDetailSuccess({company}));
-      fixture.detectChanges();
+      dispatchLoadCompanyDetailSuccess();
     })
 
     it('then hide company loader', () => {
@@ -797,6 +773,22 @@ describe('CompanyDetailComponent', () => {
 
   function fillCompanyForm() {
     component.companyForm.get('name')!.setValue('any');
+    fixture.detectChanges();
+  }
+
+  function dispatchLoadCompanyDetailSuccess() {
+    const company = {
+      aboutUs: "anyHtml",
+      address,
+      cityDeliveryPrice: 10,
+      facebook: "anyFacebook",
+      id: "anyCompany",
+      instagram: "anyInstagram",
+      name: "anyCompanyName",
+      website: "anyWebsite",
+      whatsapp: "anyWhatsapp"
+    } as any;
+    store.dispatch(loadCompanyDetailSuccess({company}));
     fixture.detectChanges();
   }
 

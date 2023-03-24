@@ -6,6 +6,7 @@ import { filter, Observable, Subscription, take } from 'rxjs';
 import { Address } from 'src/app/model/address/address';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
+import { environment } from 'src/environments/environment';
 import { loadAddressByZipCode, loadCompanyDetail, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAddress, saveCompanyDetailLogo, saveDeliveryPrice } from './store/company-detail.actions';
 
 @Component({
@@ -32,6 +33,8 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   companySubscription!: Subscription;
   errorSubscription!: Subscription;
   zipCodeSubscription!: Subscription;
+
+  showServiceTax = environment.showServiceTax;
 
   editorConfig: AngularEditorConfig = {
     editable: true,

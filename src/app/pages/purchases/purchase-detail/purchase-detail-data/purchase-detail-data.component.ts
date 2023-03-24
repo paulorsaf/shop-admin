@@ -5,7 +5,6 @@ import { filter, Observable, Subscription, take } from 'rxjs';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { Purchase } from 'src/app/model/purchase/purchase';
 import { AppState } from 'src/app/store/app-state';
-import { environment } from 'src/environments/environment';
 import { printPurchase } from '../../store/purchases.actions';
 import { sendPurchaseToSystem, updatePurchaseStatus } from '../store/purchase-detail.actions';
 
@@ -15,8 +14,6 @@ import { sendPurchaseToSystem, updatePurchaseStatus } from '../store/purchase-de
   styleUrls: ['./purchase-detail-data.component.scss']
 })
 export class PurchaseDetailDataComponent implements OnInit, OnDestroy {
-
-  showPrintPurchase = environment.showPrintPurchase;
 
   canSendPurchaseToOwnSystem$!: Observable<boolean>;
   isSending$!: Observable<boolean>;

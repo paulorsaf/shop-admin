@@ -57,6 +57,8 @@ export const AppInitialState: AppState = {
         isSavingDeliveryPrice: false,
         isSavedPayment: false,
         isSavingPayment: false,
+        isSavedServiceTax: false,
+        isSavingServiceTax: false,
         isUploadedLogo: false,
         isUploadingLogo: false
     },

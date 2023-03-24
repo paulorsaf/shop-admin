@@ -34,3 +34,7 @@ export const saveCompanyDetailPaymentFail = createAction('[Company detail] save 
 export const saveDeliveryPrice = createAction('[Company detail] save delivery price', props<{price: number}>());
 export const saveDeliveryPriceSuccess = createAction('[Company detail] save delivery price success');
 export const saveDeliveryPriceFail = createAction('[Company detail] save delivery price fail', props<{error: any}>());
+
+export const saveServiceTax = createAction('[Company detail] save service tax', props<{serviceTax: number}>());
+export const saveServiceTaxSuccess = createAction('[Company detail] save service tax success');
+export const saveServiceTaxFail = createAction('[Company detail] save service tax fail', props<{error: any}>());

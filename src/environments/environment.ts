@@ -2,6 +2,6 @@ import { environmentDefault } from "./environment.default";
 
 export const environment = {
   ...environmentDefault,
-  showPrintPurchase: true,
+  apiUrl: "https://southamerica-east1-shop-354211.cloudfunctions.net/shop-admin-server",
   production: false
 };

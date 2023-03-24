@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess, saveServiceTax, saveServiceTaxFail, saveServiceTaxSuccess } from "./company-detail.actions";
 import { companyDetailReducer } from "./company-detail.reducers";
 import { CompanyDetailState } from "./company-detail.state";
 
@@ -430,6 +430,56 @@ describe('Company detail store', () => {
             error,
             isSavedDeliveryPrice: false,
             isSavingDeliveryPrice: false
+        });
+    });
+    
+    it('saveServiceTax', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            error: {},
+            isSavedServiceTax: true,
+            isSavingServiceTax: false
+        };
+
+        const state = companyDetailReducer(initialState, saveServiceTax({serviceTax: 10}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error: undefined,
+            isSavedServiceTax: false,
+            isSavingServiceTax: true
+        });
+    });
+    
+    it('saveServiceTaxSuccess', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isSavingServiceTax: true
+        };
+
+        const state = companyDetailReducer(initialState, saveServiceTaxSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            isSavedServiceTax: true,
+            isSavingServiceTax: false
+        });
+    });
+    
+    it('saveServiceTaxFail', () => {
+        const initialState: CompanyDetailState = {
+            ...AppInitialState.companyDetail,
+            isSavingServiceTax: true
+        };
+
+        const error = {error: "error"};
+        const state = companyDetailReducer(initialState, saveServiceTaxFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.companyDetail,
+            error,
+            isSavedServiceTax: false,
+            isSavingServiceTax: false
         });
     });
   

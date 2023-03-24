@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { CompanyDetailEffects } from './company-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess } from "./company-detail.actions";
+import { clearAddressByZip, loadAddressByZipCode, loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetail, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUs, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddress, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogo, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailPayment, saveCompanyDetailPaymentFail, saveCompanyDetailPaymentSuccess, saveCompanyDetailSuccess, saveDeliveryPrice, saveDeliveryPriceFail, saveDeliveryPriceSuccess, saveServiceTax, saveServiceTaxFail, saveServiceTaxSuccess } from "./company-detail.actions";
 import { CompanyService } from "src/app/services/company/company.service";
 import { AddressServiceMock } from "src/mock/address-service.mock";
 import { AddressService } from "src/app/services/address/address.service";
@@ -289,6 +289,32 @@ describe('CompanyDetailEffects', () => {
 
     })
 
+    describe("Given save service tax", () => {
+
+        beforeEach(() => {
+            actions$ = of(saveServiceTax({serviceTax: 10}));
+        })
+
+        it('when success, then return save service tax success', (done) => {
+            companyService._response = of({});
+    
+            effects.saveCompanyDetailServiceTaxEffect$.subscribe(response => {
+                expect(response).toEqual(saveServiceTaxSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return save service tax fail', (done) => {
+            companyService._response = throwError(error);
+    
+            effects.saveCompanyDetailServiceTaxEffect$.subscribe(response => {
+                expect(response).toEqual(saveServiceTaxFail({error}));
+                done();
+            })
+        })
+
+    })
+
 });
 
 class CompanyServiceMock {
@@ -314,6 +340,9 @@ class CompanyServiceMock {
         return this._response;
     }
     updatePayment() {
+        return this._response;
+    }
+    updateServiceTax() {
         return this._response;
     }
     

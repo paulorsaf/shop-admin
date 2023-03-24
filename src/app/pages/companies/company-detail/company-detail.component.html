@@ -136,6 +136,9 @@
                     </mat-spinner>
                 </form>
             </mat-card-content>
+            
+            <app-service-tax *ngIf="showServiceTax"></app-service-tax>
+
             <mat-card-title class="padding-top">Valor da entrega</mat-card-title>
             <mat-card-content>
                 <form [formGroup]="deliveryForm">

@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { PurchaseSummary } from 'src/app/model/purchase/purchase-summary';
 import { AppState } from 'src/app/store/app-state';
-import { environment } from 'src/environments/environment';
 import { loadPurchases, printPurchase } from './store/purchases.actions';
 
 @Component({
@@ -20,7 +19,7 @@ export class PurchasesComponent implements OnInit {
 
   dataSource!: MatTableDataSource<PurchaseSummary[]>;
   displayedColumns = [
-    'user', 'totalAmount', 'totalPrice', 'delivery', 'status', 'payment', 'date'
+    'user', 'totalAmount', 'totalPrice', 'delivery', 'status', 'payment', 'date', 'print'
   ];
 
   purchasesSubscription!: Subscription;
@@ -31,10 +30,6 @@ export class PurchasesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (environment.showPrintPurchase) {
-      this.displayedColumns.push('print');
-    }
-
     this.dataSource = new MatTableDataSource<PurchaseSummary[]>([]);
 
     this.isLoading$ = this.store.select(state => state.purchases.isLoading);

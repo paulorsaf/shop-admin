@@ -49,4 +49,9 @@ export class CompanyService {
     return this.apiService.patch<void>(url, payment);
   }
 
+  updateServiceTax(id: string, serviceTax: number): Observable<void> {
+    const url = `${environment.apiUrl}/companies/${id}/service-taxes`;
+    return this.apiService.patch<void>(url, {serviceTax});
+  }
+
 }

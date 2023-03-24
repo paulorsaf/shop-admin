@@ -18,6 +18,8 @@ export type CompanyDetailState = {
     isSavingDeliveryPrice: boolean;
     isSavedPayment: boolean;
     isSavingPayment: boolean;
+    isSavedServiceTax: boolean;
+    isSavingServiceTax: boolean;
     isUploadedLogo: boolean;
     isUploadingLogo: boolean;
     company?: Company;
