@@ -1,20 +1,18 @@
 <mat-card-title class="padding-top">Taxa de serviço</mat-card-title>
 <mat-card-content>
-    <form [formGroup]="serviceTaxForm">
+    <form [formGroup]="serviceTaxForm" *ngIf="serviceTaxForm">
         <mat-form-field>
             <mat-label>Taxa de serviço</mat-label>
             <input matInput placeholder="Taxa de serviço" type="number"
                 formControlName="serviceTax">
         </mat-form-field>
-        <div><mat-hint>* Esse será o valor aplicado a cada compra</mat-hint></div>
 
-        <button mat-raised-button color="primary" (click)="save()"
-            [disabled]="!serviceTaxForm.valid" *ngIf="!(isSaving$ | async)"
-            test-id="save-service-tax-button">
-            Salvar taxa de serviço
-        </button>
-        <mat-spinner color="primary" diameter="20" class="save-delivery-price"
-            *ngIf="(isSaving$ | async)" test-id="save-service-tax-loader">
-        </mat-spinner>
+        <app-button-loader
+            [isDisabled]="!serviceTaxForm.valid"
+            [isLoading]="(isSaving$ | async)"
+            (onClick)="save()">
+        </app-button-loader>
+
+        <div><mat-hint>* Esse será o valor aplicado a cada compra</mat-hint></div>
     </form>
 </mat-card-content>

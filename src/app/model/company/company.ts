@@ -17,6 +17,7 @@ export type Company = {
     id: string;
     logo: Image;
     payment: Payment;
+    serviceTax: number;
 } & CompanyDetails;
 
 export type Image = {

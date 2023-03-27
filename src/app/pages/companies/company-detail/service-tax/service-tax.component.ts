@@ -24,9 +24,16 @@ export class ServiceTaxComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.serviceTaxForm = this.formBuilder.group({
-      serviceTax: ['', [Validators.required]]
-    });
+    this.store.select(state => state.companyDetail.company)
+      .pipe(
+        filter(company => !!company),
+        take(1)
+      )
+      .subscribe(company => {
+        this.serviceTaxForm = this.formBuilder.group({
+          serviceTax: [company?.serviceTax, [Validators.required]]
+        });
+      })
 
     this.isSaving$ = this.store.select(state => state.companyDetail.isSavingServiceTax);
   }

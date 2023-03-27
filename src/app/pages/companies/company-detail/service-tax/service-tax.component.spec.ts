@@ -8,6 +8,8 @@ import { PageMock } from 'src/mock/page.mock';
 import { saveServiceTaxFail, saveServiceTaxSuccess } from '../store/company-detail.actions';
 import { companyDetailReducer } from '../store/company-detail.reducers';
 import { ServiceTaxComponent } from './service-tax.component';
+import { loadCompanyDetailSuccess } from '../store/company-detail.actions';
+import { ButtonLoaderModule } from 'src/app/components/button-loader/button-loader.module';
 
 describe('ServiceTaxComponent', () => {
   let component: ServiceTaxComponent;
@@ -25,6 +27,7 @@ describe('ServiceTaxComponent', () => {
       ],
       imports: [
         ReactiveFormsModule,
+        ButtonLoaderModule,
         StoreModule.forRoot([]),
         StoreModule.forFeature('companyDetail', companyDetailReducer)
       ]
@@ -38,6 +41,7 @@ describe('ServiceTaxComponent', () => {
     component = fixture.componentInstance;
     page = fixture.debugElement.nativeElement;
 
+    store.dispatch(loadCompanyDetailSuccess({company: {serviceTax: 5} as any}));
     fixture.detectChanges();
   });
 
@@ -47,12 +51,16 @@ describe('ServiceTaxComponent', () => {
       expect(component.serviceTaxForm).not.toBeUndefined();
     })
 
+    it('then service tax initial value should come from company detail', () => {
+      expect(component.serviceTaxForm.value.serviceTax).toEqual(5);
+    })
+
     it('then show save service tax button', () => {
-      expect(page.querySelector('[test-id="save-service-tax-button"]')).not.toBeNull();
+      expect(page.querySelector('[test-id="button"]')).not.toBeNull();
     })
 
     it('then hide save service tax loader', () => {
-      expect(page.querySelector('[test-id="save-service-tax-loader"]')).toBeNull();
+      expect(page.querySelector('[test-id="loader"]')).toBeNull();
     })
 
   })
@@ -77,14 +85,14 @@ describe('ServiceTaxComponent', () => {
       component.serviceTaxForm.get('serviceTax')!.setValue('');
       fixture.detectChanges();
 
-      expect(page.querySelector('[test-id="save-service-tax-button"]').disabled).toBeTruthy();
+      expect(page.querySelector('[test-id="button"]').disabled).toBeTruthy();
     })
 
     it('when service tax is valid, then enabled save service tax button', () => {
       component.serviceTaxForm.get('serviceTax')!.setValue('10');
       fixture.detectChanges();
 
-      expect(page.querySelector('[test-id="save-service-tax-button"]').disabled).toBeFalsy();
+      expect(page.querySelector('[test-id="button"]').disabled).toBeFalsy();
     })
 
   })
@@ -95,7 +103,7 @@ describe('ServiceTaxComponent', () => {
       component.serviceTaxForm.get('serviceTax')!.setValue(10);
       fixture.detectChanges();
 
-      page.querySelector('[test-id="save-service-tax-button"]').click();
+      page.querySelector('[test-id="button"]').click();
       fixture.detectChanges();
     })
 
@@ -107,11 +115,11 @@ describe('ServiceTaxComponent', () => {
     })
 
     it('then hide save service tax button', () => {
-      expect(page.querySelector('[test-id="save-service-tax-button"]')).toBeNull();
+      expect(page.querySelector('[test-id="button"]')).toBeNull();
     })
 
     it('then show service tax loader', () => {
-      expect(page.querySelector('[test-id="save-service-tax-loader"]')).not.toBeNull();
+      expect(page.querySelector('[test-id="loader"]')).not.toBeNull();
     })
 
     describe('when service tax saved', () => {
@@ -122,11 +130,11 @@ describe('ServiceTaxComponent', () => {
       })
 
       it('then show save service tax button', () => {
-        expect(page.querySelector('[test-id="save-service-tax-button"]')).not.toBeNull();
+        expect(page.querySelector('[test-id="button"]')).not.toBeNull();
       })
   
       it('then hide service tax loader', () => {
-        expect(page.querySelector('[test-id="save-service-tax-loader"]')).toBeNull();
+        expect(page.querySelector('[test-id="loader"]')).toBeNull();
       })
 
       it('then show success message', done => {
@@ -147,11 +155,11 @@ describe('ServiceTaxComponent', () => {
       })
 
       it('then show save service tax button', () => {
-        expect(page.querySelector('[test-id="save-service-tax-button"]')).not.toBeNull();
+        expect(page.querySelector('[test-id="button"]')).not.toBeNull();
       })
   
       it('then hide service tax loader', () => {
-        expect(page.querySelector('[test-id="save-service-tax-loader"]')).toBeNull();
+        expect(page.querySelector('[test-id="loader"]')).toBeNull();
       })
 
       it('then show success message', done => {

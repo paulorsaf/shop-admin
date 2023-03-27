@@ -13,6 +13,8 @@ import { CompanyDetailComponent } from './company-detail/company-detail.componen
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CompanyDetailPaymentComponent } from './company-detail/company-detail-payment/company-detail-payment.component';
 import { ServiceTaxComponent } from './company-detail/service-tax/service-tax.component';
+import { MatIconModule } from '@angular/material/icon';
+import { ButtonLoaderModule } from 'src/app/components/button-loader/button-loader.module';
 
 const routes: Routes = [{
   path: '',
@@ -37,8 +39,10 @@ const routes: Routes = [{
     MatCardModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    ButtonLoaderModule,
 
     AngularEditorModule
   ],
