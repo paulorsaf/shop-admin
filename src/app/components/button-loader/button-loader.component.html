@@ -1,0 +1,9 @@
+<button mat-icon-button color="primary" (click)="click()"
+    [disabled]="isDisabled" *ngIf="!isLoading"
+    test-id="button">
+    <mat-icon>save</mat-icon>
+</button>
+<button mat-icon-button color="primary" *ngIf="isLoading"
+    test-id="loader">
+    <mat-icon>hourglass_top</mat-icon>
+</button>
