@@ -163,7 +163,7 @@ export class CompanyDetailEffects {
             switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
                 this.companyService.updateServiceTax(
                     storeState.companyDetail.company?.id || "",
-                    action.price
+                    action.serviceTax
                 ).pipe(
                     map(() => saveServiceTaxSuccess()),
                     catchError(error => of(saveServiceTaxFail({error})))
