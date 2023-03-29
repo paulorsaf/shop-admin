@@ -69,6 +69,12 @@
             </span>
             <div mat-line>Taxa do cartão de crédito</div>
         </mat-list-item>
+        <mat-list-item role="listitem" *ngIf="purchase.price?.serviceFee">
+            <span class="total-product-price">
+                {{purchase.price?.serviceFee | currency: "R$ "}}
+            </span>
+            <div mat-line>Taxa de serviço</div>
+        </mat-list-item>
     </mat-list>
     <mat-list role="list">
         <mat-list-item role="listitem">
