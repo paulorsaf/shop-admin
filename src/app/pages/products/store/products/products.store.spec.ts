@@ -1,3 +1,4 @@
+import { Product } from "src/app/model/product/product";
 import { AppInitialState } from "src/app/store/app-initial-state";
 import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
 import { productsReducer } from "./products.reducers";
@@ -50,9 +51,10 @@ describe('Products store', () => {
     describe('given loadSuccess', () => {
 
         let initialState: ProductsState;
-        const products = [{id: 2}, {id: 3}] as any;
+        let products: Product[];
 
         beforeEach(() => {
+            products = [{id: 2}, {id: 3}] as any;
             initialState = {
                 ...AppInitialState.products,
                 isLoaded: false,
@@ -67,7 +69,7 @@ describe('Products store', () => {
     
             expect(state).toEqual({
                 ...AppInitialState.products,
-                hasMoreToLoad: true,
+                hasMoreToLoad: false,
                 isLoaded: true,
                 isLoading: false,
                 isLoadingMoreProducts: false,
@@ -82,7 +84,7 @@ describe('Products store', () => {
     
             expect(state).toEqual({
                 ...AppInitialState.products,
-                hasMoreToLoad: true,
+                hasMoreToLoad: false,
                 isLoaded: true,
                 isLoading: false,
                 isLoadingMoreProducts: false,
@@ -91,7 +93,22 @@ describe('Products store', () => {
             });
         });
     
-        it('when there are products loaded, then allow to load more products', () => {
+        it('when there are less than 30 products loaded, then do not allow to load more products', () => {
+            const state = productsReducer(initialState, loadSuccess({products}));
+    
+            expect(state).toEqual({
+                ...AppInitialState.products,
+                hasMoreToLoad: false,
+                isLoaded: true,
+                isLoading: false,
+                isLoadingMoreProducts: false,
+                products
+            });
+        });
+    
+        it('when there are 30 products loaded, then allow to load more products', () => {
+            products = Array.from(Array(30).keys()).map((v, index) => ({id: index+1})) as any;
+
             const state = productsReducer(initialState, loadSuccess({products}));
     
             expect(state).toEqual({

@@ -10,6 +10,19 @@
             Adicionar produto
         </button>
     </div>
+    <section>
+        <mat-form-field class="width-25">
+            <mat-label>ID interno</mat-label>
+            <input matInput [(ngModel)]="internalId">
+        </mat-form-field>
+        <app-button-loader
+            [isDisabled]="false"
+            [isLoading]="false"
+            defaultIcon="search"
+            (onClick)="filter()"
+            test-id="button-filter">
+        </app-button-loader>
+    </section>
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>ID interno</th>

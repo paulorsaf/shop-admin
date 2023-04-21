@@ -7,6 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { AppState } from "src/app/store/app-state";
 import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
+import { ProductsState } from "./products.state";
 
 @Injectable()
 export class ProductsEffects {
@@ -24,15 +25,16 @@ export class ProductsEffects {
                 load,
                 loadMoreProducts
             ),
-            this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
-                this.productService.find({
-                    page: storeState.products.page
+            withLatestFrom(this.store.select(store => store.products)),
+            switchMap(([action, state]: [action: any, state: ProductsState]) => {
+                return this.productService.find({
+                    page: state.page,
+                    internalId: action.filter?.internalId || ""
                 }).pipe(
                     map(products => loadSuccess({products})),
                     catchError(error => of(loadFail({error})))
                 )
-            )
+            })
         )
     )
 

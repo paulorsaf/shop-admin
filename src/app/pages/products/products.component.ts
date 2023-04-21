@@ -29,6 +29,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   errorSubscription!: Subscription;
   subscription!: Subscription;
 
+  internalId: string = "";
+
   constructor(
     private dialog: MatDialog,
     private messageService: MessageService,
@@ -44,12 +46,15 @@ export class ProductsComponent implements OnInit, OnDestroy {
         ['id', 'name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'delete'] :
         ['name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'delete']
     );
-    this.hasMoreProductsToLoad$ = this.store.select(state => state.products.hasMoreToLoad);
+    this.hasMoreProductsToLoad$ = this.store.select(
+      state => state.products.hasMoreToLoad
+    );
     this.hasProducts$ = this.store.select(state => state.products.products.length > 0);
     this.isLoading$ = this.store.select(state =>
       state.products.isLoading || state.products.isRemoving
     );
-    this.isLoadingMoreProducts$ = this.store.select(state => state.products.isLoadingMoreProducts);
+    this.isLoadingMoreProducts$ =
+      this.store.select(state => state.products.isLoadingMoreProducts);
 
     this.onError();
     this.onProductsChange();
@@ -89,6 +94,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   loadMore() {
     this.store.dispatch(loadMoreProducts());
+  }
+
+  filter() {
+    this.store.dispatch(load({
+      internalId: this.internalId
+    }));
   }
 
   private remove(product: Product) {

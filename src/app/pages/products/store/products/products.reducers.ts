@@ -28,7 +28,7 @@ const _productsReducer = createReducer(initialState,
     on(loadSuccess, (state, action) => {
         return {
             ...state,
-            hasMoreToLoad: action.products?.length ? true : false,
+            hasMoreToLoad: action.products?.length === 30 ? true : false,
             isLoaded: true,
             isLoading: false,
             isLoadingMoreProducts: false,

@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
+import { ButtonLoaderModule } from 'src/app/components/button-loader/button-loader.module';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
 import { BlankComponent } from 'src/mock/blank-component/blank.component.mock';
@@ -30,10 +32,12 @@ describe('ProductsComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [
+        BrowserAnimationsModule,
         ProductsModule,
         RouterTestingModule.withRoutes([{
           path: "products/:id", component: BlankComponent
         }]),
+        ButtonLoaderModule,
         StoreModule.forRoot([]),
         StoreModule.forFeature('categories', categoriesReducer),
         StoreModule.forFeature('products', productsReducer)
@@ -53,19 +57,27 @@ describe('ProductsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('given page starts, then load products', done => {
-    store.select('products').subscribe(state => {
-      expect(state.isLoading).toBeTruthy();
-      done();
-    })
-  });
+  describe('given page starts', () => {
 
-  it('given page starts, then load categories', done => {
-    store.select('categories').subscribe(state => {
-      expect(state.isLoading).toBeTruthy();
-      done();
-    })
-  });
+    it('then load products', done => {
+      store.select('products').subscribe(state => {
+        expect(state.isLoading).toBeTruthy();
+        done();
+      })
+    });
+  
+    it('then load categories', done => {
+      store.select('categories').subscribe(state => {
+        expect(state.isLoading).toBeTruthy();
+        done();
+      })
+    });
+
+    it('then internal id filter should be empty', () => {
+      expect(component.internalId).toEqual("");
+    });
+
+  })
 
   describe('given loading products', () => {
 
@@ -86,9 +98,7 @@ describe('ProductsComponent', () => {
   describe('given products loaded', () => {
 
     beforeEach(() => {
-      const products = [{id: 1}, {id: 2}] as any;
-      store.dispatch(loadSuccess({products}));
-      fixture.detectChanges();
+      dispatchLoadSuccess();
     })
 
     it('then hide products loader', () => {
@@ -103,14 +113,18 @@ describe('ProductsComponent', () => {
       expect(page.querySelector('[test-id="pagination-button"]')).not.toBeNull();
     });
 
+    it('when no more products to load, then hide pagination button', () => {
+      dispatchLoadSuccess(2);
+
+      expect(page.querySelector('[test-id="pagination-button"]')).toBeNull();
+    });
+
     it('when products found, then hide no results message', () => {
       expect(page.querySelector('[test-id="no-results-found"]')).toBeNull();
     });
 
     it('when no products found, then show no results message', () => {
-      const products = [] as any;
-      store.dispatch(loadSuccess({products}));
-      fixture.detectChanges();
+      dispatchLoadSuccess(0);
 
       expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
     });
@@ -140,9 +154,7 @@ describe('ProductsComponent', () => {
   describe('given user clicks to remove product', () => {
 
     beforeEach(() => {
-      const products = [{id: 1}, {id: 2}] as any;
-      store.dispatch(loadSuccess({products}));
-      fixture.detectChanges();
+      dispatchLoadSuccess();
     })
 
     it('then show confirm dialog', () => {
@@ -215,9 +227,7 @@ describe('ProductsComponent', () => {
   describe('given user clicks on pagination button', () => {
 
     beforeEach(() => {
-      const products = [{id: 1}, {id: 2}] as any;
-      store.dispatch(loadSuccess({products}));
-      fixture.detectChanges();
+      dispatchLoadSuccess()
 
       page.querySelector('[test-id="pagination-button"]').click();
       fixture.detectChanges();
@@ -243,5 +253,29 @@ describe('ProductsComponent', () => {
     })
 
   })
+
+  describe('given user clicks to filter products', () => {
+
+    beforeEach(() => {
+      dispatchLoadSuccess();
+
+      page.querySelector('[test-id="button-filter"] [test-id="button"]').click();
+      fixture.detectChanges();
+    })
+
+    it('then load products', done => {
+      store.select('products').subscribe(state => {
+        expect(state.isLoading).toBeTruthy();
+        done();
+      })
+    })
+
+  })
+
+  function dispatchLoadSuccess(amount = 30) {
+    const products = Array.from(Array(amount).keys()).map((v, index) => ({id: index+1})) as any;
+    store.dispatch(loadSuccess({products}));
+    fixture.detectChanges();
+  }
 
 });

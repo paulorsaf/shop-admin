@@ -23,6 +23,7 @@ import { ProductImagesComponent } from './product-detail/product-images/product-
 import { ProductDetailLoadingComponent } from './product-detail/product-detail-loading/product-detail-loading.component';
 import { PageListLoaderModule } from 'src/app/components/page-list-loader/page-list-loader.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { ButtonLoaderModule } from 'src/app/components/button-loader/button-loader.module';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -46,6 +47,7 @@ const routes: Routes = [
 
     PageListLoaderModule,
     NgxSkeletonLoaderModule,
+    ButtonLoaderModule,
 
     MatButtonModule,
     MatCardModule,
