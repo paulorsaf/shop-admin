@@ -9,6 +9,7 @@ export class ButtonLoaderComponent {
 
   @Input() isDisabled: boolean | null = false;
   @Input() isLoading: boolean | null = false;
+  @Input() defaultIcon = "save";
 
   @Output() onClick = new EventEmitter<void>();
 
