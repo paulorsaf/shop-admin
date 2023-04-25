@@ -4,6 +4,7 @@ export type Purchase = {
     hasBeenSentToSystem: boolean;
     id: string;
     payment: {
+        changeFor: number;
         error: any;
         receiptUrl: string;
         type: string;

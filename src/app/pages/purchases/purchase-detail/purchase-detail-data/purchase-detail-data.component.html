@@ -15,6 +15,9 @@
             test-id="receipt">
             Ver recibo
         </div>
+        <div *ngIf="purchase?.payment?.changeFor">
+            Troco para: {{purchase?.payment?.changeFor | currency: "R$ "}}
+        </div>
         <mat-error *ngIf="purchase?.payment?.error" test-id="payment-error">
             {{purchase.payment.error}}
         </mat-error>

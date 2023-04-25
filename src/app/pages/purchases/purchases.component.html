@@ -58,6 +58,9 @@
                         receipt_long
                     </mat-icon>
                 </div>
+                <span *ngIf="element.payment?.type === 'MONEY'">
+                    Troco para: {{element.payment.changeFor | currency: "R$ "}}
+                </span>
                 <div *ngIf="element.payment?.error" test-id="payment-error">
                     <mat-error>Erro: {{element.payment.error}}</mat-error>
                 </div>
