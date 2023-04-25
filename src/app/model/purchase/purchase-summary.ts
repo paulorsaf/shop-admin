@@ -5,6 +5,7 @@ export type PurchaseSummary = {
     createdAt: string;
     id: string;
     payment: {
+        changeFor: number;
         error: any;
         receiptUrl: string;
         type: string;

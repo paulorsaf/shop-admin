@@ -94,6 +94,9 @@
                         *ngIf="element.payment?.receiptUrl" test-id="pix-receipt">
                         Ver recibo
                     </div>
+                    <span *ngIf="element.payment?.type === 'MONEY'">
+                        <br/> Troco para: {{element.payment.changeFor | currency: "R$ "}}
+                    </span>
                 </div>
                 <div *ngIf="element.payment?.error" test-id="payment-error">
                     <mat-error>Erro: {{element.payment.error}}</mat-error>
