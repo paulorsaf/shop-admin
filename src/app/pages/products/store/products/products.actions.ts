@@ -10,6 +10,10 @@ export const remove = createAction('[Product] remove', props<{product: Product}>
 export const removeSuccess = createAction('[Product] remove success');
 export const removeFail = createAction('[Product] remove fail', props<{error: any}>());
 
+export const updateProductOnList = createAction('[Product] update product', props<{id: string}>());
+export const updateProductOnListSuccess = createAction('[Product] update product success', props<{product: Product}>());
+export const updateProductOnListFail = createAction('[Product] update product fail', props<{error: any}>());
+
 type ProductsFilter = {
     internalId?: string;
 }

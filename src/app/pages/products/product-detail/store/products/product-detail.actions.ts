@@ -36,4 +36,8 @@ export const updateStockOption = createAction('[Product] update stock', props<{s
 export const updateStockOptionSuccess = createAction('[Product] update stock success');
 export const updateStockOptionFail = createAction('[Product] update stock fail', props<{error: any}>());
 
+export const changeVisibility = createAction('[Product] change visibility', props<{id: string}>());
+export const changeVisibilitySuccess = createAction('[Product] change visibility success', props<{id: string}>());
+export const changeVisibilityFail = createAction('[Product] change visibility fail', props<{error: any}>());
+
 export const resetFlags = createAction('[Product] reset flags');

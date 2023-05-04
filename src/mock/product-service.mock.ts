@@ -6,6 +6,9 @@ export class ProductServiceMock {
     _isUpdated = false;
     _response: any;
 
+    changeVisibility() {
+        return this._response || of({});
+    }
     find() {
         return this._response || of({});
     }

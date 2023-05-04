@@ -6,8 +6,10 @@ export type ProductsState = {
     isLoaded: boolean;
     isLoading: boolean;
     isLoadingMoreProducts: boolean;
+    isLoadingProductDetail: boolean;
     isRemoved: boolean;
     isRemoving: boolean;
     page: number;
     products: Product[];
+    productDetailId?: string;
 }

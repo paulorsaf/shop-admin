@@ -85,6 +85,7 @@ export const AppInitialState: AppState = {
     },
     productDetail: {
         error: null,
+        isChangingVisibility: false,
         isEditedStock: false,
         isEditingStock: false,
         isLoaded: false,
@@ -112,6 +113,7 @@ export const AppInitialState: AppState = {
         isLoaded: false,
         isLoading: false,
         isLoadingMoreProducts: false,
+        isLoadingProductDetail: false,
         isRemoved: false,
         isRemoving: false,
         page: 0,

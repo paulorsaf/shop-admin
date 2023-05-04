@@ -24,6 +24,7 @@ import { ProductDetailLoadingComponent } from './product-detail/product-detail-l
 import { PageListLoaderModule } from 'src/app/components/page-list-loader/page-list-loader.module';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { ButtonLoaderModule } from 'src/app/components/button-loader/button-loader.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 const routes: Routes = [
   { path: '', component: ProductsComponent },
@@ -59,6 +60,7 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatTableModule,
 
     NgxMatColorPickerModule,

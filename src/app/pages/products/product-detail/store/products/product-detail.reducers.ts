@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from './product-detail.actions';
+import { changeVisibility, changeVisibilityFail, changeVisibilitySuccess, clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from './product-detail.actions';
 import { ProductDetailState } from './product-detail.state';
 
 const initialState: ProductDetailState = AppInitialState.productDetail;
@@ -10,9 +10,11 @@ const _productDetailReducer = createReducer(initialState,
         return {
             ...state,
             error: null,
+            isChangingVisibility: false,
             isLoaded: false,
             isLoading: true,
-            product: undefined
+            product: undefined,
+            productChangingVisibilityId: undefined
         };
     }),
     on(loadDetailSuccess, (state, action) => {
@@ -212,6 +214,29 @@ const _productDetailReducer = createReducer(initialState,
             error: action.error,
             isRemovedImage: false,
             isRemovingImage: false
+        };
+    }),
+    on(changeVisibility, (state, action) => {
+        return {
+            ...state,
+            error: null,
+            isChangingVisibility: true,
+            productChangingVisibilityId: action.id
+        };
+    }),
+    on(changeVisibilitySuccess, (state) => {
+        return {
+            ...state,
+            isChangingVisibility: false,
+            productChangingVisibilityId: undefined
+        };
+    }),
+    on(changeVisibilityFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isChangingVisibility: false,
+            productChangingVisibilityId: undefined
         };
     })
 );

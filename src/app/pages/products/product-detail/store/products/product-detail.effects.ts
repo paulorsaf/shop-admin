@@ -7,7 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { AppState } from "src/app/store/app-state";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { changeVisibility, changeVisibilityFail, changeVisibilitySuccess, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 
 @Injectable()
 export class ProductDetailEffects {
@@ -91,7 +91,7 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(saveStockOptionSuccess),
             this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+            switchMap(([, storeState]: [action: any, storeState: AppState]) =>
                 of(loadStock({id: storeState.productDetail.product!.id})))
         )
     )
@@ -115,7 +115,7 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(uploadImageSuccess),
             this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+            switchMap(([, storeState]: [action: any, storeState: AppState]) =>
                 of(loadDetail({id: storeState.productDetail.product!.id}))
             )
         )
@@ -141,7 +141,7 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(removeStockSuccess),
             this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+            switchMap(([, storeState]: [action: any, storeState: AppState]) =>
                 of(loadStock({id: storeState.productDetail.product!.id}))
             )
         )
@@ -167,7 +167,7 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(updateStockOptionSuccess),
             this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+            switchMap(([, storeState]: [action: any, storeState: AppState]) =>
                 of(loadStock({id: storeState.productDetail.product!.id}))
             )
         )
@@ -205,8 +205,20 @@ export class ProductDetailEffects {
         this.actions$.pipe(
             ofType(removeImageSuccess),
             this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) =>
+            switchMap(([, storeState]: [action: any, storeState: AppState]) =>
                 of(loadDetail({id: storeState.productDetail.product!.id}))
+            )
+        )
+    )
+
+    changeVisibilityEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(changeVisibility),
+            switchMap((params: {id: string}) =>
+                this.productService.changeVisibility(params.id).pipe(
+                    map(() => changeVisibilitySuccess(params)),
+                    catchError(error => of(changeVisibilityFail({error})))
+                )
             )
         )
     )

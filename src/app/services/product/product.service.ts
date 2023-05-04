@@ -13,6 +13,11 @@ export class ProductService {
     private apiService: ApiService
   ) { }
 
+  changeVisibility(productId: string): Observable<void> {
+    const url = `${environment.apiUrl}/products/${productId}/visibilities`;
+    return this.apiService.patch<void>(url);
+  }
+
   find(params: Find): Observable<Product[]> {
     const url = `${environment.apiUrl}/products`;
     return this.apiService.get<Product[]>(url, params);

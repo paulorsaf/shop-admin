@@ -1,6 +1,6 @@
 import { Product } from "src/app/model/product/product";
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
+import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
 import { productsReducer } from "./products.reducers";
 import { ProductsState } from "./products.state";
 
@@ -207,6 +207,85 @@ describe('Products store', () => {
             error,
             isRemoved: false,
             isRemoving: false
+        });
+    });
+    
+    it('updateProductOnList', () => {
+        const initialState: ProductsState = {
+            ...AppInitialState.products,
+            error: {},
+            isLoadingProductDetail: false,
+            productDetailId: undefined
+        };
+
+        const state = productsReducer(initialState, updateProductOnList({id: "anyProductId"}));
+
+        expect(state).toEqual({
+            ...AppInitialState.products,
+            error: undefined,
+            isLoadingProductDetail: true,
+            productDetailId: "anyProductId"
+        });
+    });
+
+    describe('given update product on list success', () => {
+
+        const products = [
+            {id: "anyProductId1"},
+            {id: "anyProductId2"}
+        ] as any;
+
+        const initialState: ProductsState = {
+            ...AppInitialState.products,
+            products,
+            isLoadingProductDetail: true,
+            productDetailId: "anyProductId"
+        };
+
+        it('when product doesnt exist on list, then return same list', () => {
+            const product = {id: "anyOtherProductId"} as any;
+            const state = productsReducer(initialState, updateProductOnListSuccess({product}));
+    
+            expect(state).toEqual({
+                ...AppInitialState.products,
+                products,
+                isLoadingProductDetail: false,
+                productDetailId: undefined
+            });
+        })
+
+        it('when product exists on list, then update product on list', () => {
+            const product = {id: "anyProductId1", isVisible: true} as any;
+            const state = productsReducer(initialState, updateProductOnListSuccess({product}));
+    
+            expect(state).toEqual({
+                ...AppInitialState.products,
+                products: [
+                    product,
+                    products[1]
+                ],
+                isLoadingProductDetail: false,
+                productDetailId: undefined
+            });
+        })
+
+    })
+    
+    it('updateProductOnListFail', () => {
+        const initialState: ProductsState = {
+            ...AppInitialState.products,
+            isLoadingProductDetail: true,
+            productDetailId: "anyProductId"
+        };
+
+        const error = {error: "error"};
+        const state = productsReducer(initialState, updateProductOnListFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.products,
+            error,
+            isLoadingProductDetail: false,
+            productDetailId: undefined
         });
     });
   

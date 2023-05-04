@@ -3,6 +3,7 @@ import { Stock } from "src/app/model/product/stock";
 
 export type ProductDetailState = {
     error: any;
+    isChangingVisibility: boolean;
     isEditedStock: boolean;
     isEditingStock: boolean;
     isLoaded: boolean;
@@ -22,5 +23,6 @@ export type ProductDetailState = {
     isUploadedImage: boolean;
     isUploadingImage: boolean;
     product?: Product;
+    productChangingVisibilityId?: string;
     stock?: Stock[];
 }

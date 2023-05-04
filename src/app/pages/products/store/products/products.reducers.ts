@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from './products.actions';
+import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from './products.actions';
 import { ProductsState } from './products.state';
 
 const initialState: ProductsState = AppInitialState.products;
@@ -65,6 +65,31 @@ const _productsReducer = createReducer(initialState,
             error: action.error,
             isRemoved: false,
             isRemoving: false
+        };
+    }),
+    on(updateProductOnList, (state, action) => {
+        return {
+            ...state,
+            error: undefined,
+            isLoadingProductDetail: true,
+            productDetailId: action.id
+        };
+    }),
+    on(updateProductOnListSuccess, (state, action) => {
+        return {
+            ...state,
+            products: state.products
+                .map(p => p.id === action.product.id ? action.product : p),
+            isLoadingProductDetail: false,
+            productDetailId: undefined
+        };
+    }),
+    on(updateProductOnListFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isLoadingProductDetail: false,
+            productDetailId: undefined
         };
     })
 );

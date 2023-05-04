@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store, StoreModule } from '@ngrx/store';
@@ -12,6 +13,8 @@ import { MatDialogMock } from 'src/mock/mat-dialog.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { categoriesReducer } from '../categories/store/categories.reducers';
+import { changeVisibilityFail, changeVisibilitySuccess } from './product-detail/store/products/product-detail.actions';
+import { productDetailReducer } from './product-detail/store/products/product-detail.reducers';
 import { ProductsComponent } from './products.component';
 import { ProductsModule } from './products.module';
 import { loadSuccess, removeFail, removeSuccess } from './store/products/products.actions';
@@ -38,9 +41,11 @@ describe('ProductsComponent', () => {
           path: "products/:id", component: BlankComponent
         }]),
         ButtonLoaderModule,
+        MatSlideToggleModule,
         StoreModule.forRoot([]),
         StoreModule.forFeature('categories', categoriesReducer),
-        StoreModule.forFeature('products', productsReducer)
+        StoreModule.forFeature('products', productsReducer),
+        StoreModule.forFeature('productDetail', productDetailReducer)
       ]
     })
     .overrideProvider(MatDialog, {useValue: dialog})
@@ -114,7 +119,7 @@ describe('ProductsComponent', () => {
     });
 
     it('when no more products to load, then hide pagination button', () => {
-      dispatchLoadSuccess(2);
+      dispatchLoadSuccess({amount: 2});
 
       expect(page.querySelector('[test-id="pagination-button"]')).toBeNull();
     });
@@ -124,7 +129,7 @@ describe('ProductsComponent', () => {
     });
 
     it('when no products found, then show no results message', () => {
-      dispatchLoadSuccess(0);
+      dispatchLoadSuccess({amount: 0});
 
       expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
     });
@@ -147,6 +152,18 @@ describe('ProductsComponent', () => {
         expect(location.path()).toEqual('/products/new');
         done();
       }, 100)
+    });
+
+    it('when product visibility is true, then toggle should be true', () => {
+      dispatchLoadSuccess({amount: 1, visibility: true});
+
+      expect(page.querySelector('[test-id="visibility-toggle"] [aria-checked="true"]')).not.toBeNull();
+    });
+
+    it('when product visibility is false, then toggle should be false', () => {
+      dispatchLoadSuccess({amount: 1, visibility: false});
+
+      expect(page.querySelector('[test-id="visibility-toggle"] [aria-checked="false"]')).not.toBeNull();
     });
 
   })
@@ -272,8 +289,82 @@ describe('ProductsComponent', () => {
 
   })
 
-  function dispatchLoadSuccess(amount = 30) {
-    const products = Array.from(Array(amount).keys()).map((v, index) => ({id: index+1})) as any;
+  describe('given user changes product visibility', () => {
+
+    beforeEach(() => {
+      dispatchLoadSuccess({amount: 3, visibility: true});
+
+      component.toggleVisibility({id: 1} as any);
+      fixture.detectChanges();
+    })
+
+    it('then change product visibility', done => {
+      store.select('productDetail').subscribe(state => {
+        expect(state.isChangingVisibility).toBeTruthy();
+        done();
+      })
+    })
+
+    it('then show visibility loader', () => {
+      expect(page.querySelectorAll('[test-id="visibility-loader"]')).not.toBeNull();
+    })
+
+    it('then disable other toggles', () => {
+      expect(
+        page.querySelectorAll('[test-id="visibility-toggle"][ng-reflect-disabled="true"]').length
+      ).toEqual(2);
+    })
+
+    describe('when visibility changed with success', () => {
+
+      beforeEach(() => {
+        store.dispatch(changeVisibilitySuccess({id: "1"}));
+        fixture.detectChanges();
+      })
+
+      it('then hide visibility loader', () => {
+        expect(page.querySelector('[test-id="visibility-loader"]')).toBeNull();
+      })
+
+      it('then enable toggles', () => {
+        expect(
+          page.querySelectorAll('[test-id="visibility-toggle"][ng-reflect-disabled="false"]').length
+        ).toEqual(3);
+      })
+
+    })
+
+    describe('when visibility changed with error', () => {
+
+      beforeEach(() => {
+        const error = {message: "error"};
+        store.dispatch(changeVisibilityFail({error}));
+        fixture.detectChanges();
+      })
+
+      it('then show error', () => {
+        expect(messageService._hasShownError).toBeTruthy();
+      })
+
+      it('then hide visibility loader', () => {
+        expect(page.querySelector('[test-id="visibility-loader"]')).toBeNull();
+      })
+
+      it('then change visibility back to previous state', () => {
+        expect(
+          page.querySelectorAll('[test-id="visibility-toggle"][ng-reflect-disabled="false"]').length
+        ).toEqual(3);
+      })
+
+    })
+
+  })
+
+  function dispatchLoadSuccess(
+    {amount = 30, visibility = true}: {amount: number, visibility?: boolean} = {amount: 30, visibility: true}
+  ) {
+    const products = Array.from(Array(amount).keys())
+      .map((v, index) => ({id: index+1, isVisible: visibility})) as any;
     store.dispatch(loadSuccess({products}));
     fixture.detectChanges();
   }

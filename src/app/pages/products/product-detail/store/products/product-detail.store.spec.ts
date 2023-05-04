@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { changeVisibility, changeVisibilityFail, changeVisibilitySuccess, clear, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, resetFlags, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { productDetailReducer } from "./product-detail.reducers";
 import { ProductDetailState } from "./product-detail.state";
 
@@ -9,9 +9,11 @@ describe('Product store', () => {
         const initialState: ProductDetailState = {
             ...AppInitialState.productDetail,
             error: {},
+            isChangingVisibility: true,
             isLoaded: true,
             isLoading: false,
-            product: {} as any
+            product: {} as any,
+            productChangingVisibilityId: "1"
         };
 
         const state = productDetailReducer(initialState, loadDetail({id: '1'}));
@@ -19,9 +21,11 @@ describe('Product store', () => {
         expect(state).toEqual({
             ...AppInitialState.productDetail,
             error: null,
+            isChangingVisibility: false,
             isLoaded: false,
             isLoading: true,
-            product: undefined
+            product: undefined,
+            productChangingVisibilityId: undefined
         });
     });
     
@@ -467,6 +471,60 @@ describe('Product store', () => {
             error,
             isRemovedImage: false,
             isRemovingImage: false
+        });
+    });
+    
+    it('changeVisibility', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isChangingVisibility: false,
+            productChangingVisibilityId: undefined
+        };
+
+        const id = "anyId";
+        const state = productDetailReducer(initialState, changeVisibility({id}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error: null,
+            isChangingVisibility: true,
+            productChangingVisibilityId: "anyId"
+        });
+    });
+    
+    it('changeVisibilitySuccess', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            isChangingVisibility: true,
+            productChangingVisibilityId: "anyId"
+        };
+
+        const state = productDetailReducer(initialState, changeVisibilitySuccess({id: "1"}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            isChangingVisibility: false,
+            productChangingVisibilityId: undefined
+        });
+    });
+    
+    it('changeVisibilityFail', () => {
+        const initialState: ProductDetailState = {
+            ...AppInitialState.productDetail,
+            error: {},
+            isChangingVisibility: true,
+            productChangingVisibilityId: "anyId"
+        };
+
+        const error = {error: "error"};
+        const state = productDetailReducer(initialState, changeVisibilityFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.productDetail,
+            error,
+            isChangingVisibility: false,
+            productChangingVisibilityId: undefined
         });
     });
   

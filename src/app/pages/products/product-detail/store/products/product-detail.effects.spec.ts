@@ -6,7 +6,7 @@ import { ProductDetailEffects } from './product-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
+import { changeVisibility, changeVisibilityFail, changeVisibilitySuccess, loadDetail, loadDetailFail, loadDetailSuccess, loadStock, loadStockFail, loadStockSuccess, removeImage, removeImageFail, removeImageSuccess, removeStock, removeStockFail, removeStockSuccess, saveDetail, saveDetailFail, saveDetailSuccess, saveStockOption, saveStockOptionFail, saveStockOptionSuccess, updateStockOption, updateStockOptionFail, updateStockOptionSuccess, uploadImage, uploadImageFail, uploadImageSuccess } from "./product-detail.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { StockService } from "src/app/services/stock/stock.service";
 import { StockServiceMock } from "src/mock/stock-service.mock";
@@ -370,6 +370,32 @@ describe('ProductDetailEffects', () => {
         it('then return load detail', (done) => {
             effects.removeImageSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(loadDetail({id: '1'}));
+                done();
+            })
+        })
+
+    })
+
+    describe("given change product visibility", () => {
+
+        beforeEach(() => {
+            actions$ = of(changeVisibility({id: "anyProductId"}));
+        })
+
+        it('when success, then return change visibility success', (done) => {
+            productService._response = of({});
+    
+            effects.changeVisibilityEffect$.subscribe(response => {
+                expect(response).toEqual(changeVisibilitySuccess({id: "anyProductId"}));
+                done();
+            })
+        })
+    
+        it('when fail, then return change visibility fail', (done) => {
+            productService._response = throwError(error);
+    
+            effects.changeVisibilityEffect$.subscribe(response => {
+                expect(response).toEqual(changeVisibilityFail({error}));
                 done();
             })
         })

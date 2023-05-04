@@ -6,8 +6,9 @@ import { ProductsEffects } from './products.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess } from "./products.actions";
+import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
 import { ProductService } from "src/app/services/product/product.service";
+import { changeVisibilitySuccess } from "../../product-detail/store/products/product-detail.actions";
 
 describe('ProductsEffects', () => {
 
@@ -125,6 +126,48 @@ describe('ProductsEffects', () => {
         it('then return load', (done) => {
             effects.removeSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(load());
+                done();
+            })
+        })
+
+    })
+
+    describe("given change visibility success", () => {
+
+        beforeEach(() => {
+            actions$ = of(changeVisibilitySuccess({id: "anyProductId"}));
+        })
+
+        it('then return update product on list', (done) => {
+            effects.changeVisibilitySuccessEffect$.subscribe(response => {
+                expect(response).toEqual(updateProductOnList({id: "anyProductId"}));
+                done();
+            })
+        })
+
+    })
+
+    describe("given update product on list", () => {
+
+        beforeEach(() => {
+            actions$ = of(updateProductOnList({id: "anyProductId"}));
+        })
+
+        it('when success, then return update product on list success', (done) => {
+            const product = {id: "anyProductId"} as any;
+            productService._response = of(product);
+    
+            effects.updateProductOnList$.subscribe(response => {
+                expect(response).toEqual(updateProductOnListSuccess({product}));
+                done();
+            })
+        })
+    
+        it('when fail, then return update product on list error', (done) => {
+            productService._response = throwError(error);
+    
+            effects.updateProductOnList$.subscribe(response => {
+                expect(response).toEqual(updateProductOnListFail({error}));
                 done();
             })
         })
