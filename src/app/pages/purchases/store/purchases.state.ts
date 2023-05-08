@@ -3,5 +3,6 @@ export type PurchasesState = {
     isLoaded: boolean;
     isLoading: boolean;
     isPrinting: boolean;
+    isPrintingAll: boolean;
     purchases: any[]
 }

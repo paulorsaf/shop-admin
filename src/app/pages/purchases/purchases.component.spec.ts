@@ -57,6 +57,10 @@ describe('PurchasesComponent', () => {
     it('then hide purchases', () => {
       expect(page.querySelector('[test-id="purchases"]')).toBeNull();
     });
+
+    it('then hide print button', () => {
+      expect(page.querySelector('[test-id="print-purchases-button"]')).toBeNull();
+    })
     
   });
 
@@ -76,17 +80,31 @@ describe('PurchasesComponent', () => {
       expect(page.querySelector('[test-id="purchases"]')).not.toBeNull();
     });
 
+    it('then show print button', () => {
+      expect(page.querySelector('[test-id="print-purchases-button"]')).not.toBeNull();
+    })
+
     it('when purchases found, then hide no results found message', () => {
       expect(page.querySelector('[test-id="no-results-found"]')).toBeNull();
     });
 
-    it('when no purchases, then show no results found message', () => {
-      const purchases = [] as any;
-      store.dispatch(loadPurchasesSuccess({purchases}));
-      fixture.detectChanges();
+    describe('when no purchases found', () => {
 
-      expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
-    });
+      beforeEach(() => {
+        const purchases = [] as any;
+        store.dispatch(loadPurchasesSuccess({purchases}));
+        fixture.detectChanges();
+      })
+
+      it('then show no results found message', () => {
+        expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
+      });
+
+      it('then hide print button', () => {
+        expect(page.querySelector('[test-id="print-purchases-button"]')).toBeNull();
+      })
+
+    })
 
     it('when purchase payment doesnt have error, then hide payment error', () => {
       const purchases = [{payment: {}}] as any;
@@ -136,6 +154,16 @@ describe('PurchasesComponent', () => {
   
       store.select('purchases').subscribe(state => {
         expect(state.isPrinting).toBeTruthy();
+        done();
+      })
+    })
+
+    it('when user clicks on print purchases button, then print purchases', done => {
+      page.querySelector('[test-id="print-purchases-button"]').click();
+      fixture.detectChanges();
+
+      store.select('purchases').subscribe(state => {
+        expect(state.isPrintingAll).toBeTruthy();
         done();
       })
     })

@@ -6,7 +6,7 @@ import { PurchasesEffects } from './purchases.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { PurchaseService } from "src/app/services/purchase/purchase.service";
-import { loadPurchases, loadPurchasesFail, loadPurchasesSuccess, printPurchase, printPurchaseSuccess } from "./purchases.actions";
+import { loadPurchases, loadPurchasesFail, loadPurchasesSuccess, printAllPurchases, printAllPurchasesSuccess, printPurchase, printPurchaseSuccess } from "./purchases.actions";
 
 describe('PurchasesEffects', () => {
 
@@ -88,6 +88,21 @@ describe('PurchasesEffects', () => {
 
     })
 
+    describe("given print all purchases", () => {
+
+        beforeEach(() => {
+            actions$ = of(printAllPurchases());
+        })
+
+        it('when success, then return print all purchases success', (done) => {
+            effects.printAllPurchasesEffect$.subscribe(response => {
+                expect(response).toEqual(printAllPurchasesSuccess());
+                done();
+            })
+        })
+
+    })
+
 });
 
 export class PurchaseServiceMock {
@@ -96,6 +111,9 @@ export class PurchaseServiceMock {
         return this._response;
     }
     print() {
+        return this._response;
+    }
+    printAll() {
         return this._response;
     }
 }

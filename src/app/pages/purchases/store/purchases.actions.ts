@@ -7,3 +7,6 @@ export const loadPurchasesFail = createAction('[Purchases] load purchases fail',
 
 export const printPurchase = createAction('[Purchases] print purchase', props<{id: string}>());
 export const printPurchaseSuccess = createAction('[Purchases] print purchase success');
+
+export const printAllPurchases = createAction('[Purchases] print all purchases');
+export const printAllPurchasesSuccess = createAction('[Purchases] print all purchases success');

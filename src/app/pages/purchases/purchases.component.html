@@ -104,6 +104,10 @@
             </mat-card-content>
         </mat-card>
     </span>
+    <button mat-fab color="primary" *ngIf="(purchases$ | async)?.length"
+        (click)="printAll()" test-id="print-purchases-button">
+        <mat-icon>print</mat-icon>
+    </button>
     <div *ngIf="(purchases$ | async)?.length === 0" align="middle" test-id="no-results-found">
         Nenhum resultado encontrado
     </div>

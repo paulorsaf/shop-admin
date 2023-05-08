@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { PurchaseSummary } from 'src/app/model/purchase/purchase-summary';
 import { AppState } from 'src/app/store/app-state';
-import { loadPurchases, printPurchase } from './store/purchases.actions';
+import { loadPurchases, printAllPurchases, printPurchase } from './store/purchases.actions';
 
 @Component({
   selector: 'app-purchases',
@@ -53,6 +53,10 @@ export class PurchasesComponent implements OnInit {
   print($event: any, purchase: PurchaseSummary) {
     $event.stopPropagation();
     this.store.dispatch(printPurchase({id: purchase.id}));
+  }
+
+  printAll() {
+    this.store.dispatch(printAllPurchases());
   }
 
   private onPurchasesChange() {

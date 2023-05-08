@@ -24,3 +24,9 @@ mat-card-title {
 .print {
     width: 24px;
 }
+
+[mat-fab] {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
