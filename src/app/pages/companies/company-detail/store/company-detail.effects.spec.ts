@@ -266,7 +266,9 @@ describe('CompanyDetailEffects', () => {
     describe("Given save delivery price", () => {
 
         beforeEach(() => {
-            actions$ = of(saveDeliveryPrice({price: 10}));
+            actions$ = of(saveDeliveryPrice({
+                hasDeliveryByMail: true, price: 10
+            }));
         })
 
         it('when success, then return save deliveryPrice success', (done) => {

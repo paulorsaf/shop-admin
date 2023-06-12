@@ -143,10 +143,11 @@ export class CompanyDetailEffects {
     saveCompanyDetailDeliveryPriceEffect$ = createEffect(() =>
         this.actions$.pipe(
             ofType(saveDeliveryPrice),
-            this.getStore(),
-            switchMap(([action, storeState]: [action: any, storeState: AppState]) => 
+            withLatestFrom(this.store.select(store => store.companyDetail.company?.id || "")),
+            switchMap(([action, companyId]) => 
                 this.companyService.updateDeliveryPrice(
-                    storeState.companyDetail.company?.id || "",
+                    companyId,
+                    action.hasDeliveryByMail,
                     action.price
                 ).pipe(
                     map(() => saveDeliveryPriceSuccess()),

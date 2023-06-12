@@ -13,6 +13,7 @@ export type Company = {
     address: Address;
     canUpdateStock: boolean;
     cityDeliveryPrice: number;
+    hasDeliveryByMail: boolean;
     hasToSendPurchaseToOwnSystem: boolean;
     id: string;
     logo: Image;

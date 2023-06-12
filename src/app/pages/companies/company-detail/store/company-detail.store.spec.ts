@@ -390,7 +390,9 @@ describe('Company detail store', () => {
             isSavingDeliveryPrice: false
         };
 
-        const state = companyDetailReducer(initialState, saveDeliveryPrice({price: 10}));
+        const state = companyDetailReducer(initialState, saveDeliveryPrice({
+            hasDeliveryByMail: true, price: 10
+        }));
 
         expect(state).toEqual({
             ...AppInitialState.companyDetail,

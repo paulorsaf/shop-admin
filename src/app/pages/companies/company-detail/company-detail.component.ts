@@ -120,7 +120,10 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
   }
 
   saveDeliveryPrice() {
-    this.store.dispatch(saveDeliveryPrice({price: this.deliveryForm.value.price}));
+    this.store.dispatch(saveDeliveryPrice({
+      hasDeliveryByMail: this.deliveryForm.value.hasDeliveryByMail,
+      price: this.deliveryForm.value.price
+    }));
   }
 
   private getLogoStyle() {
@@ -157,7 +160,8 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
     });
 
     this.deliveryForm = this.formBuilder.group({
-      price: ['', [Validators.required]]
+      price: ['', [Validators.required]],
+      hasDeliveryByMail: [false]
     });
   }
 
@@ -191,6 +195,7 @@ export class CompanyDetailComponent implements OnInit, OnDestroy {
           this.fillAddressForm(company.address);
         }
         this.deliveryForm.get('price')!.setValue(company?.cityDeliveryPrice || 0);
+        this.deliveryForm.get('hasDeliveryByMail')!.setValue(!!company?.hasDeliveryByMail);
       })
   }
 

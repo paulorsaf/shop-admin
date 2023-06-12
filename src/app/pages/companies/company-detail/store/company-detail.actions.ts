@@ -31,7 +31,7 @@ export const saveCompanyDetailPayment = createAction('[Company detail] save paym
 export const saveCompanyDetailPaymentSuccess = createAction('[Company detail] save payment success');
 export const saveCompanyDetailPaymentFail = createAction('[Company detail] save payment fail', props<{error: any}>());
 
-export const saveDeliveryPrice = createAction('[Company detail] save delivery price', props<{price: number}>());
+export const saveDeliveryPrice = createAction('[Company detail] save delivery price', props<{hasDeliveryByMail: boolean, price: number}>());
 export const saveDeliveryPriceSuccess = createAction('[Company detail] save delivery price success');
 export const saveDeliveryPriceFail = createAction('[Company detail] save delivery price fail', props<{error: any}>());
 

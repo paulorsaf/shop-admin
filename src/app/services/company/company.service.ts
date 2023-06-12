@@ -34,9 +34,9 @@ export class CompanyService {
     return this.apiService.patch<void>(url, address);
   }
 
-  updateDeliveryPrice(id: string, price: number): Observable<void> {
+  updateDeliveryPrice(id: string, hasDeliveryByMail: boolean, price: number): Observable<void> {
     const url = `${environment.apiUrl}/companies/${id}/deliveryprices`;
-    return this.apiService.patch<void>(url, {price});
+    return this.apiService.patch<void>(url, {hasDeliveryByMail, price});
   }
 
   updateLogo(id: string, image: File): Observable<void> {

@@ -141,17 +141,16 @@
 
             <mat-card-title class="padding-top">Valor da entrega</mat-card-title>
             <mat-card-content>
-                <form [formGroup]="deliveryForm">
+                <form [formGroup]="deliveryForm" *ngIf="deliveryForm">
                     <mat-form-field>
                         <mat-label>Valor da entrega</mat-label>
                         <input matInput placeholder="Valor da entrega" type="number"
                             formControlName="price">
                     </mat-form-field>
                     <div>
-                        <mat-hint>
-                            * Esse será o valor cobrado para entregas na mesma cidade da loja.<br/>
-                            Para entrega em cidades diferentes usaremos o valor cobrado pelo serviço dos correios.
-                        </mat-hint>
+                        <mat-checkbox color="primary" formControlName="hasDeliveryByMail">
+                            Usar correios para entregas em outras cidades?
+                        </mat-checkbox>
                     </div>
 
                     <button mat-raised-button color="primary" (click)="saveDeliveryPrice()"

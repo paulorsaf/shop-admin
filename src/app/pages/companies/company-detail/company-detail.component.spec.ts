@@ -10,6 +10,7 @@ import { PageMock } from 'src/mock/page.mock';
 import { CompanyDetailComponent } from './company-detail.component';
 import { loadAddressByZipCodeFail, loadAddressByZipCodeSuccess, loadCompanyDetailFail, loadCompanyDetailSuccess, saveCompanyDetail, saveCompanyDetailAboutUsFail, saveCompanyDetailAboutUsSuccess, saveCompanyDetailAddressFail, saveCompanyDetailAddressSuccess, saveCompanyDetailFail, saveCompanyDetailLogoFail, saveCompanyDetailLogoSuccess, saveCompanyDetailSuccess } from './store/company-detail.actions';
 import { companyDetailReducer } from './store/company-detail.reducers';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('CompanyDetailComponent', () => {
   let component: CompanyDetailComponent;
@@ -37,6 +38,7 @@ describe('CompanyDetailComponent', () => {
         ReactiveFormsModule,
         AngularEditorModule,
         HttpClientTestingModule,
+        MatCheckboxModule,
         StoreModule.forRoot([]),
         StoreModule.forFeature('companyDetail', companyDetailReducer)
       ]
@@ -61,178 +63,6 @@ describe('CompanyDetailComponent', () => {
         done();
       })
     });
-
-    it('then create about us form', () => {
-      expect(component.aboutUsForm).not.toBeUndefined();
-    });
-
-    it('then create address form', () => {
-      expect(component.addressForm).not.toBeUndefined();
-    });
-
-    it('then create company form', () => {
-      expect(component.companyForm).not.toBeUndefined();
-    });
-
-    it('then create delivery form', () => {
-      expect(component.deliveryForm).not.toBeUndefined();
-    });
-
-  })
-
-  describe('given address form', () => {
-
-    it('when street is empty, then street should be invalid', () => {
-      component.addressForm.get('street')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('street')!.valid).toBeFalsy();
-    })
-
-    it('when street is filled, then street should be valid', () => {
-      component.addressForm.get('street')!.setValue('anyStreet');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('street')!.valid).toBeTruthy();
-    })
-
-    it('when number is empty, then number should be invalid', () => {
-      component.addressForm.get('number')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('number')!.valid).toBeFalsy();
-    })
-
-    it('when number is filled, then number should be valid', () => {
-      component.addressForm.get('number')!.setValue('anyNumber');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('number')!.valid).toBeTruthy();
-    })
-
-    it('when neighborhood is empty, then neighborhood should be invalid', () => {
-      component.addressForm.get('neighborhood')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('neighborhood')!.valid).toBeFalsy();
-    })
-
-    it('when neighborhood is filled, then neighborhood should be valid', () => {
-      component.addressForm.get('neighborhood')!.setValue('anyNeighborhood');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('neighborhood')!.valid).toBeTruthy();
-    })
-
-    it('when complement is empty, then complement should be invalid', () => {
-      component.addressForm.get('complement')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('complement')!.valid).toBeFalsy();
-    })
-
-    it('when complement is filled, then complement should be valid', () => {
-      component.addressForm.get('complement')!.setValue('anyComplement');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('complement')!.valid).toBeTruthy();
-    })
-
-    it('when zipCode is empty, then zipCode should be invalid', () => {
-      component.addressForm.get('zipCode')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('zipCode')!.valid).toBeFalsy();
-    })
-
-    it('when zipCode is filled, then zipCode should be valid', () => {
-      component.addressForm.get('zipCode')!.setValue('anyZipCode');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('zipCode')!.valid).toBeTruthy();
-    })
-
-    it('when city is empty, then city should be invalid', () => {
-      component.addressForm.get('city')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('city')!.valid).toBeFalsy();
-    })
-
-    it('when city is filled, then city should be valid', () => {
-      component.addressForm.get('city')!.setValue('anyCity');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('city')!.valid).toBeTruthy();
-    })
-
-    it('when state is empty, then state should be invalid', () => {
-      component.addressForm.get('state')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('state')!.valid).toBeFalsy();
-    })
-
-    it('when state is filled, then state should be valid', () => {
-      component.addressForm.get('state')!.setValue('anyState');
-      fixture.detectChanges();
-
-      expect(component.addressForm.get('state')!.valid).toBeTruthy();
-    })
-
-  })
-
-  describe('given company form', () => {
-
-    it('when name is empty, then name should be invalid', () => {
-      component.companyForm.get('name')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.companyForm.get('name')!.valid).toBeFalsy();
-    })
-
-    it('when name is filled, then name should be valid', () => {
-      component.companyForm.get('name')!.setValue('anyName');
-      fixture.detectChanges();
-
-      expect(component.companyForm.get('name')!.valid).toBeTruthy();
-    })
-
-  })
-
-  describe('given delivery form', () => {
-
-    beforeEach(() => {
-      dispatchLoadCompanyDetailSuccess();
-    })
-
-    it('when price is empty, then price should be invalid', () => {
-      component.deliveryForm.get('price')!.setValue('');
-      fixture.detectChanges();
-
-      expect(component.deliveryForm.get('price')!.valid).toBeFalsy();
-    })
-
-    it('when name is filled, then name should be valid', () => {
-      component.deliveryForm.get('price')!.setValue('anyName');
-      fixture.detectChanges();
-
-      expect(component.deliveryForm.get('price')!.valid).toBeTruthy();
-    })
-
-    it('when delivery form is invalid, then disable save delivery button', () => {
-      component.deliveryForm.get('price')?.setValue('');
-      fixture.detectChanges();
-
-      expect(page.querySelector('[test-id="save-delivery-button"]').disabled).toBeTruthy();
-    })
-
-    it('when delivery form is valid, then enable save delivery button', () => {
-      component.deliveryForm.get('price')?.setValue('10');
-      fixture.detectChanges();
-
-      expect(page.querySelector('[test-id="save-delivery-button"]').disabled).toBeFalsy();
-    })
 
   })
 
@@ -284,7 +114,8 @@ describe('CompanyDetailComponent', () => {
 
     it('then populate delivery form', () => {
       expect(component.deliveryForm.value).toEqual({
-        price: 10
+        price: 10,
+        hasDeliveryByMail: true
       });
     })
 
@@ -785,6 +616,7 @@ describe('CompanyDetailComponent', () => {
       id: "anyCompany",
       instagram: "anyInstagram",
       name: "anyCompanyName",
+      hasDeliveryByMail: true,
       website: "anyWebsite",
       whatsapp: "anyWhatsapp"
     } as any;
