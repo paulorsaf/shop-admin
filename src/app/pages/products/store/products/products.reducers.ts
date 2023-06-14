@@ -1,12 +1,12 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from './products.actions';
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from './products.actions';
 import { ProductsState } from './products.state';
 
 const initialState: ProductsState = AppInitialState.products;
 
 const _productsReducer = createReducer(initialState,
-    on(load, (state) => {
+    on(loadProducts, (state) => {
         return {
             ...state,
             error: null,
@@ -25,7 +25,7 @@ const _productsReducer = createReducer(initialState,
             page: state.page + 1
         };
     }),
-    on(loadSuccess, (state, action) => {
+    on(loadProductsSuccess, (state, action) => {
         return {
             ...state,
             hasMoreToLoad: action.products?.length === 30 ? true : false,
@@ -35,7 +35,7 @@ const _productsReducer = createReducer(initialState,
             products: state.page === 0 ? action.products : state.products.concat(action.products)
         };
     }),
-    on(loadFail, (state, action) => {
+    on(loadProductsFail, (state, action) => {
         return {
             ...state,
             error: action.error,
@@ -44,7 +44,7 @@ const _productsReducer = createReducer(initialState,
             isLoadingMoreProducts: false
         };
     }),
-    on(remove, (state) => {
+    on(removeProduct, (state) => {
         return {
             ...state,
             error: null,
@@ -52,14 +52,14 @@ const _productsReducer = createReducer(initialState,
             isRemoving: true
         };
     }),
-    on(removeSuccess, (state) => {
+    on(removeProductSuccess, (state) => {
         return {
             ...state,
             isRemoved: true,
             isRemoving: false
         };
     }),
-    on(removeFail, (state, action) => {
+    on(removeProductFail, (state, action) => {
         return {
             ...state,
             error: action.error,

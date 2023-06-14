@@ -10,7 +10,7 @@ import { AppState } from 'src/app/store/app-state';
 import { ActivatedRouteMock } from 'src/mock/activated-route.mock';
 import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
-import { loadSuccess } from '../../products/store/products/products.actions';
+import { loadProductsSuccess } from '../../products/store/products/products.actions';
 import { productsReducer } from '../../products/store/products/products.reducers';
 import { BannerDetailComponent } from './banner-detail.component';
 import { loadBannerDetailFail, loadBannerDetailSuccess, saveBannerDetailFail, saveBannerDetailSuccess } from './store/banner-detail.actions';
@@ -68,7 +68,7 @@ describe('BannerDetailComponent', () => {
       activatedRoute.value = 'new';
       fixture.detectChanges();
 
-      store.dispatch(loadSuccess({products: []}));
+      store.dispatch(loadProductsSuccess({products: []}));
       fixture.detectChanges();
     })
     
@@ -108,7 +108,7 @@ describe('BannerDetailComponent', () => {
       activatedRoute.value = 'new';
       fixture.detectChanges();
       
-      store.dispatch(loadSuccess({products: []}));
+      store.dispatch(loadProductsSuccess({products: []}));
       fixture.detectChanges();
     })
 
@@ -134,7 +134,7 @@ describe('BannerDetailComponent', () => {
       activatedRoute.value = 'anyBannerId';
       fixture.detectChanges();
       
-      store.dispatch(loadSuccess({products: []}));
+      store.dispatch(loadProductsSuccess({products: []}));
       fixture.detectChanges();
     })
 
@@ -189,7 +189,7 @@ describe('BannerDetailComponent', () => {
         store.dispatch(loadBannerDetailFail({error}));
         fixture.detectChanges();
       
-        store.dispatch(loadSuccess({products: []}));
+        store.dispatch(loadProductsSuccess({products: []}));
         fixture.detectChanges();
       })
 
@@ -215,7 +215,7 @@ describe('BannerDetailComponent', () => {
       activatedRoute.value = 'new';
       fixture.detectChanges();
       
-      store.dispatch(loadSuccess({products: []}));
+      store.dispatch(loadProductsSuccess({products: []}));
       fixture.detectChanges();
 
       component.form.get('productId')?.setValue('anyProductId');

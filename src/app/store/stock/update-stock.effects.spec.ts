@@ -7,8 +7,11 @@ import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { StockService } from "src/app/services/stock/stock.service";
 import { updateStock, updateStockFail, updateStockSuccess } from "./update-stock.actions";
+import { RouterTestingModule } from "@angular/router/testing";
+import { BlankComponent } from "src/mock/blank-component/blank.component.mock";
+import { loadProducts } from "src/app/pages/products/store/products/products.actions";
 
-describe('UpdateStockEffects', () => {
+fdescribe('UpdateStockEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: UpdateStockEffects;
@@ -22,7 +25,10 @@ describe('UpdateStockEffects', () => {
         TestBed.configureTestingModule({
             imports: [
                 EffectsModule.forRoot([]),
-                EffectsModule.forFeature([UpdateStockEffects])
+                EffectsModule.forFeature([UpdateStockEffects]),
+                RouterTestingModule.withRoutes([
+                    { path: "products", component: BlankComponent }
+                ])
             ],
             providers: [
                 UpdateStockEffects,
@@ -57,6 +63,37 @@ describe('UpdateStockEffects', () => {
                 expect(response).toEqual(updateStockFail({error}));
                 done();
             })
+        })
+
+    })
+
+    describe("Given update stock success", () => {
+
+        beforeEach(() => {
+            actions$ = of(updateStockSuccess());
+        })
+
+        it('when user is on products page, then return load products', (done) => {
+            spyOn(effects, 'isProductsPage').and.returnValue(true);
+
+            effects.updateStockEffectSuccess$.subscribe(response => {
+                expect(response).toEqual(loadProducts());
+                done();
+            })
+        })
+    
+        it('when user is not on products page, then do not return', (done) => {
+            spyOn(effects, 'isProductsPage').and.returnValue(false);
+
+            let hasReturned = false;
+            effects.updateStockEffectSuccess$.subscribe(() => {
+                hasReturned = true;
+            })
+
+            setTimeout(() => {
+                expect(hasReturned).toBeFalsy();
+                done();
+            }, 100)
         })
 
     })

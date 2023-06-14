@@ -17,7 +17,7 @@ import { changeVisibilityFail, changeVisibilitySuccess } from './product-detail/
 import { productDetailReducer } from './product-detail/store/products/product-detail.reducers';
 import { ProductsComponent } from './products.component';
 import { ProductsModule } from './products.module';
-import { loadSuccess, removeFail, removeSuccess } from './store/products/products.actions';
+import { loadProductsSuccess, removeProductFail, removeProductSuccess } from './store/products/products.actions';
 import { productsReducer } from './store/products/products.reducers';
 
 describe('ProductsComponent', () => {
@@ -202,7 +202,7 @@ describe('ProductsComponent', () => {
       })
 
       it('and category removed with success, then hide loading', () => {
-        store.dispatch(removeSuccess());
+        store.dispatch(removeProductSuccess());
         fixture.detectChanges();
   
         expect(page.querySelector('[test-id="products-loader"]')).toBeNull();
@@ -211,7 +211,7 @@ describe('ProductsComponent', () => {
       describe('and category removed with error', () => {
 
         beforeEach(() => {
-          store.dispatch(removeFail({error: "error"}));
+          store.dispatch(removeProductFail({error: "error"}));
           fixture.detectChanges();
         })
 
@@ -365,7 +365,7 @@ describe('ProductsComponent', () => {
   ) {
     const products = Array.from(Array(amount).keys())
       .map((v, index) => ({id: index+1, isVisible: visibility})) as any;
-    store.dispatch(loadSuccess({products}));
+    store.dispatch(loadProductsSuccess({products}));
     fixture.detectChanges();
   }
 

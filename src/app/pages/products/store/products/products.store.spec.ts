@@ -1,12 +1,12 @@
 import { Product } from "src/app/model/product/product";
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
 import { productsReducer } from "./products.reducers";
 import { ProductsState } from "./products.state";
 
 describe('Products store', () => {
     
-    it('load', () => {
+    it('loadProducts', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             error: {},
@@ -18,7 +18,7 @@ describe('Products store', () => {
             products: [{}] as any
         };
 
-        const state = productsReducer(initialState, load());
+        const state = productsReducer(initialState, loadProducts());
 
         expect(state).toEqual({
             ...AppInitialState.products,
@@ -48,7 +48,7 @@ describe('Products store', () => {
         });
     });
 
-    describe('given loadSuccess', () => {
+    describe('given loadProductsSuccess', () => {
 
         let initialState: ProductsState;
         let products: Product[];
@@ -65,7 +65,7 @@ describe('Products store', () => {
         })
     
         it('when page is equal to 0, then replace existing products', () => {
-            const state = productsReducer(initialState, loadSuccess({products}));
+            const state = productsReducer(initialState, loadProductsSuccess({products}));
     
             expect(state).toEqual({
                 ...AppInitialState.products,
@@ -80,7 +80,7 @@ describe('Products store', () => {
         it('when page is different than 0, then add to existing products', () => {
             initialState.page = 1;
 
-            const state = productsReducer(initialState, loadSuccess({products}));
+            const state = productsReducer(initialState, loadProductsSuccess({products}));
     
             expect(state).toEqual({
                 ...AppInitialState.products,
@@ -94,7 +94,7 @@ describe('Products store', () => {
         });
     
         it('when there are less than 30 products loaded, then do not allow to load more products', () => {
-            const state = productsReducer(initialState, loadSuccess({products}));
+            const state = productsReducer(initialState, loadProductsSuccess({products}));
     
             expect(state).toEqual({
                 ...AppInitialState.products,
@@ -109,7 +109,7 @@ describe('Products store', () => {
         it('when there are 30 products loaded, then allow to load more products', () => {
             products = Array.from(Array(30).keys()).map((v, index) => ({id: index+1})) as any;
 
-            const state = productsReducer(initialState, loadSuccess({products}));
+            const state = productsReducer(initialState, loadProductsSuccess({products}));
     
             expect(state).toEqual({
                 ...AppInitialState.products,
@@ -123,7 +123,7 @@ describe('Products store', () => {
     
         it('when products loaded are empty, then do not allow to load more products', () => {
             const products: any[] = [];
-            const state = productsReducer(initialState, loadSuccess({products}));
+            const state = productsReducer(initialState, loadProductsSuccess({products}));
     
             expect(state).toEqual({
                 ...AppInitialState.products,
@@ -137,7 +137,7 @@ describe('Products store', () => {
 
     })
     
-    it('loadFail', () => {
+    it('loadProductsFail', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             isLoaded: false,
@@ -146,7 +146,7 @@ describe('Products store', () => {
         };
 
         const error = {error: "error"};
-        const state = productsReducer(initialState, loadFail({error}));
+        const state = productsReducer(initialState, loadProductsFail({error}));
 
         expect(state).toEqual({
             ...AppInitialState.products,
@@ -157,7 +157,7 @@ describe('Products store', () => {
         });
     });
     
-    it('remove', () => {
+    it('removeProduct', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             error: {},
@@ -166,7 +166,7 @@ describe('Products store', () => {
         };
 
         const product = {id: 1} as any;
-        const state = productsReducer(initialState, remove({product}));
+        const state = productsReducer(initialState, removeProduct({product}));
 
         expect(state).toEqual({
             ...AppInitialState.products,
@@ -176,14 +176,14 @@ describe('Products store', () => {
         });
     });
     
-    it('removeSuccess', () => {
+    it('removeProductSuccess', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             isRemoved: false,
             isRemoving: true
         };
 
-        const state = productsReducer(initialState, removeSuccess());
+        const state = productsReducer(initialState, removeProductSuccess());
 
         expect(state).toEqual({
             ...AppInitialState.products,
@@ -192,7 +192,7 @@ describe('Products store', () => {
         });
     });
     
-    it('removeFail', () => {
+    it('removeProductFail', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             isRemoved: false,
@@ -200,7 +200,7 @@ describe('Products store', () => {
         };
 
         const error = {error: "error"};
-        const state = productsReducer(initialState, removeFail({error}));
+        const state = productsReducer(initialState, removeProductFail({error}));
 
         expect(state).toEqual({
             ...AppInitialState.products,

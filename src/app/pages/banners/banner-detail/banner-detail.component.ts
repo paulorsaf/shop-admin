@@ -7,7 +7,7 @@ import { Banner } from 'src/app/model/banner/banner';
 import { Product } from 'src/app/model/product/product';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { load } from '../../products/store/products/products.actions';
+import { loadProducts } from '../../products/store/products/products.actions';
 import { clearBannerDetail, loadBannerDetail, saveBannerDetail } from './store/banner-detail.actions';
 
 @Component({
@@ -47,7 +47,7 @@ export class BannerDetailComponent implements OnInit, OnDestroy {
     this.onSave();
 
     this.loadBannerPage();
-    this.store.dispatch(load());
+    this.store.dispatch(loadProducts());
   }
 
   ngOnDestroy(): void {

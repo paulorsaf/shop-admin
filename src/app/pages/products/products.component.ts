@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { AppState } from 'src/app/store/app-state';
-import { load, loadMoreProducts, remove } from './store/products/products.actions';
+import { loadProducts, loadMoreProducts, removeProduct } from './store/products/products.actions';
 import { load as loadCategories } from 'src/app/pages/categories/store/categories.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
@@ -67,7 +67,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.onError();
     this.onProductsChange();
 
-    this.store.dispatch(load());
+    this.store.dispatch(loadProducts());
     this.store.dispatch(loadCategories());
   }
 
@@ -105,7 +105,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   filter() {
-    this.store.dispatch(load({
+    this.store.dispatch(loadProducts({
       internalId: this.internalId
     }));
   }
@@ -126,7 +126,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   private remove(product: Product) {
-    this.store.dispatch(remove({product}));
+    this.store.dispatch(removeProduct({product}));
   }
 
   private onProductsChange() {

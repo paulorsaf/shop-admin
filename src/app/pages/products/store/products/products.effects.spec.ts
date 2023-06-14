@@ -6,7 +6,7 @@ import { ProductsEffects } from './products.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { changeVisibilitySuccess } from "../../product-detail/store/products/product-detail.actions";
 
@@ -41,14 +41,14 @@ describe('ProductsEffects', () => {
     describe("Given load", () => {
 
         beforeEach(() => {
-            actions$ = of(load());
+            actions$ = of(loadProducts());
         })
 
         it('when success, then return load success', (done) => {
             productService._response = of(products);
     
             effects.loadEffect$.subscribe(response => {
-                expect(response).toEqual(loadSuccess({products}));
+                expect(response).toEqual(loadProductsSuccess({products}));
                 done();
             })
         })
@@ -57,7 +57,7 @@ describe('ProductsEffects', () => {
             productService._response = throwError(error);
     
             effects.loadEffect$.subscribe(response => {
-                expect(response).toEqual(loadFail({error}));
+                expect(response).toEqual(loadProductsFail({error}));
                 done();
             })
         })
@@ -74,7 +74,7 @@ describe('ProductsEffects', () => {
             productService._response = of(products);
     
             effects.loadEffect$.subscribe(response => {
-                expect(response).toEqual(loadSuccess({products}));
+                expect(response).toEqual(loadProductsSuccess({products}));
                 done();
             })
         })
@@ -83,7 +83,7 @@ describe('ProductsEffects', () => {
             productService._response = throwError(error);
     
             effects.loadEffect$.subscribe(response => {
-                expect(response).toEqual(loadFail({error}));
+                expect(response).toEqual(loadProductsFail({error}));
                 done();
             })
         })
@@ -94,14 +94,14 @@ describe('ProductsEffects', () => {
 
         beforeEach(() => {
             const product = {id: 1} as any;
-            actions$ = of(remove({product}));
+            actions$ = of(removeProduct({product}));
         })
 
         it('when success, then return load success', (done) => {
             productService._response = of(products);
     
             effects.removeEffect$.subscribe(response => {
-                expect(response).toEqual(removeSuccess());
+                expect(response).toEqual(removeProductSuccess());
                 done();
             })
         })
@@ -110,7 +110,7 @@ describe('ProductsEffects', () => {
             productService._response = throwError(error);
     
             effects.removeEffect$.subscribe(response => {
-                expect(response).toEqual(removeFail({error}));
+                expect(response).toEqual(removeProductFail({error}));
                 done();
             })
         })
@@ -120,12 +120,12 @@ describe('ProductsEffects', () => {
     describe("Given remove success", () => {
 
         beforeEach(() => {
-            actions$ = of(removeSuccess());
+            actions$ = of(removeProductSuccess());
         })
 
         it('then return load', (done) => {
             effects.removeSuccessEffect$.subscribe(response => {
-                expect(response).toEqual(load());
+                expect(response).toEqual(loadProducts());
                 done();
             })
         })

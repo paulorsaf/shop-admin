@@ -7,7 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { AppState } from "src/app/store/app-state";
 import { changeVisibilitySuccess } from "../../product-detail/store/products/product-detail.actions";
-import { load, loadFail, loadMoreProducts, loadSuccess, remove, removeFail, removeSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
 import { ProductsState } from "./products.state";
 
 @Injectable()
@@ -23,7 +23,7 @@ export class ProductsEffects {
     loadEffect$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
-                load,
+                loadProducts,
                 loadMoreProducts
             ),
             withLatestFrom(this.store.select(store => store.products)),
@@ -32,8 +32,8 @@ export class ProductsEffects {
                     page: state.page,
                     internalId: action.filter?.internalId || ""
                 }).pipe(
-                    map(products => loadSuccess({products})),
-                    catchError(error => of(loadFail({error})))
+                    map(products => loadProductsSuccess({products})),
+                    catchError(error => of(loadProductsFail({error})))
                 )
             })
         )
@@ -41,11 +41,11 @@ export class ProductsEffects {
 
     removeEffect$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(remove),
+            ofType(removeProduct),
             switchMap((params: {product: Product}) =>
                 this.productService.remove(params.product).pipe(
-                    map(() => removeSuccess()),
-                    catchError(error => of(removeFail({error})))
+                    map(() => removeProductSuccess()),
+                    catchError(error => of(removeProductFail({error})))
                 )
             )
         )
@@ -53,8 +53,8 @@ export class ProductsEffects {
 
     removeSuccessEffect$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(removeSuccess),
-            switchMap(() => of(load()))
+            ofType(removeProductSuccess),
+            switchMap(() => of(loadProducts()))
         )
     )
 
