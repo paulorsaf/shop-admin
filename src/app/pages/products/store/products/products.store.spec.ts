@@ -1,6 +1,6 @@
 import { Product } from "src/app/model/product/product";
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts } from "./products.actions";
 import { productsReducer } from "./products.reducers";
 import { ProductsState } from "./products.state";
 
@@ -10,7 +10,9 @@ describe('Products store', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
             error: {},
+            filter: {},
             hasMoreToLoad: true,
+            isFiltering: true,
             isLoaded: true,
             isLoading: false,
             isLoadingMoreProducts: true,
@@ -23,7 +25,9 @@ describe('Products store', () => {
         expect(state).toEqual({
             ...AppInitialState.products,
             error: null,
+            filter: undefined,
             hasMoreToLoad: false,
+            isFiltering: false,
             isLoaded: false,
             isLoading: true,
             isLoadingMoreProducts: false,
@@ -35,6 +39,7 @@ describe('Products store', () => {
     it('loadMoreProducts', () => {
         const initialState: ProductsState = {
             ...AppInitialState.products,
+            isFiltering: true,
             isLoadingMoreProducts: false,
             page: 0
         };
@@ -43,6 +48,7 @@ describe('Products store', () => {
 
         expect(state).toEqual({
             ...AppInitialState.products,
+            isFiltering: false,
             isLoadingMoreProducts: true,
             page: 1
         });
@@ -57,6 +63,7 @@ describe('Products store', () => {
             products = [{id: 2}, {id: 3}] as any;
             initialState = {
                 ...AppInitialState.products,
+                isFiltering: true,
                 isLoaded: false,
                 isLoading: true,
                 isLoadingMoreProducts: true,
@@ -70,6 +77,7 @@ describe('Products store', () => {
             expect(state).toEqual({
                 ...AppInitialState.products,
                 hasMoreToLoad: false,
+                isFiltering: false,
                 isLoaded: true,
                 isLoading: false,
                 isLoadingMoreProducts: false,
@@ -85,6 +93,7 @@ describe('Products store', () => {
             expect(state).toEqual({
                 ...AppInitialState.products,
                 hasMoreToLoad: false,
+                isFiltering: false,
                 isLoaded: true,
                 isLoading: false,
                 isLoadingMoreProducts: false,
@@ -99,6 +108,7 @@ describe('Products store', () => {
             expect(state).toEqual({
                 ...AppInitialState.products,
                 hasMoreToLoad: false,
+                isFiltering: false,
                 isLoaded: true,
                 isLoading: false,
                 isLoadingMoreProducts: false,
@@ -114,6 +124,7 @@ describe('Products store', () => {
             expect(state).toEqual({
                 ...AppInitialState.products,
                 hasMoreToLoad: true,
+                isFiltering: false,
                 isLoaded: true,
                 isLoading: false,
                 isLoadingMoreProducts: false,
@@ -128,6 +139,7 @@ describe('Products store', () => {
             expect(state).toEqual({
                 ...AppInitialState.products,
                 hasMoreToLoad: false,
+                isFiltering: false,
                 isLoaded: true,
                 isLoading: false,
                 isLoadingMoreProducts: false,
@@ -154,6 +166,35 @@ describe('Products store', () => {
             isLoaded: false,
             isLoading: false,
             isLoadingMoreProducts: false
+        });
+    });
+    
+    it('filterProducts', () => {
+        const initialState: ProductsState = {
+            ...AppInitialState.products,
+            error: {},
+            hasMoreToLoad: true,
+            isLoaded: true,
+            isLoading: false,
+            isLoadingMoreProducts: true,
+            page: 1,
+            products: [{}] as any
+        };
+
+        const filter = {categoryId: "anyCategoryId"} as any;
+        const state = productsReducer(initialState, filterProducts({filter}));
+
+        expect(state).toEqual({
+            ...AppInitialState.products,
+            error: null,
+            filter,
+            hasMoreToLoad: false,
+            isFiltering: true,
+            isLoaded: false,
+            isLoading: false,
+            isLoadingMoreProducts: false,
+            page: 0,
+            products: []
         });
     });
     

@@ -58,4 +58,5 @@ export class ProductService {
 type Find = {
   page?: number;
   internalId: string;
+  categoryId: string;
 }

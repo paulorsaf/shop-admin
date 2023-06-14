@@ -15,6 +15,15 @@
             <mat-label>ID interno</mat-label>
             <input matInput [(ngModel)]="internalId">
         </mat-form-field>
+        <mat-form-field class="width-25">
+            <mat-label>Categoria</mat-label>
+            <mat-select [(ngModel)]="category">
+                <mat-option value="">Todas</mat-option>
+                <mat-option *ngFor="let category of (categories$ | async)" [value]="category.id">
+                    {{category.name}}
+                </mat-option>
+            </mat-select>
+          </mat-form-field>
         <app-button-loader
             [isDisabled]="false"
             [isLoading]="false"

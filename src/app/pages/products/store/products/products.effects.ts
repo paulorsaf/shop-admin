@@ -7,7 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { AppState } from "src/app/store/app-state";
 import { changeVisibilitySuccess } from "../../product-detail/store/products/product-detail.actions";
-import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts } from "./products.actions";
 import { ProductsState } from "./products.state";
 
 @Injectable()
@@ -23,14 +23,16 @@ export class ProductsEffects {
     loadEffect$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
+                filterProducts,
                 loadProducts,
                 loadMoreProducts
             ),
             withLatestFrom(this.store.select(store => store.products)),
-            switchMap(([action, state]: [action: any, state: ProductsState]) => {
+            switchMap(([, state]: [action: any, state: ProductsState]) => {
                 return this.productService.find({
                     page: state.page,
-                    internalId: action.filter?.internalId || ""
+                    internalId: state.filter?.internalId || "",
+                    categoryId: state.filter?.categoryId || ""
                 }).pipe(
                     map(products => loadProductsSuccess({products})),
                     catchError(error => of(loadProductsFail({error})))

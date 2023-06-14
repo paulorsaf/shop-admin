@@ -5,12 +5,13 @@ import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { AppState } from 'src/app/store/app-state';
-import { loadProducts, loadMoreProducts, removeProduct } from './store/products/products.actions';
+import { loadProducts, loadMoreProducts, removeProduct, filterProducts } from './store/products/products.actions';
 import { load as loadCategories } from 'src/app/pages/categories/store/categories.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { MessageService } from 'src/app/services/message/message.service';
 import { changeVisibility } from './product-detail/store/products/product-detail.actions';
+import { Category } from 'src/app/model/category/category';
 
 @Component({
   selector: 'app-products',
@@ -21,6 +22,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   dataSource!: MatTableDataSource<Product[]>;
   
+  categories$!: Observable<Category[]>;
   displayedColumns$!: Observable<string[]>;
   hasProducts$!: Observable<boolean>;
   isChangingVisibility$!: Observable<boolean>;
@@ -32,6 +34,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   errorSubscription!: Subscription;
   subscription!: Subscription;
 
+  category: string = "";
   internalId: string = "";
 
   constructor(
@@ -44,6 +47,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Product[]>([]);
 
+    this.categories$ = this.store.select(store => store.categories.categories);
     this.displayedColumns$ = this.store.select(
       state => state.products?.products?.some(p => p.productInternalId) ?
         ['id', 'name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'showProduct', 'delete'] :
@@ -55,7 +59,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.hasProducts$ = this.store.select(state => state.products.products.length > 0);
     this.isChangingVisibility$ = this.store.select(store => store.productDetail.isChangingVisibility);
     this.isLoading$ = this.store.select(state =>
-      state.products.isLoading || state.products.isRemoving
+      state.products.isLoading || state.products.isRemoving || state.products.isFiltering
     );
     this.isLoadingMoreProducts$ = this.store.select(
       state => state.products.isLoadingMoreProducts
@@ -105,8 +109,11 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   filter() {
-    this.store.dispatch(loadProducts({
-      internalId: this.internalId
+    this.store.dispatch(filterProducts({
+      filter: {
+        categoryId: this.category,
+        internalId: this.internalId
+      }
     }));
   }
 

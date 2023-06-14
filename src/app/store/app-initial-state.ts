@@ -109,7 +109,9 @@ export const AppInitialState: AppState = {
     },
     products: {
         error: null,
+        filter: undefined,
         hasMoreToLoad: false,
+        isFiltering: false,
         isLoaded: false,
         isLoading: false,
         isLoadingMoreProducts: false,

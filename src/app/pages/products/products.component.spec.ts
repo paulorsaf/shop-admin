@@ -82,6 +82,10 @@ describe('ProductsComponent', () => {
       expect(component.internalId).toEqual("");
     });
 
+    it('then category filter should be empty', () => {
+      expect(component.category).toEqual("");
+    });
+
   })
 
   describe('given loading products', () => {
@@ -280,9 +284,9 @@ describe('ProductsComponent', () => {
       fixture.detectChanges();
     })
 
-    it('then load products', done => {
+    it('then filter products', done => {
       store.select('products').subscribe(state => {
-        expect(state.isLoading).toBeTruthy();
+        expect(state.isFiltering).toBeTruthy();
         done();
       })
     })

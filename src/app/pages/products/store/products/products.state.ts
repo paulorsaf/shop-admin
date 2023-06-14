@@ -1,8 +1,11 @@
 import { Product } from "src/app/model/product/product";
+import { ProductsFilter } from "./products.actions";
 
 export type ProductsState = {
     error: any;
+    filter?: ProductsFilter;
     hasMoreToLoad: boolean;
+    isFiltering: boolean;
     isLoaded: boolean;
     isLoading: boolean;
     isLoadingMoreProducts: boolean;

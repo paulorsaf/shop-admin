@@ -11,7 +11,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 import { BlankComponent } from "src/mock/blank-component/blank.component.mock";
 import { loadProducts } from "src/app/pages/products/store/products/products.actions";
 
-fdescribe('UpdateStockEffects', () => {
+describe('UpdateStockEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: UpdateStockEffects;

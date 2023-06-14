@@ -6,7 +6,7 @@ import { ProductsEffects } from './products.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts } from "./products.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { changeVisibilitySuccess } from "../../product-detail/store/products/product-detail.actions";
 
@@ -38,10 +38,37 @@ describe('ProductsEffects', () => {
         effects = TestBed.get(ProductsEffects);
     })
 
-    describe("Given load", () => {
+    describe("Given load products", () => {
 
         beforeEach(() => {
             actions$ = of(loadProducts());
+        })
+
+        it('when success, then return load success', (done) => {
+            productService._response = of(products);
+    
+            effects.loadEffect$.subscribe(response => {
+                expect(response).toEqual(loadProductsSuccess({products}));
+                done();
+            })
+        })
+    
+        it('when fail, then return load fail', (done) => {
+            productService._response = throwError(error);
+    
+            effects.loadEffect$.subscribe(response => {
+                expect(response).toEqual(loadProductsFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given filter products", () => {
+
+        beforeEach(() => {
+            const filter = {category: "anyCategoryId"} as any;
+            actions$ = of(filterProducts({filter}));
         })
 
         it('when success, then return load success', (done) => {
