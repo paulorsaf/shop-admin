@@ -10,7 +10,7 @@ import { MessageService } from './services/message/message.service';
 import { AppState } from './store/app-state';
 import { updateStock, updateStockFail, updateStockSuccess } from './store/stock/update-stock.actions';
 import { updateStockReducer } from './store/stock/update-stock.reducers';
-import { verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess } from './store/user/user.actions';
+import { verfiyUserIsLoggedFail, verfiyUserIsLoggedSuccess, loadUserCompanySuccess } from './store/user/user.actions';
 import { userReducer } from './store/user/user.reducers';
 
 describe('AppComponent', () => {
@@ -84,13 +84,23 @@ describe('AppComponent', () => {
         store.dispatch(verfiyUserIsLoggedSuccess({user}));
         fixture.detectChanges();
       })
+
+      describe('and logged company is loaded', () => {
+
+        beforeEach(() => {
+          const company = {id: "anyCompanyId"} as any;
+          store.dispatch(loadUserCompanySuccess({company}));
+          fixture.detectChanges();
+        })
   
-      it('then show app', () => {
-        expect(page.querySelector('router-outlet')).not.toBeNull();
-      })
-  
-      it('then show side menu', () => {
-        expect(page.querySelector('mat-drawer')).not.toBeNull();
+        it('then show app', () => {
+          expect(page.querySelector('router-outlet')).not.toBeNull();
+        })
+    
+        it('then show side menu', () => {
+          expect(page.querySelector('mat-drawer')).not.toBeNull();
+        })
+
       })
 
       it('then hide app loader', () => {

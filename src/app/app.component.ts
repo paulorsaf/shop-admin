@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   showMenu = false;
 
   company$!: Observable<Company | undefined>;
+  isLoadingLoggedCompany$!: Observable<boolean>;
   isLogged$!: Observable<boolean>;
   isUpdatingStock$!: Observable<boolean>;
   isVerifyingUserLogged$!: Observable<boolean>;
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.company$ = this.store.select(state => state.user.company);
+    this.isLoadingLoggedCompany$ = this.store.select(store => store.user.isLoadingLoggedCompany);
     this.isLogged$ = this.store.select(state => !!state.user.user);
     this.isUpdatingStock$ = this.store.select(state => state.updateStock.isUpdating);
     this.isVerifyingUserLogged$ = this.store.select(state => state.user.isVerifyingUserLogged);
