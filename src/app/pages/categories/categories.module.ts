@@ -16,6 +16,7 @@ import { ConfirmDialogModule } from 'src/app/components/confirm-dialog/confirm-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { PageListLoaderModule } from 'src/app/components/page-list-loader/page-list-loader.module';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 const routes: Routes = [
   { path: '', component: CategoriesComponent },
@@ -45,6 +46,7 @@ const routes: Routes = [
     MatInputModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSlideToggleModule,
     MatTableModule
   ],
   exports: [CategoriesComponent]

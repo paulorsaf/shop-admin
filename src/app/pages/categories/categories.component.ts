@@ -8,7 +8,8 @@ import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confir
 import { Category } from 'src/app/model/category/category';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { load, remove } from './store/categories.actions';
+import { loadCategories, removeCategory } from './store/categories.actions';
+import { changeCategoryVisibility } from './category-detail/store/category-detail.actions';
 
 @Component({
   selector: 'app-categories',
@@ -18,9 +19,11 @@ import { load, remove } from './store/categories.actions';
 export class CategoriesComponent implements OnInit, OnDestroy {
 
   dataSource!: MatTableDataSource<Category[]>;
-  displayedColumns = ['name', 'delete'];
+  displayedColumns = ['name', 'showProduct', 'delete'];
 
   hasCategories$!: Observable<boolean>;
+  isChangingVisibility$!: Observable<boolean>;
+  categoryChangingVisibilityId$!: Observable<string | undefined>;
   isLoading$!: Observable<boolean>;
 
   errorSubscription!: Subscription;
@@ -34,15 +37,24 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.hasCategories$ = this.store.select(state => state.categories.categories.length > 0);
-    this.isLoading$ = this.store.select(state =>
-      state.categories.isLoading || state.categories.isRemoving
+    this.hasCategories$ = this.store.select(
+      store => store.categories.categories.length > 0
+    );
+    this.isLoading$ = this.store.select(store =>
+      store.categories.isLoading || store.categories.isRemoving
+    );
+
+    this.categoryChangingVisibilityId$ = this.store.select(
+      store => store.categories.categoryDetailId
+    );
+    this.isChangingVisibility$ = this.store.select(
+      store => store.categoryDetail.isChangingVisibility
     );
     
     this.onCategoriesChanged();
     this.onError();
       
-    this.store.dispatch(load());
+    this.store.dispatch(loadCategories());
   }
 
   ngOnDestroy(): void {
@@ -74,13 +86,17 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     });
   }
 
+  toggleVisibility(category: Category) {
+    this.store.dispatch(changeCategoryVisibility({id: category.id}));
+  }
+
   private remove(category: Category) {
-    this.store.dispatch(remove({category}));
+    this.store.dispatch(removeCategory({category}));
   }
 
   private onCategoriesChanged() {
     this.subscription =
-      this.store.select(state => state.categories.categories)
+      this.store.select(store => store.categories.categories)
         .subscribe(categories => {
           this.dataSource = new MatTableDataSource<any>(categories);
         });
@@ -88,7 +104,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   private onError() {
     this.errorSubscription =
-      this.store.select(state => state.categories.error)
+      this.store.select(store => store.categories.error)
         .pipe(filter(error => !!error))
         .subscribe(error => this.messageService.showError(error.error));
   }

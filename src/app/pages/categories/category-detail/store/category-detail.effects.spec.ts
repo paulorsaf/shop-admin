@@ -5,9 +5,10 @@ import { Action } from '@ngrx/store';
 import { CategoryDetailEffects } from './category-detail.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
+import { changeCategoryVisibility, changeCategoryVisibilityFail, changeCategoryVisibilitySuccess, clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
 import { CategoryServiceMock } from "src/mock/category-service.mock";
 import { CategoryService } from "src/app/services/category/category.service";
+import { updateCategoriesVisibility } from "../../store/categories.actions";
 
 describe('CategoryDetailEffects', () => {
 
@@ -98,6 +99,53 @@ describe('CategoryDetailEffects', () => {
         it('then clear category state', (done) => {
             effects.saveDetailSuccessEffect$.subscribe(response => {
                 expect(response).toEqual(clear());
+                done();
+            })
+        })
+
+    })
+
+    describe("Given change visibility", () => {
+
+        const id = "anyCategoryId";
+
+        beforeEach(() => {
+            actions$ = of(changeCategoryVisibility({id}));
+        })
+
+        it('when success, then return change category visibility success', (done) => {
+            categoryService._response = of(category);
+    
+            effects.changeVisibilityEffect$.subscribe(response => {
+                expect(response).toEqual(changeCategoryVisibilitySuccess({id}));
+                done();
+            })
+        })
+    
+        it('when fail, then return save detail fail', (done) => {
+            categoryService._response = throwError(error);
+    
+            effects.changeVisibilityEffect$.subscribe(response => {
+                expect(response).toEqual(changeCategoryVisibilityFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("Given update visibility", () => {
+
+        const id = "anyCategoryId";
+
+        beforeEach(() => {
+            actions$ = of(changeCategoryVisibilitySuccess({id}));
+        })
+
+        it('then return update category visibility', (done) => {
+            categoryService._response = of(category);
+    
+            effects.changeVisibilitySuccessEffect$.subscribe(response => {
+                expect(response).toEqual(updateCategoriesVisibility({id}));
                 done();
             })
         })

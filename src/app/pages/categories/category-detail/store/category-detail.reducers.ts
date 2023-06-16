@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from './category-detail.actions';
+import { changeCategoryVisibility, changeCategoryVisibilityFail, changeCategoryVisibilitySuccess, clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from './category-detail.actions';
 import { CategoryDetailState } from './category-detail.state';
 
 const initialState: CategoryDetailState = AppInitialState.categoryDetail;
@@ -52,6 +52,26 @@ const _categoryDetailReducer = createReducer(initialState,
             error: action.error,
             isSaved: false,
             isSaving: false
+        };
+    }),
+    on(changeCategoryVisibility, (state) => {
+        return {
+            ...state,
+            error: null,
+            isChangingVisibility: true
+        };
+    }),
+    on(changeCategoryVisibilitySuccess, (state) => {
+        return {
+            ...state,
+            isChangingVisibility: false
+        };
+    }),
+    on(changeCategoryVisibilityFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isChangingVisibility: false
         };
     }),
     on(clear, () => {

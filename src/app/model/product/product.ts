@@ -3,6 +3,7 @@ export type Product = {
     description: string;
     id: string;
     images: ProductImage[];
+    isVisible: boolean;
     name: string;
     price: number;
     priceWithDiscount: number;

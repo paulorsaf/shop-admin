@@ -4,7 +4,8 @@ import { iif, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Category } from "src/app/model/category/category";
 import { CategoryService } from "src/app/services/category/category.service";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
+import { changeCategoryVisibility, changeCategoryVisibilityFail, changeCategoryVisibilitySuccess, clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
+import { updateCategoriesVisibility } from "../../store/categories.actions";
 
 @Injectable()
 export class CategoryDetailEffects {
@@ -50,6 +51,27 @@ export class CategoryDetailEffects {
         this.actions$.pipe(
             ofType(saveDetailSuccess),
             switchMap(() => of(clear()))
+        )
+    )
+
+    changeVisibilityEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(changeCategoryVisibility),
+            switchMap((params: {id: string}) =>
+                this.categoryService.changeVisibility(params.id).pipe(
+                    map(() => changeCategoryVisibilitySuccess({id: params.id})),
+                    catchError(error => of(changeCategoryVisibilityFail({error})))
+                )
+            )
+        )
+    )
+
+    changeVisibilitySuccessEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(changeCategoryVisibilitySuccess),
+            switchMap((params: {id: string}) =>
+                of(updateCategoriesVisibility({id: params.id}))
+            )
         )
     )
 

@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Category } from "src/app/model/category/category";
 import { CategoryService } from "src/app/services/category/category.service";
-import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from "./categories.actions";
+import { loadCategories, loadCategoriesFail, loadCategoriesSuccess, removeCategory, removeCategoryFail, removeCategorySuccess } from "./categories.actions";
 
 @Injectable()
 export class CategoriesEffects {
@@ -15,34 +15,34 @@ export class CategoriesEffects {
   ){
   }
 
-  loadEffect$ = createEffect(() =>
+  loadCategoriesEffect$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(load),
+      ofType(loadCategories),
       switchMap(() =>
         this.categoryService.find().pipe(
-          map(categories => loadSuccess({categories})),
-          catchError(error => of(loadFail({error})))
+          map(categories => loadCategoriesSuccess({categories})),
+          catchError(error => of(loadCategoriesFail({error})))
         )
       )
     )
   )
 
-  removeEffect$ = createEffect(() =>
+  removeCategoryEffect$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(remove),
+      ofType(removeCategory),
       switchMap((params: {category: Category}) =>
         this.categoryService.remove(params.category).pipe(
-          map(() => removeSuccess()),
-          catchError(error => of(removeFail({error})))
+          map(() => removeCategorySuccess()),
+          catchError(error => of(removeCategoryFail({error})))
         )
       )
     )
   )
 
-  removeSuccessEffect$ = createEffect(() =>
+  removeCategorySuccessEffect$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(removeSuccess),
-      switchMap(() => of(load()))
+      ofType(removeCategorySuccess),
+      switchMap(() => of(loadCategories()))
     )
   )
 

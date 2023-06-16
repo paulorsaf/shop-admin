@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { Store, StoreModule } from "@ngrx/store";
-import { load, loadSuccess } from "src/app/pages/categories/store/categories.actions";
+import { loadCategoriesSuccess } from "src/app/pages/categories/store/categories.actions";
 import { categoriesReducer } from "src/app/pages/categories/store/categories.reducers";
 import { AppState } from "src/app/store/app-state";
 import { CategoryNamePipeModule } from "./category-name.module";
@@ -36,7 +36,7 @@ describe('Category name pipe', () => {
     })
 
     it('given id, when category with that id is found, then return category name', done => {
-        store.dispatch(loadSuccess({categories: [{id: '2', name: "anyCategoryName"}]}))
+        store.dispatch(loadCategoriesSuccess({categories: [{id: '2', name: "anyCategoryName"} as any]}))
 
         pipe.transform("2").subscribe(value => {
             expect(value).toEqual("anyCategoryName");

@@ -11,8 +11,10 @@ import { MessageServiceMock } from 'src/mock/message-service.mock';
 import { PageMock } from 'src/mock/page.mock';
 import { CategoriesComponent } from './categories.component';
 import { CategoriesModule } from './categories.module';
-import { loadSuccess, removeFail, removeSuccess } from './store/categories.actions';
+import { loadCategoriesSuccess, removeCategoryFail, removeCategorySuccess } from './store/categories.actions';
 import { categoriesReducer } from './store/categories.reducers';
+import { categoryDetailReducer } from './category-detail/store/category-detail.reducers';
+import { changeCategoryVisibilityFail, changeCategoryVisibilitySuccess } from './category-detail/store/category-detail.actions';
 
 describe('CategoriesComponent', () => {
   let component: CategoriesComponent;
@@ -35,7 +37,8 @@ describe('CategoriesComponent', () => {
         }]),
         MatDialogModule,
         StoreModule.forRoot([]),
-        StoreModule.forFeature('categories', categoriesReducer)
+        StoreModule.forFeature('categories', categoriesReducer),
+        StoreModule.forFeature('categoryDetail', categoryDetailReducer)
       ]
     })
     .overrideProvider(MatDialog, {useValue: dialog})
@@ -75,7 +78,7 @@ describe('CategoriesComponent', () => {
 
     beforeEach(() => {
       const categories = [{id: 1}, {id: 2}] as any;
-      store.dispatch(loadSuccess({categories}));
+      store.dispatch(loadCategoriesSuccess({categories}));
       fixture.detectChanges();
     })
 
@@ -93,7 +96,7 @@ describe('CategoriesComponent', () => {
 
     it('when no categories found, then show no results found message', () => {
       const categories = [] as any;
-      store.dispatch(loadSuccess({categories}));
+      store.dispatch(loadCategoriesSuccess({categories}));
       fixture.detectChanges();
 
       expect(page.querySelector('[test-id="no-results-found"]')).not.toBeNull();
@@ -125,7 +128,7 @@ describe('CategoriesComponent', () => {
 
     beforeEach(() => {
       const categories = [{id: 1}, {id: 2}] as any;
-      store.dispatch(loadSuccess({categories}));
+      store.dispatch(loadCategoriesSuccess({categories}));
       fixture.detectChanges();
     })
 
@@ -157,7 +160,7 @@ describe('CategoriesComponent', () => {
       })
 
       it('and category removed with success, then hide loading', () => {
-        store.dispatch(removeSuccess());
+        store.dispatch(removeCategorySuccess());
         fixture.detectChanges();
   
         expect(page.querySelector('[test-id="categories-loader"]')).toBeNull();
@@ -166,7 +169,7 @@ describe('CategoriesComponent', () => {
       describe('and category removed with error', () => {
 
         beforeEach(() => {
-          store.dispatch(removeFail({error: "error"}));
+          store.dispatch(removeCategoryFail({error: "error"}));
           fixture.detectChanges();
         })
 
@@ -195,5 +198,139 @@ describe('CategoriesComponent', () => {
     })
 
   })
+
+  describe('given category visibility toggle', () => {
+
+    describe('when loaded category has visibility as false', () => {
+
+      beforeEach(() => {
+        const categories = [{id: 1, isVisible: false}] as any;
+        store.dispatch(loadCategoriesSuccess({categories}));
+        fixture.detectChanges();
+      })
+
+      it('then hide toggle on', () => {
+        expect(visibilityToggleOn()).toBeNull();
+      })
+
+      it('then show toggle off', () => {
+        expect(visibilityToggleOff()).not.toBeNull();
+      })
+
+    })
+
+    describe('when loaded category has visibility as true', () => {
+
+      beforeEach(() => {
+        const categories = [{id: 1, isVisible: true}] as any;
+        store.dispatch(loadCategoriesSuccess({categories}));
+        fixture.detectChanges();
+      })
+
+      it('then show toggle on', () => {
+        expect(visibilityToggleOn()).not.toBeNull();
+      })
+
+      it('then hide toggle off', () => {
+        expect(visibilityToggleOff()).toBeNull();
+      })
+
+    })
+
+  })
+
+
+
+  describe('given user clicks on toggle', () => {
+
+    beforeEach(() => {
+      const categories = [{id: 1, isVisible: false}] as any;
+      store.dispatch(loadCategoriesSuccess({categories}));
+      fixture.detectChanges();
+
+      click(visibilityToggle());
+    })
+
+    it('then change category visibility', done => {
+      store.select('categoryDetail').subscribe(state => {
+        expect(state.isChangingVisibility).toBeTruthy();
+        done();
+      })
+    })
+
+    describe('when changing visibility', () => {
+
+      it('then hide visibility toggle', () => {
+        expect(visibilityToggle()).toBeNull();
+      })
+  
+      it('then show visibility loader', () => {
+        expect(visibilityLoader()).not.toBeNull();
+      })
+
+    })
+
+    describe('when visibility changed', () => {
+
+      beforeEach(() => {
+        const id = "anyCategoryId";
+        store.dispatch(changeCategoryVisibilitySuccess({id}));
+        fixture.detectChanges();
+      })
+
+      it('then show visibility toggle', () => {
+        expect(visibilityToggle()).not.toBeNull();
+      })
+  
+      it('then hide visibility loader', () => {
+        expect(visibilityLoader()).toBeNull();
+      })
+
+    })
+
+    describe('when error on changing visibility', () => {
+
+      beforeEach(() => {
+        const error = {message: "any error message"};
+        store.dispatch(changeCategoryVisibilityFail({error}));
+        fixture.detectChanges();
+      })
+
+      it('then show error message', () => {
+        expect(messageService._hasShownError).toBeTruthy();
+      })
+
+      it('then show visibility toggle', () => {
+        expect(visibilityToggle()).not.toBeNull();
+      })
+  
+      it('then hide visibility loader', () => {
+        expect(visibilityLoader()).toBeNull();
+      })
+
+    })
+
+  })
+
+  function visibilityToggle() {
+    return page.querySelector('[test-id="visibility-toggle"] input');
+  }
+
+  function visibilityToggleOn() {
+    return page.querySelector('[test-id="visibility-toggle"] [aria-checked="true"]');
+  }
+
+  function visibilityToggleOff() {
+    return page.querySelector('[test-id="visibility-toggle"] [aria-checked="false"]');
+  }
+
+  function visibilityLoader() {
+    return page.querySelector('[test-id="visibility-loader"]');
+  }
+
+  function click(element: any) {
+    element.click();
+    fixture.detectChanges();
+  }
 
 });

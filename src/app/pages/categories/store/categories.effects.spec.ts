@@ -6,7 +6,7 @@ import { CategoriesEffects } from './categories.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { CategoryServiceMock } from "src/mock/category-service.mock";
-import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from "./categories.actions";
+import { loadCategories, loadCategoriesFail, loadCategoriesSuccess, removeCategory, removeCategoryFail, removeCategorySuccess } from "./categories.actions";
 import { CategoryService } from "src/app/services/category/category.service";
 
 describe('CategoriesEffects', () => {
@@ -40,14 +40,14 @@ describe('CategoriesEffects', () => {
     describe("Given load", () => {
 
         beforeEach(() => {
-            actions$ = of(load());
+            actions$ = of(loadCategories());
         })
 
         it('when success, then return load success', (done) => {
             categoryService._response = of(categories);
     
-            effects.loadEffect$.subscribe(response => {
-                expect(response).toEqual(loadSuccess({categories}));
+            effects.loadCategoriesEffect$.subscribe(response => {
+                expect(response).toEqual(loadCategoriesSuccess({categories}));
                 done();
             })
         })
@@ -55,8 +55,8 @@ describe('CategoriesEffects', () => {
         it('when fail, then return load fail', (done) => {
             categoryService._response = throwError(error);
     
-            effects.loadEffect$.subscribe(response => {
-                expect(response).toEqual(loadFail({error}));
+            effects.loadCategoriesEffect$.subscribe(response => {
+                expect(response).toEqual(loadCategoriesFail({error}));
                 done();
             })
         })
@@ -67,14 +67,14 @@ describe('CategoriesEffects', () => {
 
         beforeEach(() => {
             const category = {id: 1} as any;
-            actions$ = of(remove({category}));
+            actions$ = of(removeCategory({category}));
         })
 
         it('when success, then return remove success', (done) => {
             categoryService._response = of(categories);
     
-            effects.removeEffect$.subscribe(response => {
-                expect(response).toEqual(removeSuccess());
+            effects.removeCategoryEffect$.subscribe(response => {
+                expect(response).toEqual(removeCategorySuccess());
                 done();
             })
         })
@@ -82,8 +82,8 @@ describe('CategoriesEffects', () => {
         it('when fail, then return load fail', (done) => {
             categoryService._response = throwError(error);
     
-            effects.removeEffect$.subscribe(response => {
-                expect(response).toEqual(removeFail({error}));
+            effects.removeCategoryEffect$.subscribe(response => {
+                expect(response).toEqual(removeCategoryFail({error}));
                 done();
             })
         })
@@ -93,12 +93,12 @@ describe('CategoriesEffects', () => {
     describe("Given remove success", () => {
 
         beforeEach(() => {
-            actions$ = of(removeSuccess());
+            actions$ = of(removeCategorySuccess());
         })
 
         it('then return load', (done) => {
-            effects.removeSuccessEffect$.subscribe(response => {
-                expect(response).toEqual(load());
+            effects.removeCategorySuccessEffect$.subscribe(response => {
+                expect(response).toEqual(loadCategories());
                 done();
             })
         })

@@ -15,6 +15,23 @@
           <th mat-header-cell *matHeaderCellDef>Nome</th>
           <td mat-cell *matCellDef="let element">{{element.name}}</td>
         </ng-container>
+        <ng-container matColumnDef="showProduct">
+            <th mat-header-cell *matHeaderCellDef>Visível?</th>
+            <td mat-cell *matCellDef="let element" (click)="$event.stopPropagation()">
+                <mat-slide-toggle color="primary"
+                    (toggleChange)="toggleVisibility(element)"
+                    [checked]="element.isVisible === false ? false : true"
+                    [disabled]="(isChangingVisibility$ | async)"
+                    *ngIf="(categoryChangingVisibilityId$ | async) !== element.id"
+                    test-id="visibility-toggle">
+                </mat-slide-toggle>
+                <mat-icon color="primary"
+                    *ngIf="(categoryChangingVisibilityId$ | async) === element.id"
+                    test-id="visibility-loader">
+                    hourglass_top
+                </mat-icon>
+            </td>
+        </ng-container>
         <ng-container matColumnDef="delete">
             <th mat-header-cell *matHeaderCellDef></th>
             <td mat-cell *matCellDef="let element">

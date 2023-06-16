@@ -6,7 +6,7 @@ import { filter, Observable, Subscription, take } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { AppState } from 'src/app/store/app-state';
 import { loadProducts, loadMoreProducts, removeProduct, filterProducts } from './store/products/products.actions';
-import { load as loadCategories } from 'src/app/pages/categories/store/categories.actions';
+import { loadCategories } from 'src/app/pages/categories/store/categories.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
 import { MessageService } from 'src/app/services/message/message.service';

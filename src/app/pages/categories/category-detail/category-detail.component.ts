@@ -49,6 +49,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   save() {
     this.store.dispatch(saveDetail({category: {
       id: this.getId(),
+      isVisible: true,
       name: this.form.value.name
     }}))
   }

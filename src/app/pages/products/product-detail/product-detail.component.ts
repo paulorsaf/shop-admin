@@ -7,7 +7,7 @@ import { Category } from 'src/app/model/category/category';
 import { Product } from 'src/app/model/product/product';
 import { MessageService } from 'src/app/services/message/message.service';
 import { AppState } from 'src/app/store/app-state';
-import { load } from '../../categories/store/categories.actions';
+import { loadCategories } from '../../categories/store/categories.actions';
 import { clear, loadDetail, loadStock, saveDetail } from './store/products/product-detail.actions';
 
 @Component({
@@ -43,7 +43,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.product$ = this.store.select(state => state.productDetail.product);
 
     this.loadProductDetail();
-    this.store.dispatch(load());
+    this.store.dispatch(loadCategories());
 
     this.watchProductState();
   }

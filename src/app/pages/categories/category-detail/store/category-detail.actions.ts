@@ -10,3 +10,7 @@ export const loadDetailFail = createAction('[Category] load detail fail', props<
 export const saveDetail = createAction('[Category] save detail', props<{category: Category}>());
 export const saveDetailSuccess = createAction('[Category] save detail success');
 export const saveDetailFail = createAction('[Category] save detail fail', props<{error: any}>());
+
+export const changeCategoryVisibility = createAction('[Category] change visibility', props<{id: string}>());
+export const changeCategoryVisibilitySuccess = createAction('[Category] change visibility success', props<{id: string}>());
+export const changeCategoryVisibilityFail = createAction('[Category] change visibility fail', props<{error: any}>());

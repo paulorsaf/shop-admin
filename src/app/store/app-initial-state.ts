@@ -1,3 +1,5 @@
+import { categoryDetailInitialState } from "../pages/categories/category-detail/store/category-detail.state";
+import { categoriesInitialState } from "../pages/categories/store/categories.state";
 import { AppState } from "./app-state";
 
 export const AppInitialState: AppState = {
@@ -17,22 +19,8 @@ export const AppInitialState: AppState = {
         isRemoved: false,
         isRemoving: false
     },
-    categories: {
-        categories: [],
-        error: null,
-        isLoaded: false,
-        isLoading: false,
-        isRemoved: false,
-        isRemoving: false
-    },
-    categoryDetail: {
-        error: null,
-        isLoaded: false,
-        isLoading: false,
-        isSaved: false,
-        isSaving: false,
-        category: undefined
-    },
+    categories: categoriesInitialState,
+    categoryDetail: categoryDetailInitialState,
     clients: {
         error: null,
         isLoaded: false,

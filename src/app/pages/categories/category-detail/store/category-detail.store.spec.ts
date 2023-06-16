@@ -1,5 +1,5 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
+import { changeCategoryVisibility, changeCategoryVisibilitySuccess, clear, loadDetail, loadDetailFail, loadDetailSuccess, saveDetail, saveDetailFail, saveDetailSuccess } from "./category-detail.actions";
 import { categoryDetailReducer } from "./category-detail.reducers";
 import { CategoryDetailState } from "./category-detail.state";
 
@@ -69,7 +69,7 @@ describe('Category store', () => {
             isSaving: false
         };
 
-        const category = {id: '1', name: "any"};
+        const category = {id: '1', name: "any"} as any;
         const state = categoryDetailReducer(initialState, saveDetail({category}));
 
         expect(state).toEqual({
@@ -129,6 +129,37 @@ describe('Category store', () => {
 
         expect(state).toEqual({
             ...AppInitialState.categoryDetail
+        });
+    });
+    
+    it('changeCategoryVisibility', () => {
+        const initialState: CategoryDetailState = {
+            ...AppInitialState.categoryDetail,
+            error: {},
+            isChangingVisibility: false
+        };
+
+        const state = categoryDetailReducer(initialState, changeCategoryVisibility({id: "anyId"}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categoryDetail,
+            error: null,
+            isChangingVisibility: true
+        });
+    });
+    
+    it('changeCategoryVisibilitySuccess', () => {
+        const initialState: CategoryDetailState = {
+            ...AppInitialState.categoryDetail,
+            isChangingVisibility: true
+        };
+
+        const id = "anyId";
+        const state = categoryDetailReducer(initialState, changeCategoryVisibilitySuccess({id}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categoryDetail,
+            isChangingVisibility: false
         });
     });
   

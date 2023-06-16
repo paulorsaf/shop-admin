@@ -13,6 +13,11 @@ export class CategoryService {
     private apiService: ApiService
   ) { }
 
+  changeVisibility(id: string): Observable<void> {
+    const url = `${environment.apiUrl}/categories/${id}/visibilities`;
+    return this.apiService.patch<void>(url);
+  }
+
   find(): Observable<Category[]> {
     const url = `${environment.apiUrl}/categories`;
     return this.apiService.get<Category[]>(url);

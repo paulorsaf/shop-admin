@@ -1,23 +1,26 @@
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { load, loadFail, loadSuccess, remove, removeFail, removeSuccess } from "./categories.actions";
+import { loadCategories, loadCategoriesFail, loadCategoriesSuccess, removeCategory, removeCategoryFail, removeCategorySuccess, updateCategoriesVisibility } from "./categories.actions";
 import { categoriesReducer } from "./categories.reducers";
 import { CategoriesState } from "./categories.state";
+import { changeCategoryVisibility } from "../category-detail/store/category-detail.actions";
 
 describe('Categories store', () => {
     
-    it('load', () => {
+    it('loadCategories', () => {
         const initialState: CategoriesState = {
             ...AppInitialState.categories,
+            categoryDetailId: "any",
             error: {},
             isLoaded: true,
             isLoading: false,
             categories: [{}] as any
         };
 
-        const state = categoriesReducer(initialState, load());
+        const state = categoriesReducer(initialState, loadCategories());
 
         expect(state).toEqual({
             ...AppInitialState.categories,
+            categoryDetailId: undefined,
             error: null,
             isLoaded: false,
             isLoading: true,
@@ -25,7 +28,7 @@ describe('Categories store', () => {
         });
     });
     
-    it('loadSuccess', () => {
+    it('loadCategoriesSuccess', () => {
         const initialState: CategoriesState = {
             ...AppInitialState.categories,
             isLoaded: false,
@@ -33,7 +36,7 @@ describe('Categories store', () => {
         };
 
         const categories = [{}, {}] as any;
-        const state = categoriesReducer(initialState, loadSuccess({categories}));
+        const state = categoriesReducer(initialState, loadCategoriesSuccess({categories}));
 
         expect(state).toEqual({
             ...AppInitialState.categories,
@@ -43,7 +46,7 @@ describe('Categories store', () => {
         });
     });
     
-    it('loadFail', () => {
+    it('loadCategoriesFail', () => {
         const initialState: CategoriesState = {
             ...AppInitialState.categories,
             isLoaded: false,
@@ -51,7 +54,7 @@ describe('Categories store', () => {
         };
 
         const error = {error: "error"};
-        const state = categoriesReducer(initialState, loadFail({error}));
+        const state = categoriesReducer(initialState, loadCategoriesFail({error}));
 
         expect(state).toEqual({
             ...AppInitialState.categories,
@@ -61,7 +64,7 @@ describe('Categories store', () => {
         });
     });
     
-    it('remove', () => {
+    it('removeCategory', () => {
         const initialState: CategoriesState = {
             ...AppInitialState.categories,
             error: {},
@@ -70,7 +73,7 @@ describe('Categories store', () => {
         };
 
         const category = {id: 1} as any;
-        const state = categoriesReducer(initialState, remove({category}));
+        const state = categoriesReducer(initialState, removeCategory({category}));
 
         expect(state).toEqual({
             ...AppInitialState.categories,
@@ -80,14 +83,14 @@ describe('Categories store', () => {
         });
     });
     
-    it('removeSuccess', () => {
+    it('removeCategorySuccess', () => {
         const initialState: CategoriesState = {
             ...AppInitialState.categories,
             isRemoved: false,
             isRemoving: true
         };
 
-        const state = categoriesReducer(initialState, removeSuccess());
+        const state = categoriesReducer(initialState, removeCategorySuccess());
 
         expect(state).toEqual({
             ...AppInitialState.categories,
@@ -96,7 +99,7 @@ describe('Categories store', () => {
         });
     });
     
-    it('removeFail', () => {
+    it('removeCategoryFail', () => {
         const initialState: CategoriesState = {
             ...AppInitialState.categories,
             isRemoved: false,
@@ -104,13 +107,51 @@ describe('Categories store', () => {
         };
 
         const error = {error: "error"}
-        const state = categoriesReducer(initialState, removeFail({error}));
+        const state = categoriesReducer(initialState, removeCategoryFail({error}));
 
         expect(state).toEqual({
             ...AppInitialState.categories,
             error,
             isRemoved: false,
             isRemoving: false
+        });
+    });
+    
+    it('changeCategoryVisibility', () => {
+        const initialState: CategoriesState = {
+            ...AppInitialState.categories,
+            categoryDetailId: ""
+        };
+
+        const id = "anyCategoryId";
+        const state = categoriesReducer(initialState, changeCategoryVisibility({id}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categories,
+            categoryDetailId: id
+        });
+    });
+    
+    it('updateCategoriesVisibility', () => {
+        const initialState: CategoriesState = {
+            ...AppInitialState.categories,
+            categories: [
+                {id: "anyId", isVisible: true},
+                {id: "chosenId", isVisible: false},
+                {id: "anyOtherId", isVisible: true},
+            ] as any
+        };
+
+        const id = "chosenId";
+        const state = categoriesReducer(initialState, updateCategoriesVisibility({id}));
+
+        expect(state).toEqual({
+            ...AppInitialState.categories,
+            categories: [
+                {id: "anyId", isVisible: true},
+                {id: "chosenId", isVisible: true},
+                {id: "anyOtherId", isVisible: true},
+            ] as any
         });
     });
   
