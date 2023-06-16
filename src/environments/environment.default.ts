@@ -1,5 +1,5 @@
 export const environmentDefault = {
-    apiUrl: "http://localhost:3000",
+    apiUrl: "https://southamerica-east1-shop-354211.cloudfunctions.net/shop-admin-server",
     firebaseConfig: {
         apiKey: "AIzaSyAdts_6YqaZPH6ucaPPIIO-lxYskA14xB4",
         authDomain: "shop-354211.firebaseapp.com",
