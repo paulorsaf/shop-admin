@@ -89,6 +89,7 @@ describe('ProductDetailComponent', () => {
         categoryId: "",
         price: 0,
         priceWithDiscount: 0,
+        productInternalId: '',
         unit: '',
         weight: ''
       })
@@ -139,6 +140,7 @@ describe('ProductDetailComponent', () => {
           categoryId: "1",
           price: 10,
           priceWithDiscount: 5,
+          productInternalId: '123',
           unit: "KG",
           weight: 1
         })
@@ -365,7 +367,7 @@ describe('ProductDetailComponent', () => {
   function dispatchLoadDetailSuccess() {
     const product: Product = {
       description: 'anyDescription', id: 1, name: "name", categoryId: '1', price: 10,
-      priceWithDiscount: 5, unit: "KG", weight: 1
+      priceWithDiscount: 5, productInternalId: '123', unit: "KG", weight: 1
     } as any;
     store.dispatch(loadDetailSuccess({product}));
     fixture.detectChanges();
