@@ -1,10 +1,12 @@
 import { Product } from "src/app/model/product/product";
 import { AppInitialState } from "src/app/store/app-initial-state";
-import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts, uploadProducts, uploadProductsSuccess, uploadProductsFail } from "./products.actions";
 import { productsReducer } from "./products.reducers";
 import { ProductsState } from "./products.state";
 
-describe('Products store', () => {
+fdescribe('Products store', () => {
+
+    const error = {error: "error"};
     
     it('loadProducts', () => {
         const initialState: ProductsState = {
@@ -16,6 +18,7 @@ describe('Products store', () => {
             isLoaded: true,
             isLoading: false,
             isLoadingMoreProducts: true,
+            isUploading: true,
             page: 1,
             products: [{}] as any
         };
@@ -31,6 +34,7 @@ describe('Products store', () => {
             isLoaded: false,
             isLoading: true,
             isLoadingMoreProducts: false,
+            isUploading: false,
             page: 0,
             products: []
         });
@@ -157,7 +161,6 @@ describe('Products store', () => {
             isLoadingMoreProducts: true,
         };
 
-        const error = {error: "error"};
         const state = productsReducer(initialState, loadProductsFail({error}));
 
         expect(state).toEqual({
@@ -327,6 +330,52 @@ describe('Products store', () => {
             error,
             isLoadingProductDetail: false,
             productDetailId: undefined
+        });
+    });
+    
+    it('uploadProducts', () => {
+        const initialState: ProductsState = {
+            ...AppInitialState.products,
+            error: {},
+            isUploading: false
+        };
+
+        const file = {id: "anyId"} as any;
+        const state = productsReducer(initialState, uploadProducts({file}));
+
+        expect(state).toEqual({
+            ...AppInitialState.products,
+            error: undefined,
+            isUploading: true
+        });
+    });
+    
+    it('uploadProductsSuccess', () => {
+        const initialState: ProductsState = {
+            ...AppInitialState.products,
+            isUploading: true
+        };
+
+        const state = productsReducer(initialState, uploadProductsSuccess());
+
+        expect(state).toEqual({
+            ...AppInitialState.products,
+            isUploading: false
+        });
+    });
+    
+    it('uploadProductsSuccess', () => {
+        const initialState: ProductsState = {
+            ...AppInitialState.products,
+            isUploading: true
+        };
+
+        const state = productsReducer(initialState, uploadProductsFail({error}));
+
+        expect(state).toEqual({
+            ...AppInitialState.products,
+            error,
+            isUploading: false
         });
     });
   

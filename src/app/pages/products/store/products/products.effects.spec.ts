@@ -6,11 +6,11 @@ import { ProductsEffects } from './products.effects';
 import { EffectsModule } from "@ngrx/effects";
 import { provideMockStore } from "@ngrx/store/testing";
 import { ProductServiceMock } from "src/mock/product-service.mock";
-import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts, uploadProducts, uploadProductsSuccess, uploadProductsFail } from "./products.actions";
 import { ProductService } from "src/app/services/product/product.service";
 import { changeVisibilitySuccess } from "../../product-detail/store/products/product-detail.actions";
 
-describe('ProductsEffects', () => {
+fdescribe('ProductsEffects', () => {
 
     let actions$ = new Observable<Action>();
     let effects: ProductsEffects;
@@ -195,6 +195,49 @@ describe('ProductsEffects', () => {
     
             effects.updateProductOnList$.subscribe(response => {
                 expect(response).toEqual(updateProductOnListFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("given upload product", () => {
+
+        beforeEach(() => {
+            const file = {id: "anyId"} as any;
+            actions$ = of(uploadProducts({file}));
+        })
+
+        it('when success, then return update product success', (done) => {
+            const product = {id: "anyProductId"} as any;
+            productService._response = of(product);
+    
+            effects.uploadProducts$.subscribe(response => {
+                expect(response).toEqual(uploadProductsSuccess());
+                done();
+            })
+        })
+    
+        it('when fail, then return upload product error', (done) => {
+            productService._response = throwError(error);
+    
+            effects.uploadProducts$.subscribe(response => {
+                expect(response).toEqual(uploadProductsFail({error}));
+                done();
+            })
+        })
+
+    })
+
+    describe("given upload products success", () => {
+
+        beforeEach(() => {
+            actions$ = of(uploadProductsSuccess());
+        })
+
+        it('then return load products', (done) => {
+            effects.uploadProductsSuccess$.subscribe(response => {
+                expect(response).toEqual(loadProducts());
                 done();
             })
         })

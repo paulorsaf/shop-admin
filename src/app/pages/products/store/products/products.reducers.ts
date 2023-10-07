@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { AppInitialState } from 'src/app/store/app-initial-state';
-import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts } from './products.actions';
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts, uploadProducts, uploadProductsSuccess, uploadProductsFail } from './products.actions';
 import { ProductsState } from './products.state';
 
 const initialState: ProductsState = AppInitialState.products;
@@ -16,6 +16,7 @@ const _productsReducer = createReducer(initialState,
             isLoaded: false,
             isLoading: true,
             isLoadingMoreProducts: false,
+            isUploading: false,
             page: 0,
             products: []
         };
@@ -108,6 +109,26 @@ const _productsReducer = createReducer(initialState,
             error: action.error,
             isLoadingProductDetail: false,
             productDetailId: undefined
+        };
+    }),
+    on(uploadProducts, (state) => {
+        return {
+            ...state,
+            error: undefined,
+            isUploading: true
+        };
+    }),
+    on(uploadProductsSuccess, (state) => {
+        return {
+            ...state,
+            isUploading: false
+        };
+    }),
+    on(uploadProductsFail, (state, action) => {
+        return {
+            ...state,
+            error: action.error,
+            isUploading: false
         };
     })
 );

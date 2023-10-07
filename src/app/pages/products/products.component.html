@@ -106,3 +106,13 @@
         Nenhum resultado encontrado
     </div>
 </section>
+
+<ng-container *ngIf="!(isLoading$ | async)">
+    <button mat-fab color="primary" *ngIf="!(isUploading$ | async)" test-id="upload">
+        <input type="file" accept=".xlsx" (change)="uploadProducts($event)"/>
+        <mat-icon>upload</mat-icon>
+    </button>
+    <button mat-fab color="primary" *ngIf="(isUploading$ | async)" test-id="upload-loader">
+        <mat-icon>hourglass_top</mat-icon>
+    </button>
+</ng-container>

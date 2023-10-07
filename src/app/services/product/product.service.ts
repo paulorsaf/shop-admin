@@ -33,6 +33,11 @@ export class ProductService {
     return this.apiService.delete<void>(url);
   }
 
+  removeImage(productId: string, imageName: string): Observable<void> {
+    const url = `${environment.apiUrl}/products/${productId}/images/${imageName}`;
+    return this.apiService.delete<void>(url);
+  }
+
   save(product: Product): Observable<Product[]> {
     const url = `${environment.apiUrl}/products`;
     return this.apiService.post<Product[]>(url, product);
@@ -43,14 +48,14 @@ export class ProductService {
     return this.apiService.patch<Product[]>(url, product);
   }
 
-  removeImage(productId: string, imageName: string): Observable<void> {
-    const url = `${environment.apiUrl}/products/${productId}/images/${imageName}`;
-    return this.apiService.delete<void>(url);
-  }
-
   uploadImage(productId: string, image: File): Observable<void> {
     const url = `${environment.apiUrl}/products/${productId}/images`;
     return this.apiService.postMultipart<void>(url, image);
+  }
+
+  uploadProducts(file: File): Observable<void> {
+    const url = `${environment.apiUrl}/products/uploads`;
+    return this.apiService.postMultipart<void>(url, file);
   }
 
 }

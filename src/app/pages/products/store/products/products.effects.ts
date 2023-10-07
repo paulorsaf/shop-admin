@@ -7,7 +7,7 @@ import { Product } from "src/app/model/product/product";
 import { ProductService } from "src/app/services/product/product.service";
 import { AppState } from "src/app/store/app-state";
 import { changeVisibilitySuccess } from "../../product-detail/store/products/product-detail.actions";
-import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts } from "./products.actions";
+import { loadProducts, loadProductsFail, loadMoreProducts, loadProductsSuccess, removeProduct, removeProductFail, removeProductSuccess, updateProductOnList, updateProductOnListFail, updateProductOnListSuccess, filterProducts, uploadProducts, uploadProductsSuccess, uploadProductsFail } from "./products.actions";
 import { ProductsState } from "./products.state";
 
 @Injectable()
@@ -17,8 +17,7 @@ export class ProductsEffects {
         private actions$: Actions,
         private productService: ProductService,
         private store: Store<AppState>
-    ){
-    }
+    ){}
 
     loadEffect$ = createEffect(() =>
         this.actions$.pipe(
@@ -76,6 +75,25 @@ export class ProductsEffects {
                     catchError(error => of(updateProductOnListFail({error})))
                 )
             )
+        )
+    )
+
+    uploadProducts$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(uploadProducts),
+            switchMap(({file}) =>
+                this.productService.uploadProducts(file).pipe(
+                    map(() => uploadProductsSuccess()),
+                    catchError(error => of(uploadProductsFail({error})))
+                )
+            )
+        )
+    )
+
+    uploadProductsSuccess$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(uploadProductsSuccess),
+            switchMap(() => of(loadProducts()))
         )
     )
 

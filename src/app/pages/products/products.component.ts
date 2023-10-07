@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { filter, Observable, Subscription, take } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { AppState } from 'src/app/store/app-state';
-import { loadProducts, loadMoreProducts, removeProduct, filterProducts } from './store/products/products.actions';
+import { loadProducts, loadMoreProducts, removeProduct, filterProducts, uploadProducts } from './store/products/products.actions';
 import { loadCategories } from 'src/app/pages/categories/store/categories.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/components/confirm-dialog/confirm-dialog.component';
@@ -28,6 +28,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   isChangingVisibility$!: Observable<boolean>;
   isLoading$!: Observable<boolean>;
   isLoadingMoreProducts$!: Observable<boolean>;
+  isUploading$!: Observable<boolean>;
   productChangingVisibilityId$!: Observable<string | undefined>;
   hasMoreProductsToLoad$!: Observable<boolean>;
 
@@ -49,21 +50,22 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
     this.categories$ = this.store.select(store => store.categories.categories);
     this.displayedColumns$ = this.store.select(
-      state => state.products?.products?.some(p => p.productInternalId) ?
+      store => store.products?.products?.some(p => p.productInternalId) ?
         ['id', 'name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'showProduct', 'delete'] :
         ['name', 'category', 'price', 'priceWithDiscount', 'totalStock', 'showProduct', 'delete']
     );
     this.hasMoreProductsToLoad$ = this.store.select(
-      state => state.products.hasMoreToLoad
+      store => store.products.hasMoreToLoad
     );
-    this.hasProducts$ = this.store.select(state => state.products.products.length > 0);
+    this.hasProducts$ = this.store.select(store => store.products.products.length > 0);
     this.isChangingVisibility$ = this.store.select(store => store.productDetail.isChangingVisibility);
-    this.isLoading$ = this.store.select(state =>
-      state.products.isLoading || state.products.isRemoving || state.products.isFiltering
+    this.isLoading$ = this.store.select(store =>
+      store.products.isLoading || store.products.isRemoving || store.products.isFiltering
     );
     this.isLoadingMoreProducts$ = this.store.select(
-      state => state.products.isLoadingMoreProducts
+      store => store.products.isLoadingMoreProducts
     );
+    this.isUploading$ = this.store.select(store => store.products.isUploading);
     this.productChangingVisibilityId$ = this.store.select(
       store => store.productDetail.productChangingVisibilityId || store.products.productDetailId
     );
@@ -130,6 +132,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
           this.messageService.showError(state.error.error);
         }
       });
+  }
+
+  uploadProducts($event: any) {
+    const file = $event.target.files[0];
+    this.store.dispatch(uploadProducts({file}));
+    $event.target.value = "";
   }
 
   private remove(product: Product) {

@@ -17,10 +17,10 @@ import { changeVisibilityFail, changeVisibilitySuccess } from './product-detail/
 import { productDetailReducer } from './product-detail/store/products/product-detail.reducers';
 import { ProductsComponent } from './products.component';
 import { ProductsModule } from './products.module';
-import { loadProductsSuccess, removeProductFail, removeProductSuccess } from './store/products/products.actions';
+import { loadProductsSuccess, removeProductFail, removeProductSuccess, uploadProductsSuccess } from './store/products/products.actions';
 import { productsReducer } from './store/products/products.reducers';
 
-describe('ProductsComponent', () => {
+fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let page: PageMock;
@@ -86,6 +86,10 @@ describe('ProductsComponent', () => {
       expect(component.category).toEqual("");
     });
 
+    it('then hide upload button', () => {
+      expect(page.querySelector('[test-id="upload"]')).toBeNull();
+    })
+
   })
 
   describe('given loading products', () => {
@@ -121,6 +125,10 @@ describe('ProductsComponent', () => {
     it('then show pagination button', () => {
       expect(page.querySelector('[test-id="pagination-button"]')).not.toBeNull();
     });
+
+    it('then show upload button', () => {
+      expect(page.querySelector('[test-id="upload"]')).not.toBeNull();
+    })
 
     it('when no more products to load, then hide pagination button', () => {
       dispatchLoadSuccess({amount: 2});
@@ -358,6 +366,53 @@ describe('ProductsComponent', () => {
         expect(
           page.querySelectorAll('[test-id="visibility-toggle"][ng-reflect-disabled="false"]').length
         ).toEqual(3);
+      })
+
+    })
+
+  })
+
+  describe('given user uploads file button', () => {
+
+    beforeEach(() => {
+      dispatchLoadSuccess();
+
+      component.uploadProducts({target: {files: [{id: "anyId"}]}});
+      fixture.detectChanges();
+    })
+
+    it('then start upload', done => {
+      store.select('products').subscribe(state => {
+        expect(state.isUploading).toBeTruthy();
+        done();
+      })
+    })
+
+    describe('when uploading', () => {
+
+      it('then hide upload', () => {
+        expect(page.querySelector('[test-id="upload"]')).toBeNull();
+      })
+
+      it('then show upload loader', () => {
+        expect(page.querySelector('[test-id="upload-loader"]')).not.toBeNull();
+      })
+
+    })
+
+    describe('when uploaded', () => {
+
+      beforeEach(() => {
+        store.dispatch(uploadProductsSuccess());
+        fixture.detectChanges();
+      })
+
+      it('then show upload', () => {
+        expect(page.querySelector('[test-id="upload"]')).not.toBeNull();
+      })
+
+      it('then hide upload loader', () => {
+        expect(page.querySelector('[test-id="upload-loader"]')).toBeNull();
       })
 
     })

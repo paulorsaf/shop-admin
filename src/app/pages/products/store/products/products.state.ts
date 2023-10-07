@@ -12,6 +12,7 @@ export type ProductsState = {
     isLoadingProductDetail: boolean;
     isRemoved: boolean;
     isRemoving: boolean;
+    isUploading: boolean;
     page: number;
     products: Product[];
     productDetailId?: string;

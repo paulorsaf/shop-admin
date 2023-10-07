@@ -32,5 +32,8 @@ export class ProductServiceMock {
     uploadImage() {
         return this._response || of({});
     }
+    uploadProducts() {
+        return this._response || of({});
+    }
 
 }

@@ -106,6 +106,7 @@ export const AppInitialState: AppState = {
         isLoadingProductDetail: false,
         isRemoved: false,
         isRemoving: false,
+        isUploading: false,
         page: 0,
         products: []
     },

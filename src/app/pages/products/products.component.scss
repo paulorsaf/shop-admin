@@ -2,10 +2,25 @@
     margin: 20px 0;
 }
 
-mat-icon {
+td mat-icon {
     margin: 5px;
 }
 
 mat-form-field {
     margin-right: 5px;
+}
+
+[mat-fab] {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
 }

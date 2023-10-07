@@ -16,6 +16,10 @@ export const updateProductOnList = createAction('[Product] update product', prop
 export const updateProductOnListSuccess = createAction('[Product] update product success', props<{product: Product}>());
 export const updateProductOnListFail = createAction('[Product] update product fail', props<{error: any}>());
 
+export const uploadProducts = createAction('[Product] upload', props<{file: File}>());
+export const uploadProductsSuccess = createAction('[Product] upload success');
+export const uploadProductsFail = createAction('[Product] upload fail', props<{error: any}>());
+
 export type ProductsFilter = {
     categoryId?: string;
     internalId?: string;
