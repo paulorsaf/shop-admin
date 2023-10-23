@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from, switchMap } from 'rxjs';
 import { Product } from 'src/app/model/product/product';
 import { environment } from 'src/environments/environment';
 import { ApiService } from 'src/app/services/api/api.service';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { ApiService } from 'src/app/services/api/api.service';
 export class ProductService {
 
   constructor(
-    private apiService: ApiService
+    private apiService: ApiService,
+    private storage: AngularFireStorage
   ) { }
 
   changeVisibility(productId: string): Observable<void> {
@@ -54,8 +56,12 @@ export class ProductService {
   }
 
   uploadProducts(file: File): Observable<void> {
-    const url = `${environment.apiUrl}/products/uploads`;
-    return this.apiService.postMultipart<void>(url, file);
+    const path = `products/uploads/${file.name}`;
+    return from(this.storage.upload(path, file))
+      .pipe(switchMap(() => {
+        const url = `${environment.apiUrl}/products/uploads`;
+        return this.apiService.post<void>(url, {path});
+      }))
   }
 
 }
